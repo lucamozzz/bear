@@ -64,7 +64,11 @@ function Assignment(props) {
                         element={element}
                         description={translate('ex."lux"')}
                         label={`Attribute ${index + 1}`}
-                        getValue={() => item.key}
+                        getValue={() => {
+                            if (item.key === undefined || item.key === 'undefined')
+                                return '';
+                            return item.key
+                        }}
                         setValue={(newKey) => {
                             const updatedItems = getValues();
                             updatedItems[index].key = newKey;
@@ -78,7 +82,11 @@ function Assignment(props) {
                         element={element}
                         description={translate('ex."on"')}
                         label={`Value ${index + 1}`}
-                        getValue={() => item.value}
+                        getValue={() => {
+                            if (item.value === undefined || item.value === 'undefined')
+                                return '';
+                            return item.value
+                        }}
                         setValue={(newValue) => {
                             const updatedItems = getValues();
                             updatedItems[index].value = newValue;
