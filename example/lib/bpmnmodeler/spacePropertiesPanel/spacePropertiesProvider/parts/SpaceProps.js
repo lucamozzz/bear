@@ -17,27 +17,34 @@ export default function SpaceProps(element, modeler) {
     });
   } else if (is(element, 'bpmn:Task')) {
     properties.push(
-        {
-          id: 'guard',
-          element,
-          component: Guard,
-          isEdited: isTextFieldEntryEdited
-        },
-        {
-          id: 'destination',
-          element,
-          modeler,
-          component: Destination,
-          isEdited: isSelectEntryEdited
-        },
-
-        {
-          id: 'assignment',
-          element,
-          component: Assignment,
-          isEdited: isTextFieldEntryEdited
-        },
-
+      {
+        id: 'guard',
+        element,
+        component: Guard,
+        isEdited: isTextFieldEntryEdited
+      },
+      {
+        id: 'destination',
+        element,
+        modeler,
+        component: Destination,
+        isEdited: isSelectEntryEdited
+      },
+      {
+        id: 'assignment',
+        element,
+        component: Assignment,
+        isEdited: isTextFieldEntryEdited
+      },
+    );
+  } else if (is(element, 'bpmn:DataObjectReference')) {
+    properties.push(
+      {
+        id: 'assignment',
+        element,
+        component: Assignment,
+        isEdited: isTextFieldEntryEdited
+      },
     );
   }
 
@@ -46,7 +53,7 @@ export default function SpaceProps(element, modeler) {
 
 
 function Guard(props) {
-  const {element, id} = props;
+  const { element, id } = props;
 
   const modeling = useService('modeling');
   const translate = useService('translate');
@@ -63,18 +70,18 @@ function Guard(props) {
   }
 
   return <TextFieldEntry
-      id={id}
-      element={element}
-      description={translate('')}
-      label={translate('Guard')}
-      getValue={getValue}
-      setValue={setValue}
-      debounce={debounce}
+    id={id}
+    element={element}
+    description={translate('')}
+    label={translate('Guard')}
+    getValue={getValue}
+    setValue={setValue}
+    debounce={debounce}
   />
 }
 
 function Root(props) {
-  const {element, id, modeler} = props;
+  const { element, id, modeler } = props;
 
   const modeling = useService('modeling');
   const translate = useService('translate');
@@ -100,18 +107,18 @@ function Root(props) {
       label: 'null',
       value: null
     },
-      ...options];
+    ...options];
 
     if (places.length === 0) {
       return newOptions;
     } else {
       for (let i = 0; i < place.length; i++) {
         newOptions.push(
-            {
-              label: `${place[i].name}`,
-              value: place[i].id
-            },
-            ...options
+          {
+            label: `${place[i].name}`,
+            value: place[i].id
+          },
+          ...options
         );
       }
       //console.log(newOptions);
@@ -129,16 +136,16 @@ function Root(props) {
   // console.log(element.businessObject)
 
   return <SelectEntry
-      id={ id }
-      element={ element }
-      label={ translate('Initial Position') }
-      getValue={ getValue }
-      getOptions= {getOptions}
-      setValue ={setValue}
-      debounce={ debounce }
+    id={id}
+    element={element}
+    label={translate('Initial Position')}
+    getValue={getValue}
+    getOptions={getOptions}
+    setValue={setValue}
+    debounce={debounce}
   />
-
 }
+
 function Destination(props) {
   const { element, id, modeler } = props;
 
@@ -163,18 +170,18 @@ function Destination(props) {
       label: 'null',
       value: null
     },
-      ...options];
+    ...options];
 
     if (places.length === 0) {
       return newOptions;
     } else {
       for (let i = 0; i < place.length; i++) {
         newOptions.push(
-            {
-              label: `${place[i].name}`,
-              value: place[i].id
-            },
-            ...options
+          {
+            label: `${place[i].name}`,
+            value: place[i].id
+          },
+          ...options
         );
       }
       return newOptions;
@@ -190,16 +197,16 @@ function Destination(props) {
   // console.log(element.businessObject)
 
   return (
-      <div>
-        <SelectEntry
-            id={id}
-            element={element}
-            label={translate('Destination')}
-            getValue={getValue}
-            getOptions={getOptions}
-            setValue={setValue}
-            debounce={debounce}
-        />
-      </div>
+    <div>
+      <SelectEntry
+        id={id}
+        element={element}
+        label={translate('Destination')}
+        getValue={getValue}
+        getOptions={getOptions}
+        setValue={setValue}
+        debounce={debounce}
+      />
+    </div>
   );
 }

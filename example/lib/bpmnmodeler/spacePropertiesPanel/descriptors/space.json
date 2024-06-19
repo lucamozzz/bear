@@ -45,6 +45,19 @@
           "type": "Array[String]"
         }
       ]
+    },
+    {
+      "name": "SpaceDO",
+      "extends": [
+        "bpmn:DataObjectReference"
+      ],
+      "properties": [
+        {
+          "name": "assignment",
+          "isAttr": true,
+          "type": "Array[String]"
+        }
+      ]
     }
   ]
 }

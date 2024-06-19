@@ -14,25 +14,28 @@ export default function SpacePropertiesProvider(propertiesPanel, translate, even
   this._spaceModeler = spaceModeler;
   const modeler = this._spaceModeler;
 
-this.getGroups = function (element) {
+  this.getGroups = function (element) {
     return function (groups) {
-        if (is(element, 'bpmn:Task')) {
-            groups.push(createSpaceGroup(element, translate));
-        }
-        if (is(element, 'bpmn:Participant')) {
-            groups.push(createSpaceGroup(element, translate));
-        }
-        if (is(element, 'bpmn:StartEvent') || is(element, 'bpmn:BoundaryEvent')) {
-            groups.push(createConditionGroup(element, translate));
-        }
-        if (is(element, 'bpmn:Process')) {
-            groups.push(createTimeGroup(element, translate));
-        }
+      if (is(element, 'bpmn:Task')) {
+        groups.push(createSpaceGroup(element, translate));
+      }
+      if (is(element, 'bpmn:DataObjectReference')) {
+        groups.push(createSpaceGroup(element, translate));
+      }
+      if (is(element, 'bpmn:Participant')) {
+        groups.push(createSpaceGroup(element, translate));
+      }
+      if (is(element, 'bpmn:StartEvent') || is(element, 'bpmn:BoundaryEvent')) {
+        groups.push(createConditionGroup(element, translate));
+      }
+      if (is(element, 'bpmn:Process')) {
+        groups.push(createTimeGroup(element, translate));
+      }
 
-        // Filter out null groups
-        return groups.filter((group) => group !== null);
+      // Filter out null groups
+      return groups.filter((group) => group !== null);
     };
-};
+  };
   propertiesPanel.registerProvider(LOW_PRIORITY, this);
 
   // Create the custom space group
