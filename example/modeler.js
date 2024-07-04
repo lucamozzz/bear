@@ -18,7 +18,7 @@ import OlcModeler from './lib/olcmodeler/OlcModeler';
 import Mediator from './lib/mediator/Mediator';
 import BpmnSpaceModeler from './lib/bpmnmodeler/bpmnSpaceModeler';
 import { downloadZIP, uploadZIP } from './lib/util/FileUtil';
-import {OlcPropertiesPanelModule, OlcPropertiesProviderModule} from "./olc-js-properties-panel";
+import { OlcPropertiesPanelModule, OlcPropertiesProviderModule } from "./olc-js-properties-panel";
 
 import BpmnColorPickerModule from 'bpmn-js-color-picker';
 
@@ -109,12 +109,17 @@ var modeler = new BpmnSpaceModeler({
     }
 });
 
+localStorage.setItem('processStateMap', '{}');
+
 const olcPropertiesPanel = document.querySelector('#properties-panel-olc');
 const propertiesPanel = document.querySelector('#properties-panel');
 
 const propertiesPanelToggle = document.querySelector('#properties-panel-toggle');
 const olcPropertiesPanelResizer = document.querySelector('#properties-panel-resizer-olc');
 const propertiesPanelResizer = document.querySelector('#properties-panel-resizer');
+
+const dataPanelToggle = document.querySelector('#data-panel-toggle');
+const dataPanel = document.querySelector('#data-panel');
 
 let startX, startWidth;
 
@@ -130,6 +135,18 @@ function togglePropertiesPanel() {
     }
 }
 
+function toggleDataPanel() {
+    dataPanel.innerHTML = '';
+
+    const dataPanelOpen = dataPanel && dataPanel.classList.contains('open');
+
+    if (dataPanelOpen) {
+        toggleDataProperties(false);
+    } else {
+        toggleDataProperties(true);
+    }
+}
+
 function toggleOlcProperties(open) {
     if (olcPropertiesPanel) {
         if (open) {
@@ -139,6 +156,41 @@ function toggleOlcProperties(open) {
         }
         history.replaceState({}, document.title, url.toString());
         olcPropertiesPanel.classList.toggle('open', open);
+    }
+}
+
+document.addEventListener('processStateMapUpdate', () => {
+    const dataPanelOpen = dataPanel && dataPanel.classList.contains('open');
+    if (dataPanelOpen)
+        updateDataProperties()
+
+});
+
+function toggleDataProperties(open) {
+    if (dataPanel) {
+        history.replaceState({}, document.title, url.toString());
+        dataPanel.classList.toggle('open', open);
+        if (open)
+            updateDataProperties()
+    }
+}
+
+function updateDataProperties() {
+    dataPanel.innerHTML = "";
+    const mapJson = localStorage.getItem('processStateMap');
+    if (mapJson) {
+        new Map(JSON.parse(mapJson)).forEach((value, key) => {
+            if (key !== 'undefined' && value !== 'undefined'){   
+                const entryDiv = document.createElement('div');
+                entryDiv.className = 'entry';
+                const keySpan = document.createElement('span');
+                keySpan.textContent = `${key}: `;
+                const valueText = document.createTextNode(value);
+                entryDiv.appendChild(keySpan);
+                entryDiv.appendChild(valueText);
+                dataPanel.appendChild(entryDiv);
+            }
+        });
     }
 }
 
@@ -160,8 +212,15 @@ if (propertiesPanelToggle) {
     });
 }
 
+if (dataPanelToggle) {
+    dataPanelToggle.addEventListener('click', function (event) {
+        toggleDataPanel();
+    });
+}
+
 if (olcPropertiesPanelResizer) {
     olcPropertiesPanelResizer.addEventListener('click', function (event) {
+        toggleDataProperties(false);
         toggleOlcProperties(!olcPropertiesPanel.classList.contains('open'));
     });
 
@@ -187,6 +246,7 @@ if (olcPropertiesPanelResizer) {
 
 if (propertiesPanelResizer) {
     propertiesPanelResizer.addEventListener('click', function (event) {
+        toggleDataProperties(false);
         toggleProperties(!propertiesPanel.classList.contains('open'));
     });
 
@@ -234,23 +294,12 @@ if (remoteDiagram) {
 
 toggleProperties(url.searchParams.has('pp'));
 
-
-
-
-
-
-
-
-
-
-
-
 async function createNewDiagram() {
     await modeler.importXML(exampleXML);
     await olcModeler.createNew(); // Initialize XML of the OLC modeler
 }
 
-$(function() {
+$(function () {
     createNewDiagram();
 });
 
@@ -288,7 +337,7 @@ function loadDiagram(xml) {
             reader.readAsText(file, "UTF-8");
             reader.onload = function (evt) {
                 const bpmnXML = evt.target.result;
-                modeler.importXML(bpmnXML, function(err) {
+                modeler.importXML(bpmnXML, function (err) {
                     if (err) {
                         return console.error('could not import BPMN 2.0 diagram', err);
                     }
@@ -304,17 +353,32 @@ function loadDiagram(xml) {
     document.body.removeChild(fileInput);
 }
 
+
 async function importFromZip(zipData) {
     const zip = await Zip.loadAsync(zipData, { base64: true });
-    const files = {
-        space: zip.file('behaviour.bpmn'),
-        olcs: zip.file('space.xml'),
+    
+    let files = {
+        space: null,
+        olcs: null
     };
+
+    // Iterate over all files in the zip
+    zip.forEach((relativePath, file) => {
+        if (relativePath == 'behaviour.bpmn' || relativePath.endsWith('/behaviour.bpmn')) {
+            files.space = file;
+        } else if (relativePath == 'space.xml' || relativePath.endsWith('/space.xml')) {
+            files.olcs = file;
+        }
+    });
+
+    // Check if the required files are found
     Object.keys(files).forEach(key => {
         if (!files[key]) {
             throw new Error('Missing file: ' + key);
         }
     });
+
+    // Import the XML content of the files
     await olcModeler.importXML(await files.olcs.async("string"));
     await modeler.importXML(await files.space.async("string"));
 }
@@ -355,13 +419,8 @@ async function exportToZip() {
 }
 
 document.querySelector('#download-button').addEventListener('click', () => exportToZip().then(zip => {
-    downloadZIP('SpaceBPMN.zip', zip, 'base64');
+    downloadZIP('BEAR.zip', zip, 'base64');
 }));
-
-
-
-
-
 
 var dragTarget;
 
@@ -418,10 +477,10 @@ function dragend() {
 }
 
 // Add event listeners for element selection
-modeler.get('eventBus').on('element.click', function(event) {
+modeler.get('eventBus').on('element.click', function (event) {
     mediator.switchPropertyPanel(event.element);
 });
 
-olcModeler.get('eventBus').on('element.click', function(event) {
+olcModeler.get('eventBus').on('element.click', function (event) {
     mediator.switchPropertyPanel(event.element);
 });

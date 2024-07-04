@@ -39,11 +39,11 @@ export function ConditionProps(props) {
         entries.push(...VariableEventProps({ element }));
     }
 
-    entries.push({
-        id: "conditionType",
-        component: ConditionType,
-        isEdited: isSelectEntryEdited
-    });
+    // entries.push({
+    //     id: "conditionType",
+    //     component: ConditionType,
+    //     isEdited: isSelectEntryEdited
+    // });
 
     const conditionType = getConditionType(element);
 
@@ -322,19 +322,7 @@ function VariableEventProps(props) {
 
     const entries = [];
 
-    entries.push({
-        id: "conditionVariableName",
-        component: VariableName,
-        isEdited: isTextFieldEntryEdited
-    });
 
-    if (!is(element, "bpmn:StartEvent")) {
-        entries.push({
-            id: "conditionVariableEvents",
-            component: VariableEvents,
-            isEdited: isTextFieldEntryEdited
-        });
-    }
 
     return entries;
 }

@@ -62,7 +62,7 @@ function Assignment(props) {
                     <TextFieldEntry
                         id={`${id}-key-${index}`}
                         element={element}
-                        description={translate('ex."lux"')}
+                        description={translate('e.g. "lux"')}
                         label={`Attribute ${index + 1}`}
                         getValue={() => {
                             if (item.key === undefined || item.key === 'undefined')
@@ -80,7 +80,7 @@ function Assignment(props) {
                     <TextFieldEntry
                         id={`${id}-value-${index}`}
                         element={element}
-                        description={translate('ex."on"')}
+                        description={translate('e.g. "on"')}
                         label={`Value ${index + 1}`}
                         getValue={() => {
                             if (item.value === undefined || item.value === 'undefined')

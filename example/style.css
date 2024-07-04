@@ -382,3 +382,24 @@ body:not(.presentation-mode) .bts-notifications {
   height: 100%;
 }
 
+#data-panel {
+  background-color: #f9f9f9;
+  max-width: 400px;
+}
+
+#data-panel .entry {
+  border: 1px solid #ddd;
+  padding: 8px;
+  margin-top: 5px;
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+#data-panel .entry:hover {
+  background-color: #f1f1f1;
+}
+
+#data-panel .entry span {
+  font-weight: bold;
+}

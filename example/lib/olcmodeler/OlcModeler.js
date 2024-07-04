@@ -188,10 +188,6 @@ OlcModeler.prototype.importDefinitions = function (definitions) {
 
 
 OlcModeler.prototype.showOlc = function (space) {
- // this.get('eventBus').on('prova', function() {
-   // alert(1)
-  //});
-console.log(this.get('eventBus'));
   this.clear();
   this._space = space;
   if (space) {

@@ -22,10 +22,19 @@ export default function SpacePropertiesProvider(propertiesPanel, translate, even
       if (is(element, 'bpmn:DataObjectReference')) {
         groups.push(createSpaceGroup(element, translate));
       }
+      if (is(element, 'bpmn:SequenceFlow')) {
+        groups.push(createSpaceGroup(element, translate));
+      }
       if (is(element, 'bpmn:Participant')) {
         groups.push(createSpaceGroup(element, translate));
       }
-      if (is(element, 'bpmn:StartEvent') || is(element, 'bpmn:BoundaryEvent')) {
+      if (is(element, 'bpmn:IntermediateThrowEvent') || is(element, 'bpmn:IntermediateCatchEvent')) {
+        groups.push(createSpaceGroup(element, translate));
+      }
+      if (is(element, 'bpmn:StartEvent')) {
+        groups.push(createSpaceGroup(element, translate));
+      }
+      if (is(element, 'bpmn:StartEvent') || is(element, 'bpmn:BoundaryEvent')) { 
         groups.push(createConditionGroup(element, translate));
       }
       if (is(element, 'bpmn:Process')) {
@@ -42,7 +51,7 @@ export default function SpacePropertiesProvider(propertiesPanel, translate, even
   function createSpaceGroup(element, translate) {
     const spaceGroup = {
       id: 'space',
-      label: translate('SpaceBPMN properties'),
+      label: translate('Environmental properties'),
       entries: spaceProps(element, modeler)
     };
     return spaceGroup;

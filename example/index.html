@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
 
-  <title>SpaceBPMN Demo</title>
+  <title>BEAR</title>
 
   <link rel="stylesheet" href="./style.css" />
   <link rel="stylesheet" href="https://unpkg.com/bpmn-js-color-picker/colors/color-picker.css" />
-  <link rel="icon" type="image/png" href="./icons/favicon.png" />
+  <link rel="icon" type="image/png" href="./icons/logo.png" />
 
   <meta property="og:locale" content="en_US" />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="SpaceBPMN demo" />
-  <meta property="og:title" content="SpaceBPMN Demo" />
+  <meta property="og:site_name" content="BEAR" />
+  <meta property="og:title" content="BEAR" />
   <meta property="og:url" content="https://github.com/jessicapicc/SpaceBPMN/index.html" />
 
   <style>
@@ -40,48 +41,53 @@
       padding: 6px;
       margin: 12px;
       border-radius: 2px;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
       background-color: #FAFAFA;
       text-decoration: none;
     }
-    #homeProgress {
-    width: 100%;
-  }
 
-  #homeBar {
-    width: 1%;
-    height: 3px;
-    background-color: #53d153;
-  }
+    #homeProgress {
+      width: 100%;
+    }
+
+    #homeBar {
+      width: 1%;
+      height: 3px;
+      background-color: #53d153;
+    }
+
     a:hover {
       color: #FFF;
       background-color: #53d153;
     }
   </style>
 </head>
+
 <body>
-  <h1>SpaceBPMN</h1>
   <div>
-    <div style="width: 50%; margin-left: auto;  margin-right : auto"><img src="./icons/favicon.png" alt="SpaceBPMN Home" style="width: 100%"></img>
+    <div style="width: 50%; margin-left: auto; margin-right: auto; text-align: center;">
+      <img src="./icons/logo.png" alt="BEAR" style="width: 40%;">
     </div>
-  <br>
-  <div id="homeProgress">
-  <div id="homeBar"></div>
-</div></div>
-<script>
-  var elem = document.getElementById("homeBar");
-  var width = 1;
-  var id = setInterval(frame, 10);
-  function frame() {
-    if (width >= 100) {
-      clearInterval(id);
-      window.location.replace("modeler.html");     // window.open("modeler.html", '_self');
-    } else {
-      width++;
-      elem.style.width = width + '%';
+    <br>
+    <div id="homeProgress">
+      <div id="homeBar"></div>
+    </div>
+  </div>
+  <script>
+    var elem = document.getElementById("homeBar");
+    var width = 1;
+    var id = setInterval(frame, 10);
+    function frame() {
+      if (width >= 100) {
+        clearInterval(id);
+        window.location.replace("modeler.html");     // window.open("modeler.html", '_self');
+      } else {
+        width++;
+        elem.style.width = width + '%';
+      }
     }
-  }
-</script>
+  </script>
   <script src="./index.bundle.js"></script>
 </body>
+
 </html>

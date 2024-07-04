@@ -1,5 +1,5 @@
 {
-  "name": "spacebpmn",
+  "name": "bear",
   "version": "1.0.0",
   "description": "bpmn extended with space modeling",
   "main": "index.js",
@@ -17,12 +17,6 @@
     "type": "git",
     "url": "https://github.com/jessicapicc/SpaceBPMN"
   },
-  "contributors": [
-    {
-      "name": "Jessica Piccioni",
-      "url": "https://github.com/jessicapicc"
-    }
-  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/jessicapicc/SpaceBPMN/issues"

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Modeler | SpaceBPMN Demo</title>
+    <title>BEAR | Modeler</title>
     <link rel="stylesheet" href="./dist/vendor/bpmn-js/assets/diagram-js.css" />
     <link rel="stylesheet" href="./dist/vendor/bpmn-js/assets/bpmn-js.css" />
     <link rel="stylesheet" href="./dist/vendor/bpmn-js/assets/bpmn-font/css/bpmn-embedded.css" />
@@ -15,21 +15,22 @@
     <link rel="stylesheet" href="https://unpkg.com/bpmn-js-color-picker/colors/color-picker.css" />
 
     <link rel="stylesheet" href="./style.css"/>
-    <link rel="icon" type="image/png" href="./icons/favicon.png" />
+    <link rel="icon" type="image/png" href="./icons/logo.png" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta property="og:locale" content="en_US" />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="SpaceBPMN demo" />
-    <meta property="og:title" content="SpaceBPMN Demo" />
+    <meta property="og:site_name" content="BEAR" />
+    <meta property="og:title" content="BEAR" />
     <meta property="og:url" content="https://github.com/jessicapicc/SpaceBPMN/index.html" />
 </head>
 <body>
 <div id="nav-bar" class="topnav" id="myTopnav">
-    <a href="index.html" class="active" style="padding: 4px 4px 4px 4px;"><img src="./icons/home.png" alt="Mida Web Client" style="height:42px"></img></a>
-    <a style="float:right" href="#" class="properties-panel-resize" id="properties-panel-toggle" draggable="true"><i class="fa fa-columns"></i> Properties Panel</a>
-    <a href="https://github.com/jessicapicc/SpaceBPMN" class="links" target="_blank" rel="noopener">View on GitHub</a>
-    <a style="float:right" href="#" class="download-button" id="download-button"><i class="fa fa-download"></i>Save</a>
-    <a style="float:right" href="#" class="open-diagram" id="open-diagram"><i class="fa fa-upload"></i>Open</a>
+    <a href="index.html" class="active" style="padding: 4px 4px 4px 4px;"><img src="./icons/logo.png" alt="Mida Web Client" style="height:42px"></img></a>
+    <a style="float:right" href="#" class="properties-panel-resize" id="data-panel-toggle" draggable="true"><i class="fa fa-database"></i> Data </a>
+    <a style="float:right" href="#" class="properties-panel-resize" id="properties-panel-toggle" draggable="true"><i class="fa fa-cog"></i> Properties </a>
+    <a href="https://github.com/jessicapicc/SpaceBPMN" class="links" target="_blank" rel="noopener">View on BitBucket</a>
+    <a style="float:right" href="#" class="download-button" id="download-button"><i class="fa fa-download"></i> Save</a>
+    <a style="float:right" href="#" class="open-diagram" id="open-diagram"><i class="fa fa-upload"></i> Open</a>
 </div>
 
 <div id="main" class="mainContent">
@@ -38,6 +39,7 @@
             <div class="canvas" id="canvas"></div>
             <div class="properties-panel" id="properties-panel"></div>
             <div class="properties-panel" id="properties-panel-olc"></div>
+            <div class="properties-panel" id="data-panel"></div>
         </div>
     </div>
     <div class="divider vertical"></div>

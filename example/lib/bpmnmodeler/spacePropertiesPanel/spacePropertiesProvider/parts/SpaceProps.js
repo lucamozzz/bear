@@ -46,9 +46,94 @@ export default function SpaceProps(element, modeler) {
         isEdited: isTextFieldEntryEdited
       },
     );
+  } else if (is(element, 'bpmn:SequenceFlow')) {
+    properties.push(
+      {
+        id: 'guard',
+        element,
+        component: Guard,
+        isEdited: isTextFieldEntryEdited
+      },
+    );
+  } else if (is(element, 'bpmn:IntermediateThrowEvent')) {
+    properties.push(
+      {
+        id: 'payload',
+        element,
+        component: Payload,
+        isEdited: isTextFieldEntryEdited
+      },
+    );
+  } else if (is(element, 'bpmn:IntermediateCatchEvent') || is(element, 'bpmn:StartEvent')){
+    properties.push(
+      {
+        id: 'attribute',
+        element,
+        component: Attribute,
+        isEdited: isTextFieldEntryEdited
+      },
+    );
   }
 
   return properties;
+}
+
+
+function Payload(props) {
+  const { element, id } = props;
+
+  const modeling = useService('modeling');
+  const translate = useService('translate');
+  const debounce = useService('debounceInput');
+
+  const getValue = () => {
+    return element.businessObject.payload || '';
+  }
+
+  const setValue = value => {
+    return modeling.updateProperties(element, {
+      payload: value
+    });
+  }
+
+  return <TextFieldEntry
+    id={id}
+    element={element}
+    description={translate('')}
+    label={translate('Payload')}
+    getValue={getValue}
+    setValue={setValue}
+    debounce={debounce}
+  />
+}
+
+
+function Attribute(props) {
+  const { element, id } = props;
+
+  const modeling = useService('modeling');
+  const translate = useService('translate');
+  const debounce = useService('debounceInput');
+
+  const getValue = () => {
+    return element.businessObject.attribute || '';
+  }
+
+  const setValue = value => {
+    return modeling.updateProperties(element, {
+      attribute: value
+    });
+  }
+
+  return <TextFieldEntry
+    id={id}
+    element={element}
+    description={translate('')}
+    label={translate('Attribute')}
+    getValue={getValue}
+    setValue={setValue}
+    debounce={debounce}
+  />
 }
 
 

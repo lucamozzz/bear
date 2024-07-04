@@ -32,7 +32,7 @@ function CustomGroup(element, injector) {
 
     return {
             id: 'place',
-            label: translate('SpaceBPMN properties'),
+            label: translate('Environmental properties'),
             entries,
             component: Group
         };

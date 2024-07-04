@@ -58,6 +58,58 @@
           "type": "Array[String]"
         }
       ]
+    },
+    {
+      "name": "ConditionalSequenceFlow",
+      "extends": [
+        "bpmn:SequenceFlow"
+      ],
+      "properties": [
+        {
+          "name": "guard",
+          "isAttr": true,
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "SpaceIntermediateThrowEvent",
+      "extends": [
+        "bpmn:IntermediateThrowEvent"
+      ],
+      "properties": [
+        {
+          "name": "payload",
+          "isAttr": true,
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "SpaceIntermediateCatchEvent",
+      "extends": [
+        "bpmn:IntermediateCatchEvent"
+      ],
+      "properties": [
+        {
+          "name": "attribute",
+          "isAttr": true,
+          "type": "String"
+        }
+      ]
+    },
+    {
+      "name": "SpaceStartEvent",
+      "extends": [
+        "bpmn:StartEvent"
+      ],
+      "properties": [
+        {
+          "name": "attribute",
+          "isAttr": true,
+          "type": "String"
+        }
+      ]
     }
   ]
 }

@@ -10,8 +10,8 @@ export function Assignment(props) {
     const getValues = () => {
         const assignmentString = element.businessObject.assignment || '';
         return assignmentString.split(',').map(pair => {
-            const [key, value] = pair.split('=').map(part => part.trim());
-            return { key, value };
+            const [key, value] = pair.split('=').map(part => part.trim()); // Split key and value and trim whitespace
+            return { key, value }; // Return as an object
         });
     };
 
@@ -47,7 +47,7 @@ export function Assignment(props) {
                     <TextFieldEntry
                         id={`${id}-key-${index}`}
                         element={element}
-                        description={translate('ex."add"')}
+                        description={translate('e.g. "alarm"')}
                         label={`Attribute ${index + 1}`}
                         getValue={() => {
                             if (item.key === undefined || item.key === 'undefined')
@@ -65,7 +65,7 @@ export function Assignment(props) {
                     <TextFieldEntry
                         id={`${id}-value-${index}`}
                         element={element}
-                        description={translate('ex."p1.p2"')}
+                        description={translate('e.g. "off"')}
                         label={`Value ${index + 1}`}
                         getValue={() => {
                             if (item.value === undefined || item.value === 'undefined')
