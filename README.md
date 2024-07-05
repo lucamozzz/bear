@@ -1,4 +1,4 @@
-# BPMN Environmental AnimatoR
+# BEAR (BPMN Environmental AnimatoR)
 
 ## Description
 
@@ -6,15 +6,24 @@ Modern business processes are heavily influenced by the physical environment in 
 
 ## Installation
 
-To install this project, follow these steps:
+### Manual installation
+
+To install BEAR, follow these steps:
 
 1. Clone the repository.
 2. Run `npm install` to install the dependencies.
-3. ...
+3. Run `npm run start` to start a [local instance](http://localhost:8080).
+
+### Docker installation
+
+To install BEAR, follow these steps:
+
+1. Run `docker pull proslab/bear` to install the Docker image.
+2. Run `docker run -p 8080:8080 proslab/bear` to start a [local instance](http://localhost:8080).
 
 ## Usage
 
-To use this project, follow these steps:
+To use BEAR, follow these steps:
 
 1. ...
 2. ...

@@ -400,6 +400,26 @@ body:not(.presentation-mode) .bts-notifications {
   background-color: #f1f1f1;
 }
 
-#data-panel .entry span {
+#data-panel .group {
+  border: 1px solid #ccc;
+  margin-bottom: 15px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+#data-panel .title {
   font-weight: bold;
+  margin-bottom: 10px;
+  font-size: 1.2em;
+  color: #333;
+}
+
+#data-panel .entry {
+  margin: 5px 0;
+}
+
+.entry span {
+  font-weight: bold;
+  color: #555;
 }

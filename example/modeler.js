@@ -179,18 +179,56 @@ function updateDataProperties() {
     dataPanel.innerHTML = "";
     const mapJson = localStorage.getItem('processStateMap');
     if (mapJson) {
-        new Map(JSON.parse(mapJson)).forEach((value, key) => {
-            if (key !== 'undefined' && value !== 'undefined'){   
-                const entryDiv = document.createElement('div');
-                entryDiv.className = 'entry';
-                const keySpan = document.createElement('span');
-                keySpan.textContent = `${key}: `;
-                const valueText = document.createTextNode(value);
-                entryDiv.appendChild(keySpan);
-                entryDiv.appendChild(valueText);
-                dataPanel.appendChild(entryDiv);
+        const mapData = new Map(JSON.parse(mapJson));
+        const groupedData = new Map();
+
+        // Group the data by the first part of the key
+        mapData.forEach((value, key) => {
+            if (key !== 'undefined'
+                && value !== 'undefined'
+                && !key.includes('.position')
+                && !key.includes('undefined')
+                && !key.includes('.disable')
+                && !key.includes('.enable')
+            ) {
+                const [firstPart, ...rest] = key.split('.');
+                if (firstPart && !groupedData.has(firstPart)) {
+                    groupedData.set(firstPart, []);
+                }
+                if (firstPart) {
+                    groupedData.get(firstPart).push({ key: rest.join('.'), value });
+                }
             }
         });
+
+        // Create and append divs for each group with a title
+        groupedData.forEach((entries, firstPart) => {
+            const groupDiv = document.createElement('div');
+            groupDiv.className = 'group';
+
+            const titleDiv = document.createElement('div');
+            titleDiv.className = 'title';
+            titleDiv.textContent = firstPart;
+            groupDiv.appendChild(titleDiv);
+
+            entries.forEach(({ key, value }) => {
+                const entryDiv = document.createElement('div');
+                entryDiv.className = 'entry';
+
+                const keySpan = document.createElement('span');
+                keySpan.textContent = key ? `${key}: ` : '';
+                const valueText = document.createTextNode(value);
+
+                entryDiv.appendChild(keySpan);
+                entryDiv.appendChild(valueText);
+
+                groupDiv.appendChild(entryDiv);
+            });
+
+            dataPanel.appendChild(groupDiv);
+        });
+
+
     }
 }
 

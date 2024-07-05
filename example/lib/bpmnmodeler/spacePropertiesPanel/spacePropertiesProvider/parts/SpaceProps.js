@@ -64,7 +64,7 @@ export default function SpaceProps(element, modeler) {
         isEdited: isTextFieldEntryEdited
       },
     );
-  } else if (is(element, 'bpmn:IntermediateCatchEvent') || is(element, 'bpmn:StartEvent')){
+  } else if (is(element, 'bpmn:IntermediateCatchEvent') || is(element, 'bpmn:StartEvent')) {
     properties.push(
       {
         id: 'attribute',
@@ -289,6 +289,14 @@ function Destination(props) {
         label={translate('Destination')}
         getValue={getValue}
         getOptions={getOptions}
+        setValue={setValue}
+        debounce={debounce}
+      />
+      <TextFieldEntry
+        id={id}
+        element={element}
+        description={translate('Variable name')}
+        getValue={getValue}
         setValue={setValue}
         debounce={debounce}
       />
