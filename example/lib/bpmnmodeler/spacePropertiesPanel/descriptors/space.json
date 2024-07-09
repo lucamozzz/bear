@@ -110,6 +110,19 @@
           "type": "String"
         }
       ]
+    },
+    {
+      "name": "SpaceEndEvent",
+      "extends": [
+        "bpmn:StartEvent"
+      ],
+      "properties": [
+        {
+          "name": "payload",
+          "isAttr": true,
+          "type": "String"
+        }
+      ]
     }
   ]
 }

@@ -31,6 +31,9 @@ export default function SpacePropertiesProvider(propertiesPanel, translate, even
       if (is(element, 'bpmn:IntermediateThrowEvent') || is(element, 'bpmn:IntermediateCatchEvent')) {
         groups.push(createSpaceGroup(element, translate));
       }
+      if (is(element, 'bpmn:EndEvent')) {
+        groups.push(createSpaceGroup(element, translate));
+      }
       if (is(element, 'bpmn:StartEvent')) {
         groups.push(createSpaceGroup(element, translate));
       }

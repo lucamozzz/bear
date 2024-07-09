@@ -55,7 +55,7 @@ export default function SpaceProps(element, modeler) {
         isEdited: isTextFieldEntryEdited
       },
     );
-  } else if (is(element, 'bpmn:IntermediateThrowEvent')) {
+  } else if (is(element, 'bpmn:IntermediateThrowEvent') || is(element, 'bpmn:EndEvent')) {
     properties.push(
       {
         id: 'payload',
