@@ -188,8 +188,8 @@ function updateDataProperties() {
                 && value !== 'undefined'
                 && !key.includes('.position')
                 && !key.includes('undefined')
-                && !key.includes('.disable')
-                && !key.includes('.enable')
+                && !key.includes('.disconnect')
+                && !key.includes('.connect')
             ) {
                 const [firstPart, ...rest] = key.split('.');
                 if (firstPart && !groupedData.has(firstPart)) {
