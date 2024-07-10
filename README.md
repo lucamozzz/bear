@@ -29,40 +29,38 @@ The modeler is divided into two parts: 
 *   **BPMN modeler** (on the left) used to design the BPMN collaboration processes
 *   **Environment modeler** (on the right) used to design the environment in the form of place graphs
 
-On the left of each modeler, BEAR shows an **element palette** used to design the two models. For each element of the two modelers is possible to define additional property using the **property panel.  
-**For each place of the environmental model, the property panel is used to set one or more **environmental attributes**. To define them, it is necessary to define the name of the attribute and its value `Attribute: Alarm and Value: false`. 
-  
-For each **pool**, it is possible to set a **position** corresponding to one of the places of the environmental model.  
-For each **task**, we add three new properties:
+On the left of each modeler, BEAR shows an **element palette** used to design the two models. 
+For each element in the modelers, it is possible to define additional properties using the property panel. One or more **environmental attributes** can be set for a place in the environmental model by using the associated property panel. In order to define an environmental attribute, it is necessary to define its name and its initial value. Environmental attributes can be referenced by other elements in the models by using the following notation: `place_name.attribute_name`. Other attributes can be defined by using data objects in the BPMN modeler, which will only be accessible by the elements that belong to that specific pool, using the `attribute_name` notation.
 
-*   **Guard** constrains the execution of a task to an environmental status. The guard expression has to be defined putting at the beginning the name of the attribute that constraints the activity and the value that activates the condition (`p4.attr==free`)
-*   **Destination** indicate the place the participant want to reach from its current position. The destination has to be defined by selecting one place from the environmental model.
-*   **Assignments** are used to modify the environment topology (by adding or deleting a node or place) or the value of its attributes and data objects. The assignments have to be defined by writing the name of the attribute that has to be changed and the new associated value.  
-    With the assignments, it is also possible to delete or add new places and edges of the environmental model by using the corresponding keywords `connect(p4.p5)` and `disconnect(p4.5)`
+An **initial position** corresponding to one of the places in the environmental model can be set for each **pool**, which represents participant in the collaboration.
 
-For each **conditional event** (start and boundary), we add the property **condition** used to activate the event. The property must be a boolean expression over data object and place attributes. Es. `p1.attr & do.attr == true`  
-For each **message event** is possible to set some properties: 
+**Tasks** in the model will include three new properties:
 
-*  **Send Message Events** is possible to define the payload of the message which can contain a value refered to a data object, or a place. 
-*  **Receive Message Events** is possible to set the name of the attribute to associate the payload of the corresponding send message event.
+*   **Guard** constrains the execution of a task to an environmental status. The guard expression has to be defined by specifying the name of a defined attribute and the value that activates the condition (e.g., `place_name.attribute_name == value`).
+*   **Destination** indicates the place that the participant wants to reach from its current position. The destination has to be defined by selecting one of the places defined in the environmental model or by specifying the name of an attribute that contains the name of a place.
+*   **Assignments** are used to modify the environment topology (by connecting or disconnecting places) and the value of its attributes. Assignments are defined by specifying the name of a defined attribute and its new value. To connect or disconnect places in the environmental model, it is possible to use the `connect` and `disconnect` keywords as attributes and dot separated pairs of places (e.g., `place1.place2`) as the values to be assigned.
 
-Es. If we want to comunicate that the position with fire is in the place1 we have to write in the sending message `Payload:place1` and in the receive message `Attribute Name:firePosition`.
+For both start and boundary **conditional events**, the **condition** property can be used to activate the event. The condition must be a boolean expression over data object (e.g., `attribute_name == value`) or place attributes (e.g., `place_name.attribute_name == value`).
 
-It is also possible to use the attribute name of the receive message event as a general name to define the destination of tasks Es. `Destination:firePosition`, which automatically use as destination the place defined in the payload `place1`.
-The attribute name of the receive message event can be also used as general name to define the guard or to make an assignment in the task. In this case the attribute has to be write with the symbol $. Es. `Guard:$firePosition.fire==true` or `Assignment Attribute1:$firePosition.fire; Value1: false`. 
+For a **message event** it is possible to set some properties: 
 
-It is also possible to refer to an environmental attribute related to two or more places in the environment, using the keyword PLACES. Es.`Guard: PLACES.fire==false` controls that every place which has the attribute fire, the value is set to false. 
+* **Send Message Events** may define a message payload, which can contain an attribute or any other arbitrary value, such as numbers and text.
+* **Receive Message Events** will in turn specify the name of the attribute to associate with the payload of the corresponding send message event.
 
-BEAR makes it possible to save the project (**Save** button) and to upload an existing environmental BPMN collaboration model by clicking on the **_Open_** button and choosing a .zip file containing the .bpmn file and the space .xml file.
+
+Attributes which contain the name of a place can be used in guards by using `$` sign followed by the name of the attribute. For example, if the value of `attribute1` is `place1`, writing `$attribute1.attribute_name == value` is the same as writing `place1.attribute_name == value`. The same approach can also be used for assignments.
+
+Moreover, it is possible to refer to an environmental attribute related to more places by using the `PLACES` keyword. For example, using the `PLACES.attribute_name == value` expression as a guard, will return `true` if least one place will have 'attribute_name' set to `value`, `false` otherwise. When using this approach for performing assignments, the name of the first place that has 'attribute_name' set to `value` will be returned, `null` otherwise.
+
+BEAR makes it possible to save an environmental BPMN collaboration model by clicking on the **Save** button and to upload one by clicking on the **_Open_** button. When uploading a model, a .zip file containing the .bpmn file and the space .xml file will have to be provided by the user.
 
 ## **Animation with BEAR**
 
 BEAR embeds an animator capable of representing step-by-step the environmental BPMN collaboration execution. By selecting the Token Simulation button in the BEAR interface, a play button will appear over each fireable start event. Once this button is clicked, one process is activated. This creates a new token in the form of a small colored circle at the start event of the BPMN collaboration and another token in place of the environmental model corresponding to the set position of the pool, which starts to cross the two models.
   
-The animation terminates once all tokens cannot move forward.  
-In case a token remains blocked due to environmental conditions, e.g. a guard condition violation, BEAR highlights it in red.  
-  
-The **data panel** in the BEAR interface keeps track value evolution of the values related to data objects and environmental attributes during the animation. At any time, the animation can be paused by the user to check the distribution of tokens in the environment and into the BPMN collaboration.
+The animation terminates once all tokens cannot move forward. In the case of a token remaining blocked due to environmental conditions (e.g., a guard condition violation) BEAR will highlight the issue using the red color.  
+
+The **data panel** in the top-right corner of the BEAR interface allows users to keep track of the evolution of the values related to data objects and environmental attributes throughout the animation. At any time, the animation can be paused by the user to check the distribution of the tokens in the environment and in the BPMN collaboration.
 
 ### License
 
