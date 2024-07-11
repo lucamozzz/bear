@@ -50,9 +50,9 @@ For a **message event** it is possible to set some properties:
 
 Attributes which contain the name of a place can be used in guards by using `$` sign followed by the name of the attribute. For example, if the value of `attribute1` is `place1`, writing `$attribute1.attribute_name == value` is the same as writing `place1.attribute_name == value`. The same approach can also be used for assignments.
 
-Moreover, it is possible to refer to an environmental attribute related to more places by using the `PLACES` keyword. For example, using the `PLACES.attribute_name == value` expression as a guard, will return `true` if least one place will have 'attribute_name' set to `value`, `false` otherwise. When using this approach for performing assignments, the name of the first place that has 'attribute_name' set to `value` will be returned, `null` otherwise.
+Moreover, it is possible to refer to an environmental attribute related to more places by using the `PLACES` keyword. For example, using the `PLACES.attribute_name == value` expression as a guard, will return `true` if least one place will have 'attribute_name' set to `value`, `false` otherwise. When using this approach for performing assignments, the name of the first place that has `attribute_name` set to `value` will be returned, `null` otherwise.
 
-BEAR makes it possible to save an environmental BPMN collaboration model by clicking on the **Save** button and to upload one by clicking on the **_Open_** button. When uploading a model, a .zip file containing the .bpmn file and the space .xml file will have to be provided by the user.
+BEAR makes it possible to save an environmental BPMN collaboration model by clicking on the ***Save*** button and to upload one by clicking on the **_Open_** button. When uploading a model, a .zip file containing the .bpmn file and the space .xml file will have to be provided by the user.
 
 ## **Animation with BEAR**
 
