@@ -423,3 +423,43 @@ body:not(.presentation-mode) .bts-notifications {
   font-weight: bold;
   color: #555;
 }
+
+.spinner {
+  position: fixed;
+  top: 48%;
+  left: 48%;
+  transform: translate(-50%, -50%);
+  width: 50px;
+  height: 50px;
+  border: 10px solid white;
+  border-top: 10px solid green;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  z-index: 9999; /* Make sure it stays on top */
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.hidden {
+  display: none;
+}
+
+#loadingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  z-index: 9999; /* Ensure it is on top */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#loadingOverlay.hidden {
+  display: none;
+}

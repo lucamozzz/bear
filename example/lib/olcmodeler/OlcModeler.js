@@ -20,6 +20,7 @@ import EditorActionsModule from '../common/editor-actions';
 import CopyPasteModule from 'diagram-js/lib/features/copy-paste';
 import KeyboardModule from '../common/keyboard';
 
+import bearXML from '../../resources/bear.xml';
 
 // import {OlcPropertiesPanelModule} from '../example/olc-js-properties-panel';
 import OlcPaletteModule from './palette';
@@ -112,10 +113,10 @@ export default function OlcModeler(options) {
 }
 inherits(OlcModeler, Diagram);
 
-
-
 OlcModeler.prototype.createNew = function () {
-  return this.importXML(emptyDiagram);
+  // return this.importXML(emptyDiagram);
+  localStorage['space-model'] = bearXML;
+  return this.importXML(bearXML);
 }
 
 
@@ -194,7 +195,8 @@ OlcModeler.prototype.showOlc = function (space) {
     const elementFactory = this.get('elementFactory');
     var diagramRoot = elementFactory.createRoot({ type: 'space:Space', businessObject: space });
     const canvas = this.get('canvas');
-    canvas.setRootElement(diagramRoot);
+    canvas.setRootElement(diagramRoot)
+    canvas.zoom('0.5');
 
     var elements = groupBy(space.get('Elements'), element => element.$type);
     var states = {};

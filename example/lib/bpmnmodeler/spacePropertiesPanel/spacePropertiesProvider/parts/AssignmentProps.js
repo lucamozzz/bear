@@ -43,7 +43,7 @@ export function Assignment(props) {
                 </button>
             </div>
             {getValues().map((item, index) => (
-                < div key={index} style={{ display: 'flex', alignItems: 'center', marginBottom: '5px' }}>
+                < div key={index} style={{ display: 'block', alignItems: 'center', marginBottom: '8px' }}>
                     <TextFieldEntry
                         id={`${id}-key-${index}`}
                         element={element}

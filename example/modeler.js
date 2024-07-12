@@ -13,7 +13,7 @@ import fileDrop from 'file-drops';
 import fileOpen from 'file-open';
 import download from 'downloadjs';
 import Zip from 'jszip';
-import exampleXML from '../example/resources/prova.bpmn';
+import bearBPMN from '../example/resources/bear.bpmn';
 import OlcModeler from './lib/olcmodeler/OlcModeler';
 import Mediator from './lib/mediator/Mediator';
 import BpmnSpaceModeler from './lib/bpmnmodeler/bpmnSpaceModeler';
@@ -32,9 +32,9 @@ let fileName = 'diagram.bpmn';
 
 const initialDiagram = (() => {
     try {
-        return persistent && localStorage['diagram-xml'] || exampleXML;
+        return persistent && localStorage['diagram-xml'] || bearBPMN;
     } catch (err) {
-        return exampleXML;
+        return bearBPMN;
     }
 })();
 
@@ -159,6 +159,10 @@ function toggleOlcProperties(open) {
     }
 }
 
+document.addEventListener('resetSim', async () => {
+    await olcModeler.importXML(localStorage['space-model']);
+});
+
 document.addEventListener('processStateMapUpdate', () => {
     const dataPanelOpen = dataPanel && dataPanel.classList.contains('open');
     if (dataPanelOpen)
@@ -178,6 +182,7 @@ function toggleDataProperties(open) {
 function updateDataProperties() {
     dataPanel.innerHTML = "";
     const mapJson = localStorage.getItem('processStateMap');
+    const participants = JSON.parse(localStorage.getItem('participants'));
     if (mapJson) {
         const mapData = new Map(JSON.parse(mapJson));
         const groupedData = new Map();
@@ -203,6 +208,8 @@ function updateDataProperties() {
 
         // Create and append divs for each group with a title
         groupedData.forEach((entries, firstPart) => {
+            if (participants[firstPart])
+                firstPart = participants[firstPart];
             const groupDiv = document.createElement('div');
             groupDiv.className = 'group';
 
@@ -332,9 +339,33 @@ if (remoteDiagram) {
 
 toggleProperties(url.searchParams.has('pp'));
 
+// Function to show the loading spinner
+function showLoadingSpinner() {
+    document.getElementById('loading-spinner').classList.remove('hidden');
+}
+
+// Function to hide the loading spinner
+function hideLoadingSpinner() {
+    document.getElementById('loading-spinner').classList.add('hidden');
+}
+
+// Show the loading overlay
+function showLoadingOverlay() {
+    document.getElementById('loadingOverlay').classList.remove('hidden');
+}
+
+// Hide the loading overlay
+function hideLoadingOverlay() {
+    document.getElementById('loadingOverlay').classList.add('hidden');
+}
+
 async function createNewDiagram() {
-    await modeler.importXML(exampleXML);
-    await olcModeler.createNew(); // Initialize XML of the OLC modeler
+    showLoadingSpinner();
+    showLoadingOverlay();
+    await olcModeler.createNew();
+    await modeler.importXML(bearBPMN);
+    hideLoadingSpinner();
+    hideLoadingOverlay();
 }
 
 $(function () {
@@ -344,10 +375,10 @@ $(function () {
 function openDiagram(diagram) {
     return modeler.importXML(diagram)
         .then(({ warnings }) => {
-            if (warnings.length) {
-                console.warn(warnings);
-            }
-            modeler.get('canvas').zoom('fit-viewport');
+            // if (warnings.length) {
+            //     console.warn(warnings);
+            // }
+            modeler.get('canvas').zoom('0.7');
         })
         .catch(err => {
             console.error(err);
@@ -394,7 +425,7 @@ function loadDiagram(xml) {
 
 async function importFromZip(zipData) {
     const zip = await Zip.loadAsync(zipData, { base64: true });
-    
+
     let files = {
         space: null,
         olcs: null
@@ -402,9 +433,9 @@ async function importFromZip(zipData) {
 
     // Iterate over all files in the zip
     zip.forEach((relativePath, file) => {
-        if (relativePath == 'behaviour.bpmn' || relativePath.endsWith('/behaviour.bpmn')) {
+        if (relativePath.endsWith('.bpmn')) {
             files.space = file;
-        } else if (relativePath == 'space.xml' || relativePath.endsWith('/space.xml')) {
+        } else if (relativePath.endsWith('.xml')) {
             files.olcs = file;
         }
     });
@@ -419,13 +450,14 @@ async function importFromZip(zipData) {
     // Import the XML content of the files
     await olcModeler.importXML(await files.olcs.async("string"));
     await modeler.importXML(await files.space.async("string"));
+    localStorage['space-model'] = await files.olcs.async("string");
 }
 
-document.querySelector("#open-diagram").addEventListener('click', () => uploadZIP(data => {
+document.querySelector("#open-diagram").addEventListener('click', () => uploadZIP(async data => {
     if (data.startsWith('data:')) {
         data = data.split(',')[1];
     }
-    importFromZip(data);
+    await importFromZip(data);
 }, 'base64'));
 
 function downloadDiagram() {
