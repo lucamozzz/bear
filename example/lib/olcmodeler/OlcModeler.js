@@ -115,7 +115,7 @@ inherits(OlcModeler, Diagram);
 
 OlcModeler.prototype.createNew = function () {
   // return this.importXML(emptyDiagram);
-  localStorage['space-model'] = bearXML;
+  localStorage.setItem('space-model', bearXML);
   return this.importXML(bearXML);
 }
 

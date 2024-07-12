@@ -160,7 +160,7 @@ function toggleOlcProperties(open) {
 }
 
 document.addEventListener('resetSim', async () => {
-    await olcModeler.importXML(localStorage['space-model']);
+    await olcModeler.importXML(localStorage.getItem('space-model'));
 });
 
 document.addEventListener('processStateMapUpdate', () => {
@@ -449,8 +449,8 @@ async function importFromZip(zipData) {
 
     // Import the XML content of the files
     await olcModeler.importXML(await files.olcs.async("string"));
+    localStorage.setItem('space-model', await files.olcs.async("string"));
     await modeler.importXML(await files.space.async("string"));
-    localStorage['space-model'] = await files.olcs.async("string");
 }
 
 document.querySelector("#open-diagram").addEventListener('click', () => uploadZIP(async data => {
