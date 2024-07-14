@@ -160,15 +160,20 @@ function toggleOlcProperties(open) {
     }
 }
 
-document.addEventListener('resetSim', async () => {
-    await olcModeler.importXML(localStorage.getItem('space-model'));
-});
+// document.addEventListener('resetSim', async () => {
+//     await olcModeler.importXML(localStorage.getItem('space-model'));
+// });
+
+// document.addEventListener('tokenSimulation.toggleMode', async (active) => {
+//     console.log('tokenSimulation.toggleMode', active);
+//     const olcs = (await olcModeler.saveXML({ format: true })).xml;
+//     localStorage.setItem('space-model', olcs);
+// });
 
 document.addEventListener('processStateMapUpdate', () => {
     const dataPanelOpen = dataPanel && dataPanel.classList.contains('open');
     if (dataPanelOpen)
         updateDataProperties()
-
 });
 
 function toggleDataProperties(open) {
