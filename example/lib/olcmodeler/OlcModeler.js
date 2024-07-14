@@ -119,6 +119,12 @@ OlcModeler.prototype.createNew = function () {
   return this.importXML(bearXML);
 }
 
+OlcModeler.prototype.createEmpty = function () {
+  // return this.importXML(emptyDiagram);
+  localStorage.setItem('space-model', emptyDiagram);
+  return this.importXML(emptyDiagram);
+}
+
 
 OlcModeler.prototype.importXML = function (xml) {
 

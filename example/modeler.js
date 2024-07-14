@@ -14,6 +14,7 @@ import fileOpen from 'file-open';
 import download from 'downloadjs';
 import Zip from 'jszip';
 import bearBPMN from '../example/resources/bear.bpmn';
+import emptyBPMN from '../example/resources/newDiagram.bpmn';
 import OlcModeler from './lib/olcmodeler/OlcModeler';
 import Mediator from './lib/mediator/Mediator';
 import BpmnSpaceModeler from './lib/bpmnmodeler/bpmnSpaceModeler';
@@ -368,6 +369,15 @@ async function createNewDiagram() {
     hideLoadingOverlay();
 }
 
+async function createEmptyDiagram() {
+    showLoadingSpinner();
+    showLoadingOverlay();
+    await olcModeler.createEmpty();
+    await modeler.importXML(emptyBPMN);
+    hideLoadingSpinner();
+    hideLoadingOverlay();
+}
+
 $(function () {
     createNewDiagram();
 });
@@ -467,6 +477,10 @@ function downloadDiagram() {
         }
     });
 }
+
+document.querySelector("#erase-button").addEventListener('click', () => {
+    createEmptyDiagram()
+});
 
 document.body.addEventListener('keydown', function (event) {
     if (event.code === 'KeyS' && (event.metaKey || event.ctrlKey)) {
