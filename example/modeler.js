@@ -13,7 +13,7 @@ import fileDrop from 'file-drops';
 import fileOpen from 'file-open';
 import download from 'downloadjs';
 import Zip from 'jszip';
-import bearBPMN from '../example/resources/bear.bpmn';
+import bearBPMN from '../example/resources/dorm.bpmn';
 import emptyBPMN from '../example/resources/newDiagram.bpmn';
 import OlcModeler from './lib/olcmodeler/OlcModeler';
 import Mediator from './lib/mediator/Mediator';
