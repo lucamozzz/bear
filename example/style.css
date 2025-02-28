@@ -334,13 +334,13 @@ body:not(.presentation-mode) .bts-notifications {
 }
 
 .contentLeft{
-  width: 70%;
+  width: 50%;
   height: 100%;
   display: flex;
 }
 
 .contentRight{
-  width: 30%;
+  width: 50%;
   height: 100%;
   display: flex;
 }
@@ -372,7 +372,7 @@ body:not(.presentation-mode) .bts-notifications {
 .divider.vertical {
   width: var(--thickness);
   height: 100%;
-  left: calc(70% - 10px);
+  left: calc(50% - 10px);
   cursor: w-resize;
 }
 
@@ -385,6 +385,7 @@ body:not(.presentation-mode) .bts-notifications {
 #data-panel {
   background-color: #f9f9f9;
   max-width: 400px;
+  overflow-y: scroll;
 }
 
 #data-panel .entry {

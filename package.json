@@ -82,6 +82,11 @@
     "tiny-svg": "^3.0.1",
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0",
-    "webpack-dev-server": "^4.11.1"
+    "webpack-dev-server": "^4.11.1",
+    "graphology": "^0.26.0",
+    "graphology-shortest-path": "^2.1.0",
+    "leaflet": "1.0",
+    "leaflet-draw": "^0.3.2",
+    "ol": "^10.2.1"
   }
 }

@@ -9,14 +9,22 @@
     <link rel="stylesheet" href="./dist/vendor/bpmn-js-token-simulation/assets/css/bpmn-js-token-simulation.css" />
     <link rel="stylesheet" href="./dist/vendor/bpmn-js-properties-panel/assets/properties-panel.css" />
     <link rel="stylesheet" href="./assets/css/navbar.css" />
-
     <link rel="stylesheet" href="https://unpkg.com/bpmn-js/dist/assets/diagram-js.css" />
     <link rel="stylesheet" href="https://unpkg.com/bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css" />
     <link rel="stylesheet" href="https://unpkg.com/bpmn-js-color-picker/colors/color-picker.css" />
-
     <link rel="stylesheet" href="./style.css"/>
     <link rel="icon" type="image/png" href="./icons/logo.png" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="node_modules/ol/ol.css"> -->
+
+    <style>
+      .map {
+        width: 100%;
+        height: 100vh;
+      }
+    </style>
+
     <meta property="og:locale" content="en_US" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="BEAR" />
@@ -41,14 +49,15 @@
     <div class="contentLeft">
         <div class="canvas-parent">
             <div class="canvas" id="canvas"></div>
-            <div class="properties-panel" id="properties-panel"></div>
-            <div class="properties-panel" id="properties-panel-olc"></div>
-            <div class="properties-panel" id="data-panel"></div>
         </div>
     </div>
     <div class="divider vertical"></div>
     <div class="contentRight">
-        <div class="canvas" id="olc-canvas"></div>
+        <!-- <div class="canvas" id="olc-canvas"></div> -->
+        <div id="map" class="map"></div>
+        <div class="properties-panel" id="properties-panel"></div>
+        <div class="properties-panel" id="properties-panel-olc"></div>
+        <div class="properties-panel" id="data-panel"></div>
     </div>
 </div>
 <script src="./modeler.bundle.js"></script>

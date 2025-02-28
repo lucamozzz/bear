@@ -13,15 +13,35 @@ import fileDrop from 'file-drops';
 import fileOpen from 'file-open';
 import download from 'downloadjs';
 import Zip from 'jszip';
-import bearBPMN from '../example/resources/dorm.bpmn';
+import bearBPMN from '../example/resources/test.bpmn';
 import emptyBPMN from '../example/resources/newDiagram.bpmn';
 import OlcModeler from './lib/olcmodeler/OlcModeler';
 import Mediator from './lib/mediator/Mediator';
 import BpmnSpaceModeler from './lib/bpmnmodeler/bpmnSpaceModeler';
 import { downloadZIP, uploadZIP } from './lib/util/FileUtil';
 import { OlcPropertiesPanelModule, OlcPropertiesProviderModule } from "./olc-js-properties-panel";
-
 import BpmnColorPickerModule from 'bpmn-js-color-picker';
+/********/
+// Map imports
+/********/
+import Map from 'ol/Map.js';
+import View from 'ol/View.js';
+import Stroke from 'ol/style/Stroke.js';
+import { Style } from 'ol/style';
+import { useGeographic } from 'ol/proj';
+import { OSM, Vector as VectorSource } from 'ol/source.js';
+import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer.js';
+// import { Draw, Snap, Modify, Interaction } from "ol/interaction";
+import Feature from 'ol/Feature.js';
+import LineString from 'ol/geom/LineString.js';
+import Point from 'ol/geom/Point.js';
+import Polygon from 'ol/geom/Polygon.js';
+import spaceModel from './spacemodel.json';
+import Graph from 'graphology';
+import { dijkstra } from 'graphology-shortest-path';
+import { easeOut } from 'ol/easing';
+import { unByKey } from 'ol/Observable';
+import { Circle as CircleStyle, Fill, Text } from 'ol/style';
 
 
 const url = new URL(window.location.href);
@@ -64,24 +84,24 @@ var mediator = new Mediator();
 window.mediator = mediator;
 
 // Modeler for space
-var olcModeler = new OlcModeler({
-    container: document.querySelector('#olc-canvas'),
-    keyboard: {
-        bindTo: document.querySelector('#olc-canvas')
-    },
-    additionalModules: [
-        {
-            __init__: ['mediator'],
-            mediator: ['type', mediator.OlcModelerHook]
-        },
-        OlcPropertiesProviderModule,
-        OlcPropertiesPanelModule,
-        // BpmnColorPickerModule,
-    ],
-    propertiesPanel: {
-        parent: '#properties-panel-olc',
-    }
-});
+// var olcModeler = new OlcModeler({
+//     container: document.querySelector('#olc-canvas'),
+//     keyboard: {
+//         bindTo: document.querySelector('#olc-canvas')
+//     },
+//     additionalModules: [
+//         {
+//             __init__: ['mediator'],
+//             mediator: ['type', mediator.OlcModelerHook]
+//         },
+//         OlcPropertiesProviderModule,
+//         OlcPropertiesPanelModule,
+//         // BpmnColorPickerModule,
+//     ],
+//     propertiesPanel: {
+//         parent: '#properties-panel-olc',
+//     }
+// });
 
 // Create a BPMN modeler
 var modeler = new BpmnSpaceModeler({
@@ -185,63 +205,68 @@ function toggleDataProperties(open) {
     }
 }
 
+document.addEventListener('spaceModelUpdated', (event) => updateDataProperties());
+
 function updateDataProperties() {
+    const spaceModel = JSON.parse(localStorage.getItem('spaceModel'));
     dataPanel.innerHTML = "";
-    const mapJson = localStorage.getItem('processStateMap');
-    const participants = JSON.parse(localStorage.getItem('participants'));
-    if (mapJson) {
-        const mapData = new Map(JSON.parse(mapJson));
-        const groupedData = new Map();
-
-        // Group the data by the first part of the key
-        mapData.forEach((value, key) => {
-            if (key !== 'undefined'
-                && value !== 'undefined'
-                && !key.includes('.position')
-                && !key.includes('undefined')
-                && !key.includes('.disconnect')
-                && !key.includes('.connect')
-            ) {
-                const [firstPart, ...rest] = key.split('.');
-                if (firstPart && !groupedData.has(firstPart)) {
-                    groupedData.set(firstPart, []);
-                }
-                if (firstPart) {
-                    groupedData.get(firstPart).push({ key: rest.join('.'), value });
-                }
-            }
-        });
-
-        // Create and append divs for each group with a title
-        groupedData.forEach((entries, firstPart) => {
-            if (participants[firstPart])
-                firstPart = participants[firstPart];
+    spaceModel.places = spaceModel.sets.concat(spaceModel.places)
+    if (spaceModel) {
+        ['places', 'edges'].forEach(key => {
             const groupDiv = document.createElement('div');
             groupDiv.className = 'group';
 
             const titleDiv = document.createElement('div');
             titleDiv.className = 'title';
-            titleDiv.textContent = firstPart;
+            titleDiv.textContent = key.charAt(0).toUpperCase() + key.slice(1);
             groupDiv.appendChild(titleDiv);
 
-            entries.forEach(({ key, value }) => {
+            spaceModel[key].forEach((element) => {
                 const entryDiv = document.createElement('div');
                 entryDiv.className = 'entry';
 
-                const keySpan = document.createElement('span');
-                keySpan.textContent = key ? `${key}: ` : '';
-                const valueText = document.createTextNode(value);
-
+                const keySpan = document.createElement('h6');
+                keySpan.textContent = element.name;
                 entryDiv.appendChild(keySpan);
-                entryDiv.appendChild(valueText);
+
+                if (element.attributes) {
+                    Object.keys(element.attributes).forEach(attrKey => {
+                        const attrDiv = document.createElement('div');
+                        attrDiv.className = 'attribute';
+
+                        const attrKeySpan = document.createElement('span');
+                        attrKeySpan.textContent = `${attrKey}: `;
+                        const attrValueText = document.createTextNode(element.attributes[attrKey]);
+
+                        attrDiv.appendChild(attrKeySpan);
+                        attrDiv.appendChild(attrValueText);
+                        entryDiv.appendChild(attrDiv);
+                    });
+                }
+
+                entryDiv.addEventListener('mouseover', () => {
+                    if (element.id.startsWith("set"))
+                        getSetPlaces(element.id).forEach(place => colorPlace(place));
+                    else if (element.id.startsWith("place"))
+                        colorPlace(element.id);
+                    else if (element.id.startsWith("edge"))
+                        colorEdge(element.id);
+                });
+
+                entryDiv.addEventListener('mouseout', () => {
+                    if (element.id.startsWith("set"))
+                        getSetPlaces(element.id).forEach(place => uncolorPlace(place));
+                    else if (element.id.startsWith("place"))
+                        uncolorPlace(element.id);
+                    else if (element.id.startsWith("edge"))
+                        uncolorEdge(element.id);
+                });
 
                 groupDiv.appendChild(entryDiv);
             });
 
             dataPanel.appendChild(groupDiv);
-        });
-
-
+        })
     }
 }
 
@@ -368,7 +393,7 @@ function hideLoadingOverlay() {
 async function createNewDiagram() {
     showLoadingSpinner();
     showLoadingOverlay();
-    await olcModeler.createNew();
+    // await olcModeler.createNew();
     await modeler.importXML(bearBPMN);
     hideLoadingSpinner();
     hideLoadingOverlay();
@@ -377,7 +402,7 @@ async function createNewDiagram() {
 async function createEmptyDiagram() {
     showLoadingSpinner();
     showLoadingOverlay();
-    await olcModeler.createEmpty();
+    // await olcModeler.createEmpty();
     await modeler.importXML(emptyBPMN);
     hideLoadingSpinner();
     hideLoadingOverlay();
@@ -438,35 +463,35 @@ function loadDiagram(xml) {
 }
 
 
-async function importFromZip(zipData) {
-    const zip = await Zip.loadAsync(zipData, { base64: true });
+// async function importFromZip(zipData) {
+//     const zip = await Zip.loadAsync(zipData, { base64: true });
 
-    let files = {
-        space: null,
-        olcs: null
-    };
+//     let files = {
+//         space: null,
+//         olcs: null
+//     };
 
-    // Iterate over all files in the zip
-    zip.forEach((relativePath, file) => {
-        if (relativePath.endsWith('.bpmn')) {
-            files.space = file;
-        } else if (relativePath.endsWith('.xml')) {
-            files.olcs = file;
-        }
-    });
+//     // Iterate over all files in the zip
+//     zip.forEach((relativePath, file) => {
+//         if (relativePath.endsWith('.bpmn')) {
+//             files.space = file;
+//         } else if (relativePath.endsWith('.xml')) {
+//             files.olcs = file;
+//         }
+//     });
 
-    // Check if the required files are found
-    Object.keys(files).forEach(key => {
-        if (!files[key]) {
-            throw new Error('Missing file: ' + key);
-        }
-    });
+//     // Check if the required files are found
+//     Object.keys(files).forEach(key => {
+//         if (!files[key]) {
+//             throw new Error('Missing file: ' + key);
+//         }
+//     });
 
-    // Import the XML content of the files
-    await olcModeler.importXML(await files.olcs.async("string"));
-    localStorage.setItem('space-model', await files.olcs.async("string"));
-    await modeler.importXML(await files.space.async("string"));
-}
+//     // Import the XML content of the files
+//     await olcModeler.importXML(await files.olcs.async("string"));
+//     localStorage.setItem('space-model', await files.olcs.async("string"));
+//     await modeler.importXML(await files.space.async("string"));
+// }
 
 document.querySelector("#open-diagram").addEventListener('click', () => uploadZIP(async data => {
     if (data.startsWith('data:')) {
@@ -498,14 +523,14 @@ document.body.addEventListener('keydown', function (event) {
     }
 });
 
-async function exportToZip() {
-    const zip = new Zip();
-    const space = (await modeler.saveXML({ format: true })).xml;
-    zip.file('behaviour.bpmn', space);
-    const olcs = (await olcModeler.saveXML({ format: true })).xml;
-    zip.file('space.xml', olcs);
-    return zip.generateAsync({ type: 'base64' });
-}
+// async function exportToZip() {
+//     const zip = new Zip();
+//     const space = (await modeler.saveXML({ format: true })).xml;
+//     zip.file('behaviour.bpmn', space);
+//     const olcs = (await olcModeler.saveXML({ format: true })).xml;
+//     zip.file('space.xml', olcs);
+//     return zip.generateAsync({ type: 'base64' });
+// }
 
 document.querySelector('#download-button').addEventListener('click', () => exportToZip().then(zip => {
     downloadZIP('BEAR.zip', zip, 'base64');
@@ -570,6 +595,336 @@ modeler.get('eventBus').on('element.click', function (event) {
     mediator.switchPropertyPanel(event.element);
 });
 
-olcModeler.get('eventBus').on('element.click', function (event) {
-    mediator.switchPropertyPanel(event.element);
+// olcModeler.get('eventBus').on('element.click', function (event) {
+//     mediator.switchPropertyPanel(event.element);
+// });
+
+/********/
+// Map code
+/********/
+localStorage.setItem('spaceModel', JSON.stringify(spaceModel));
+const participants = [];
+
+const raster = new TileLayer({
+    source: new OSM(),
+});
+const source = new VectorSource();
+const vector = new VectorLayer({
+    source: source,
+    style: {
+        'fill-color': 'rgba(255, 255, 255, 0.2)',
+        'stroke-color': 'red',
+        'stroke-width': 2,
+        'circle-radius': 7,
+        'circle-fill-color': '#ffcc33',
+    },
+});
+
+useGeographic();
+
+let extent = [13.067553, 43.138806, 13.068553, 43.139806]
+const map = new Map({
+    layers: [raster, vector],
+    target: 'map',
+    view: new View({
+        center: [13.068307772123394, 43.139407493133405],
+        zoom: 19,
+        rotation: 0.5,
+        maxZoom: 19,
+        minZoom: 19,
+        extent: extent,
+        constrainOnlyCenter: true,
+        smoothExtentConstraint: true,
+    }),
+});
+
+function calculateCenter(boundaries) {
+    let x = 0;
+    let y = 0;
+    boundaries.forEach((coordinate) => {
+        x += coordinate[0];
+        y += coordinate[1];
+    });
+    return [x / boundaries.length, y / boundaries.length];
+}
+
+spaceModel.places.forEach((place) => {
+    const lineFeature = new Feature({
+        geometry: new LineString(place.boundaries.concat([place.boundaries[0]])),
+    });
+    lineFeature.setId(place.id + '_boundaries');
+    source.addFeature(lineFeature);
+
+    let center
+    place.centroid ? center = place.centroid : center = calculateCenter(place.boundaries);
+    const centerFeature = new Feature({
+        geometry: new Point(center),
+    });
+
+    centerFeature.setStyle(new Style({
+        text: new Text({
+            text: place.name,
+            font: '8px Calibri,sans-serif',
+            fill: new Fill({ color: '#000' }),
+            stroke: new Stroke({
+                color: '#fff', width: 2
+            }),
+        }),
+    }))
+    centerFeature.setId(place.id + '_centroid');
+    source.addFeature(centerFeature);
+})
+
+spaceModel.sets.forEach((set) => {
+    const centerFeature = new Feature({
+        geometry: new Point(set.centroid),
+    });
+
+    centerFeature.setStyle(new Style({
+        text: new Text({
+            text: set.name,
+            font: '11px Calibri,sans-serif',
+            fill: new Fill({ color: '#000' }),
+            stroke: new Stroke({
+                color: '#fff', width: 3
+            }),
+        }),
+    }))
+    centerFeature.setId(set.id + '_centroid');
+    source.addFeature(centerFeature);
+})
+
+function getSetPlaces(set) {
+    const p = spaceModel.sets.find(s => s.id === set);
+    return p.places
+}
+
+function colorPlace(place) {
+    const p = spaceModel.places.find(p => p.id === place);
+    const polygonFeature = new Feature({
+        geometry: new Polygon([p.boundaries.concat([p.boundaries[0]])]),
+    });
+    polygonFeature.setStyle(new Style({
+        fill: new Fill({
+            color: 'rgba(255, 0, 0, 0.5)', // Green color with 50% opacity
+        }),
+        stroke: new Stroke({
+            color: 'green',
+            width: 2,
+        }),
+    }));
+    polygonFeature.setId(place + '_area');
+    source.addFeature(polygonFeature);
+}
+
+function uncolorPlace(place) {
+    source.removeFeature(source.getFeatureById(place + '_area'));
+}
+
+function colorEdge(edge) {
+    const e = spaceModel.edges.find(e => e.id === edge);
+    if (e) {
+        const sourcePlace = spaceModel.places.find(place => place.id === e.source);
+        const targetPlace = spaceModel.places.find(place => place.id === e.target);
+
+        const sourceCoords = sourcePlace?.centroid || (sourcePlace?.boundaries ? calculateCenter(sourcePlace.boundaries) : undefined);
+        const targetCoords = targetPlace?.centroid || (targetPlace?.boundaries ? calculateCenter(targetPlace.boundaries) : undefined);
+        if (sourceCoords && targetCoords) {
+            const lineFeature = new Feature({
+                geometry: new LineString([sourceCoords, targetCoords]),
+            });
+            lineFeature.setStyle(new Style({
+                stroke: new Stroke({
+                    color: 'rgba(255, 0, 0)', // Red color with 50% opacity
+                    width: 2,
+                }),
+            }));
+            lineFeature.setId(edge + '_colored');
+            source.addFeature(lineFeature);
+        }
+    }
+}
+
+function uncolorEdge(edge) {
+    source.removeFeature(source.getFeatureById(edge + '_colored'));
+}
+
+function drawGraph() {
+    spaceModel.edges.forEach((edge) => {
+        drawGraphEdge(edge);
+    })
+}
+
+function drawGraphEdge(edge) {
+    let sourcePlace = spaceModel.places.find(place => place.id === edge.source);
+    let sourceCoords = sourcePlace?.centroid || (sourcePlace?.boundaries ? calculateCenter(sourcePlace.boundaries) : undefined);
+    let targetPlace = spaceModel.places.find(place => place.id === edge.target);
+    let targetCoords = targetPlace?.centroid || (targetPlace?.boundaries ? calculateCenter(targetPlace.boundaries) : undefined);
+    if (sourceCoords && targetCoords) {
+        const lineFeature = new Feature({
+            geometry: new LineString([sourceCoords, targetCoords]),
+        });
+        lineFeature.setStyle(new Style({
+            stroke: new Stroke({
+                color: 'yellow',
+                width: 2,
+                lineDash: [2, 7],
+            }),
+        }));
+        lineFeature.setId(edge.id);
+        source.addFeature(lineFeature);
+    }
+}
+
+const graph = new Graph();
+spaceModel.places.forEach((place) => graph.addNode(place.id, { coordinates: place.centroid || calculateCenter(place.boundaries) }));
+spaceModel.edges.forEach((edge) => graph.addEdge(edge.source, edge.target, { id: edge.id, weight: edge.attributes.weight || 1 }));
+
+document.addEventListener('edgeAdded', (event) => {
+    const edge = event.detail;
+    // TODO: un arco rimosso in precedenza non viene riaggiunto correttamente "perchè già esiste"
+    // console.log('Drawing edge');
+    drawGraphEdge(edge);
+    // console.log('Drawn edge');
+    if (!graph.hasEdge(edge.source, edge.target)) {
+        // console.log('Adding edge');
+        graph.addEdge(edge.source, edge.target, { id: edge.id, weight: edge.attributes.weight || 1 });
+        // console.log('edgeAdded', edge);
+    }
+})
+
+document.addEventListener('edgeRemoved', (event) => {
+    const edge = event.detail;
+    graph.dropEdge(edge.source, edge.target);
+    source.removeFeature(source.getFeatureById(edge.id))
+});
+
+drawGraph();
+
+// map.on('click', function (event) {
+//     const coordinates = event.coordinate;
+//     console.log('Coordinates:', coordinates);
+// });
+
+function animateToken(tokenFeature, start, end, duration, destination) {
+    return new Promise((resolve) => {
+        const startTime = Date.now();
+
+        function animate(event) {
+            const elapsed = event.frameState.time - startTime;
+            const fraction = easeOut(Math.min(elapsed / duration, 1));
+
+            if (fraction >= 1) {
+                const n = participants.filter(p => p.root === destination).length
+                tokenFeature.setGeometry(new Point([end[0] + 0.00002 * (n), end[1]]));
+                unByKey(listenerKey);
+                resolve();
+            } else {
+                const currentCoordinates = [
+                    start[0] + fraction * (end[0] - start[0]),
+                    start[1] + fraction * (end[1] - start[1]),
+                ];
+                tokenFeature.setGeometry(new Point(currentCoordinates));
+            }
+        }
+
+        let type = 'postrender';
+        let func = animate;
+        const listenerKey = map.on(type, func);
+    });
+}
+
+async function moveToken(movement) {
+    let { destination, participant } = movement;
+
+    let start = participants.find(p => p.id === participant.id).root
+    if (!start) {
+        setTimeout(() => {
+            document.dispatchEvent(new CustomEvent('movement_stop_' + participant.id, { detail: { cause: "noRoot" } }));
+        }, 1000);
+        return;
+    }
+
+    const path = dijkstra.singleSource(graph, start)[destination];
+
+    if (!path) {
+        setTimeout(() => {
+            document.dispatchEvent(new CustomEvent('movement_stop_' + participant.id, { detail: { cause: "destinationUnreachable" } }));
+        }, 1000);
+        return;
+    }
+
+    if (path.length < 2) {
+        setTimeout(() => {
+            document.dispatchEvent(new CustomEvent('movement_stop_' + participant.id, { detail: { cause: "destinationReached" } }));
+        }, 1000);
+        return;
+    }
+
+    let tokenFeature = source.getFeatureById(participant.id);
+    if (tokenFeature)
+        source.removeFeature(tokenFeature);
+
+    tokenFeature = new Feature({
+        geometry: new Point(graph.getNodeAttribute(path[0], 'coordinates')),
+    })
+    tokenFeature.setId(participant.id);
+
+    const tokenStyle = new Style({
+        image: new CircleStyle({
+            radius: 7,
+            fill: new Fill({ color: participant.color }),
+            // stroke: new Stroke({ color: 'black', width: 1 }),
+        }),
+    });
+
+    tokenFeature.setStyle(tokenStyle);
+    source.addFeature(tokenFeature);
+
+    const s = graph.getNodeAttribute(path[0], 'coordinates');
+    const e = graph.getNodeAttribute(path[1], 'coordinates');
+    const edge = graph.edges().find(edge => {
+        const source = graph.source(edge);
+        const target = graph.target(edge);
+        return (source === path[0] && target === path[1])
+    });
+    const duration = 1000 * graph.getEdgeAttribute(edge, 'weight');
+    const startTime = Date.now();
+
+    await animateToken(tokenFeature, s, e, duration, path[1]);
+
+    participants[participants.findIndex(p => p.id === participant.id)].root = path[1];
+
+    moveToken(movement);
+}
+
+document.addEventListener('movement_start', (event) => moveToken(event.detail));
+
+function placeToken(participant) {
+    let tokenFeature = new Feature({
+        geometry: new Point(graph.getNodeAttribute(participant.root, 'coordinates')),
+    });
+
+    const n = participants.filter(p => p.root === participant.root).length
+    const originalCoordinates = graph.getNodeAttribute(participant.root, 'coordinates');
+    tokenFeature = new Feature({
+        geometry: new Point([originalCoordinates[0] + 0.00002 * (n - 1), originalCoordinates[1]]),
+    });
+
+    const tokenStyle = new Style({
+        image: new CircleStyle({
+            radius: 7,
+            fill: new Fill({ color: participant.color }),
+            // stroke: new Stroke({ color: 'black', width: 2 }),
+        }),
+    });
+    tokenFeature.setStyle(tokenStyle);
+    tokenFeature.setId(participant.id);
+    source.addFeature(tokenFeature);
+}
+
+document.addEventListener('process_start', (event) => {
+    const participant = event.detail.participant;
+    participants.push(participant);
+    placeToken(participant)
 });

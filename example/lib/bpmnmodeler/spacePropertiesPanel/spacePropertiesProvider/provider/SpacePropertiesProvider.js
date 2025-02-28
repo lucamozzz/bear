@@ -54,7 +54,7 @@ export default function SpacePropertiesProvider(propertiesPanel, translate, even
   function createSpaceGroup(element, translate) {
     const spaceGroup = {
       id: 'space',
-      label: translate('Environmental properties'),
+      label: translate('Environment'),
       entries: spaceProps(element, modeler)
     };
     return spaceGroup;

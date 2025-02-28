@@ -4,6 +4,8 @@ import { is } from "../../../../util/Util";
 import { Assignment } from "./AssignmentProps";
 
 
+const spaceModel = JSON.parse(localStorage.getItem('spaceModel'));
+
 export default function SpaceProps(element, modeler) {
   const properties = [];
 
@@ -183,18 +185,21 @@ function Root(props) {
       options = []
     } = overrides;
 
-    //definisci un array con le destinazioni che all'inizio è vuoto
-    //ad ogni nuovo olc:state aggiungiamo l'opzione dinamicamente
-    //fire o dispatch cerca.
-    var places = modeler._places.get('Elements');
-    var place = places.filter(element => is(element, 'space:Place'));
+    let sets = spaceModel.sets.map((set) => {
+      return {
+        name: set.name,
+        id: set.place
+      }
+    })
+
+    var place = spaceModel.places.concat(sets)
     const newOptions = [{
       label: 'null',
       value: null
     },
     ...options];
 
-    if (places.length === 0) {
+    if (place.length === 0) {
       return newOptions;
     } else {
       for (let i = 0; i < place.length; i++) {
@@ -206,7 +211,6 @@ function Root(props) {
           ...options
         );
       }
-      //console.log(newOptions);
       return newOptions;
     }
   }
@@ -249,15 +253,21 @@ function Destination(props) {
       options = []
     } = overrides;
 
-    var places = modeler._places.get('Elements');
-    var place = places.filter(element => is(element, 'space:Place'));
+    let sets = spaceModel.sets.map((set) => {
+      return {
+        name: set.name,
+        id: set.place
+      }
+    })
+
+    var place = spaceModel.places.concat(sets)
     const newOptions = [{
       label: 'null',
       value: null
     },
     ...options];
 
-    if (places.length === 0) {
+    if (place.length === 0) {
       return newOptions;
     } else {
       for (let i = 0; i < place.length; i++) {
@@ -269,7 +279,7 @@ function Destination(props) {
           ...options
         );
       }
-      return newOptions;
+    return newOptions;
     }
   }
 
