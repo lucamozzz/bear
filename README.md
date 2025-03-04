@@ -10,7 +10,7 @@ Modern business processes are heavily influenced by the physical environment in 
 
 To install BEAR, follow these steps:
 
-1. Clone the repository.
+1. Download the repository.
 2. Run `npm install` to install the dependencies.
 3. Run `npm run start` to start a [local instance](http://localhost:8080).
 
@@ -18,8 +18,8 @@ To install BEAR, follow these steps:
 
 To install BEAR, follow these steps:
 
-1. Run `docker pull proslab/bear` to install the Docker image.
-2. Run `docker run -p 8080:8080 proslab/bear` to start a [local instance](http://localhost:8080).
+1. Run `docker build -t bear .` to build the Docker image.
+2. Run `docker run -p 8080:8080 bear` to start a [local instance](http://localhost:8080).
 
 ## **Modeling with BEAR**
 
