@@ -32,14 +32,14 @@
     <bpmn2:startEvent id="Event_0dh59b1">
       <bpmn2:outgoing>Flow_1vw8x53</bpmn2:outgoing>
     </bpmn2:startEvent>
-    <bpmn2:task id="Activity_0o7ntn5" name="Move to Room B13" space:destination="place13">
+    <bpmn2:task id="Activity_0o7ntn5" name="Meet Room B13" space:destination="place13">
       <bpmn2:incoming>Flow_1vw8x53</bpmn2:incoming>
       <bpmn2:outgoing>Flow_1a2rrtb</bpmn2:outgoing>
     </bpmn2:task>
     <bpmn2:sequenceFlow id="Flow_1vw8x53" sourceRef="Event_0dh59b1" targetRef="Activity_0o7ntn5" />
     <bpmn2:sequenceFlow id="Flow_1a2rrtb" sourceRef="Activity_0o7ntn5" targetRef="Activity_121spib" />
     <bpmn2:sequenceFlow id="Flow_1gt974x" sourceRef="Activity_1h1kg3x" targetRef="Activity_12dg98a" />
-    <bpmn2:task id="Activity_1h1kg3x" name="Move to Polo B" space:destination="place5">
+    <bpmn2:task id="Activity_1h1kg3x" name="Leave Polo B" space:destination="place5">
       <bpmn2:incoming>Flow_1125v16</bpmn2:incoming>
       <bpmn2:outgoing>Flow_1gt974x</bpmn2:outgoing>
     </bpmn2:task>

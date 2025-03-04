@@ -1,8 +1,27 @@
 {
+    "map": {
+        "center": [
+            13.05414895504956,
+            43.12830758740117
+        ],
+        "extent": [
+            [
+                13.049101037683535,
+                43.12530855931709
+            ],
+            [
+                13.059196872415589,
+                43.13130646844962
+            ]
+        ],
+        "zoom": 17,
+        "maxZoom": 20,
+        "rotation": 0.5
+    },
     "places": [
         {
             "id": "place1",
-            "name": "Room A1",
+            "name": "B2",
             "boundaries": [
                 [
                     13.067744928731921,
@@ -24,12 +43,14 @@
             "attributes": {
                 "temperature": "23",
                 "humidity": "50",
-                "lights": "on"
+                "lights": "on",
+                "building": "A",
+                "available": "true"
             }
         },
         {
             "id": "place2",
-            "name": "Room A2",
+            "name": "LB1",
             "boundaries": [
                 [
                     13.067813325061795,
@@ -51,12 +72,14 @@
             "attributes": {
                 "temperature": "22",
                 "humidity": "47",
-                "lights": "on"
+                "lights": "on",
+                "building": "A",
+                "available": "true"
             }
         },
         {
             "id": "place3",
-            "name": "Room A3",
+            "name": "T1",
             "boundaries": [
                 [
                     13.067813325061795,
@@ -78,12 +101,14 @@
             "attributes": {
                 "temperature": "19",
                 "humidity": "50",
-                "lights": "on"
+                "lights": "on",
+                "building": "A",
+                "available": "false"
             }
         },
         {
             "id": "place4",
-            "name": "Room A4",
+            "name": "PhD",
             "boundaries": [
                 [
                     13.067934024467466,
@@ -105,12 +130,14 @@
             "attributes": {
                 "temperature": "23",
                 "humidity": "50",
-                "lights": "on"
+                "lights": "on",
+                "building": "A",
+                "available": "false"
             }
         },
         {
             "id": "place5",
-            "name": "Room A5",
+            "name": "E2",
             "boundaries": [
                 [
                     13.068007785215384,
@@ -132,12 +159,14 @@
             "attributes": {
                 "temperature": "20",
                 "humidity": "53",
-                "lights": "on"
+                "lights": "on",
+                "building": "A",
+                "available": "true"
             }
         },
         {
             "id": "place6",
-            "name": "Room A6",
+            "name": "SR2",
             "boundaries": [
                 [
                     13.067934024467466,
@@ -158,12 +187,44 @@
             ],
             "attributes": {
                 "temperature": "20",
-                "humidity": "52"
+                "humidity": "52",
+                "lights": "on",
+                "building": "A",
+                "available": "true"
             }
         },
         {
             "id": "place7",
-            "name": "Room A7",
+            "name": "SR1",
+            "boundaries": [
+                [
+                    13.067755657567977,
+                    43.13926935762046
+                ],
+                [
+                    13.067620206012727,
+                    43.13919694149956
+                ],
+                [
+                    13.067685920133588,
+                    43.139098103142146
+                ],
+                [
+                    13.067813325061795,
+                    43.13916366919909
+                ]
+            ],
+            "attributes": {
+                "temperature": "23",
+                "humidity": "50",
+                "lights": "on",
+                "building": "A",
+                "available": "false"
+            }
+        },
+        {
+            "id": "place8",
+            "name": "B1",
             "boundaries": [
                 [
                     13.067467320098876,
@@ -185,39 +246,14 @@
             "attributes": {
                 "temperature": "22",
                 "humidity": "49",
-                "lights": "on"
-            }
-        },
-        {
-            "id": "place8",
-            "name": "Room A8",
-            "boundaries": [
-                [
-                    13.067755657567977,
-                    43.13926935762046
-                ],
-                [
-                    13.067620206012727,
-                    43.13919694149956
-                ],
-                [
-                    13.067685920133588,
-                    43.139098103142146
-                ],
-                [
-                    13.067813325061795,
-                    43.13916366919909
-                ]
-            ],
-            "attributes": {
-                "temperature": "23",
-                "humidity": "50",
-                "lights": "on"
+                "lights": "on",
+                "building": "A",
+                "available": "false"
             }
         },
         {
             "id": "place9",
-            "name": "Room B9",
+            "name": "TL",
             "boundaries": [
                 [
                     13.06861530555725,
@@ -239,12 +275,14 @@
             "attributes": {
                 "temperature": "18",
                 "humidity": "60",
-                "lights": "on"
+                "lights": "on",
+                "building": "B",
+                "available": "false"
             }
         },
         {
             "id": "place10",
-            "name": "Room B10",
+            "name": "FO",
             "boundaries": [
                 [
                     13.068734663858413,
@@ -266,12 +304,14 @@
             "attributes": {
                 "temperature": "23",
                 "humidity": "50",
-                "lights": "on"
+                "lights": "on",
+                "building": "B",
+                "available": "false"
             }
         },
         {
             "id": "place11",
-            "name": "Room B11",
+            "name": "T2",
             "boundaries": [
                 [
                     13.068870115413665,
@@ -293,12 +333,14 @@
             "attributes": {
                 "temperature": "24",
                 "humidity": "51",
-                "lights": "on"
+                "lights": "on",
+                "building": "B",
+                "available": "true"
             }
         },
         {
             "id": "place12",
-            "name": "Room B12",
+            "name": "PR3",
             "boundaries": [
                 [
                     13.068949240579604,
@@ -320,12 +362,14 @@
             "attributes": {
                 "temperature": "22",
                 "humidity": "54",
-                "lights": "on"
+                "lights": "on",
+                "building": "B",
+                "available": "true"
             }
         },
         {
             "id": "place13",
-            "name": "Room B13",
+            "name": "PR2",
             "boundaries": [
                 [
                     13.068949240579604,
@@ -347,12 +391,14 @@
             "attributes": {
                 "temperature": "23",
                 "humidity": "50",
-                "lights": "on"
+                "lights": "on",
+                "building": "B",
+                "available": "false"
             }
         },
         {
             "id": "place14",
-            "name": "Room B14",
+            "name": "PR1",
             "boundaries": [
                 [
                     13.068949240579604,
@@ -374,12 +420,14 @@
             "attributes": {
                 "temperature": "20",
                 "humidity": "52",
-                "lights": "on"
+                "lights": "on",
+                "building": "B",
+                "available": "true"
             }
         },
         {
             "id": "place15",
-            "name": "Room B15",
+            "name": "E1",
             "boundaries": [
                 [
                     13.068780261411666,
@@ -401,12 +449,14 @@
             "attributes": {
                 "temperature": "22",
                 "humidity": "55",
-                "lights": "on"
+                "lights": "on",
+                "building": "B",
+                "available": "false"
             }
         },
         {
             "id": "place16",
-            "name": "Room B16",
+            "name": "AA1",
             "boundaries": [
                 [
                     13.06855093254089,
@@ -428,7 +478,9 @@
             "attributes": {
                 "temperature": "23",
                 "humidity": "50",
-                "lights": "on"
+                "lights": "on",
+                "building": "B",
+                "available": "false"
             }
         },
         {
@@ -608,7 +660,7 @@
             "id": "edge7",
             "name": "Edge 7",
             "source": "place6",
-            "target": "place8",
+            "target": "place7",
             "attributes": {
                 "weight": 1
             }
@@ -617,7 +669,7 @@
             "id": "edge8",
             "name": "Edge 8",
             "source": "place2",
-            "target": "place8",
+            "target": "place7",
             "attributes": {
                 "weight": 1
             }
@@ -787,7 +839,7 @@
         {
             "id": "edge27",
             "name": "Edge 27",
-            "source": "place8",
+            "source": "place7",
             "target": "place6",
             "attributes": {
                 "weight": 1
@@ -796,7 +848,7 @@
         {
             "id": "edge28",
             "name": "Edge 28",
-            "source": "place8",
+            "source": "place7",
             "target": "place2",
             "attributes": {
                 "weight": 1
@@ -913,9 +965,12 @@
     ],
     "sets": [
         {
-            "id": "set2",
+            "id": "set1",
             "name": "Building A",
-            "centroid": [13.068820336449491, 43.13958235468772],
+            "centroid": [
+                13.068820336449491,
+                43.13958235468772
+            ],
             "place": "place13",
             "places": [
                 "place9",
@@ -926,17 +981,15 @@
                 "place14",
                 "place15",
                 "place16"
-            ],
-            "attributes": {
-                "temperature": "12",
-                "humidity": "75",
-                "lights": "on"
-            }
+            ]
         },
         {
-            "id": "set1",
+            "id": "set2",
             "name": "Building B",
-            "centroid": [13.067817685536893, 43.139164091666345],
+            "centroid": [
+                13.067817685536893,
+                43.139164091666345
+            ],
             "place": "place5",
             "places": [
                 "place1",
@@ -947,27 +1000,36 @@
                 "place6",
                 "place7",
                 "place8"
-            ],
-            "attributes": {
-                "temperature": "12",
-                "humidity": "75",
-                "lights": "on"
-            }
+            ]
         },
         {
             "id": "set3",
             "name": "Parking",
-            "centroid": [13.068323730701053, 43.13943284630676],
+            "centroid": [
+                13.068323730701053,
+                43.13943284630676
+            ],
             "place": "place19",
             "places": [
                 "place17",
                 "place18",
                 "place19"
+            ]
+        }
+    ],
+    "views": [
+        {
+            "id": "view1",
+            "name": "Buildings",
+            "sets": [
+                "set1",
+                "set2"
             ],
             "attributes": {
-                "temperature": "12",
-                "humidity": "75",
-                "lights": "on"
+                "temperature": "AVG",
+                "humidity": "AVG",
+                "lights": "SOME",
+                "available": "COUNT"
             }
         }
     ]

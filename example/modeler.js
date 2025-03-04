@@ -13,7 +13,9 @@ import fileDrop from 'file-drops';
 import fileOpen from 'file-open';
 import download from 'downloadjs';
 import Zip from 'jszip';
-import bearBPMN from '../example/resources/test.bpmn';
+import bearBPMN from '../example/resources/ambulance.bpmn';
+import spaceModel from '../example/resources/ambulance.json';
+// import bearBPMN from '../example/resources/Student.bpmn';
 import emptyBPMN from '../example/resources/newDiagram.bpmn';
 import OlcModeler from './lib/olcmodeler/OlcModeler';
 import Mediator from './lib/mediator/Mediator';
@@ -21,6 +23,8 @@ import BpmnSpaceModeler from './lib/bpmnmodeler/bpmnSpaceModeler';
 import { downloadZIP, uploadZIP } from './lib/util/FileUtil';
 import { OlcPropertiesPanelModule, OlcPropertiesProviderModule } from "./olc-js-properties-panel";
 import BpmnColorPickerModule from 'bpmn-js-color-picker';
+import BindIcon from './bpmn-bind.svg';
+import UbindIcon from './bpmn-unbind.svg';
 /********/
 // Map imports
 /********/
@@ -36,14 +40,11 @@ import Feature from 'ol/Feature.js';
 import LineString from 'ol/geom/LineString.js';
 import Point from 'ol/geom/Point.js';
 import Polygon from 'ol/geom/Polygon.js';
-import spaceModel from './spacemodel.json';
 import Graph from 'graphology';
 import { dijkstra } from 'graphology-shortest-path';
 import { easeOut } from 'ol/easing';
 import { unByKey } from 'ol/Observable';
 import { Circle as CircleStyle, Fill, Text } from 'ol/style';
-
-
 const url = new URL(window.location.href);
 const persistent = url.searchParams.has('p');
 const active = url.searchParams.has('e');
@@ -144,6 +145,7 @@ const dataPanel = document.querySelector('#data-panel');
 
 let startX, startWidth;
 
+// TODO: aprire o il pannello delle proprietà o quello dei dati
 function togglePropertiesPanel() {
     const olcPanelOpen = olcPropertiesPanel && olcPropertiesPanel.classList.contains('open');
     const bpmnPanelOpen = propertiesPanel && propertiesPanel.classList.contains('open');
@@ -207,12 +209,54 @@ function toggleDataProperties(open) {
 
 document.addEventListener('spaceModelUpdated', (event) => updateDataProperties());
 
+function createViews(spaceModel) {
+    spaceModel.views.forEach(view => {
+        spaceModel[view.name] = [];
+        view.sets.forEach(setId => {
+            let values = []
+            const set = spaceModel.sets.find(s => s.id === setId);
+            set["attributes"] = {};
+
+            Object.keys(view.attributes).forEach(attribute => {
+                const aggrFun = view.attributes[attribute];
+                const attributeValues = [];
+                set.places.forEach(placeId => {
+                    const place = spaceModel.places.find(p => p.id === placeId);
+                    if (place && place.attributes && place.attributes[attribute]) {
+                        attributeValues.push(place.attributes[attribute]);
+                    }
+                });
+
+                if (aggrFun == 'AVG') {
+                    const sum = attributeValues.reduce((acc, val) => acc + parseFloat(val), 0);
+                    const avg = sum / attributeValues.length;
+                    set.attributes[attribute] = avg;
+                } else if (aggrFun == 'SOME') {
+                    set.attributes[attribute] = attributeValues.some(value => value === "on");
+                    set.attributes[attribute] ? set.attributes[attribute] = "on" : set.attributes[attribute] = "off";
+                } else if (aggrFun == 'COUNT') {
+                    set.attributes[attribute] = attributeValues.filter(value => value === "true").length;
+                }
+            });
+            spaceModel[view.name].push(set)
+        })
+    })
+
+    delete spaceModel.map;
+    delete spaceModel.views;
+    delete spaceModel.sets;
+    return spaceModel;
+}
+
 function updateDataProperties() {
-    const spaceModel = JSON.parse(localStorage.getItem('spaceModel'));
+    const spaceModel = createViews(JSON.parse(localStorage.getItem('spaceModel')));
     dataPanel.innerHTML = "";
-    spaceModel.places = spaceModel.sets.concat(spaceModel.places)
     if (spaceModel) {
-        ['places', 'edges'].forEach(key => {
+        Object.keys(spaceModel).sort((a, b) => {
+            if (a === 'places' || a === 'edges') return 1;
+            if (b === 'places' || b === 'edges') return -1;
+            return 0;
+        }).forEach(key => {
             const groupDiv = document.createElement('div');
             groupDiv.className = 'group';
 
@@ -399,14 +443,14 @@ async function createNewDiagram() {
     hideLoadingOverlay();
 }
 
-async function createEmptyDiagram() {
-    showLoadingSpinner();
-    showLoadingOverlay();
-    // await olcModeler.createEmpty();
-    await modeler.importXML(emptyBPMN);
-    hideLoadingSpinner();
-    hideLoadingOverlay();
-}
+// async function createEmptyDiagram() {
+//     showLoadingSpinner();
+//     showLoadingOverlay();
+//     // await olcModeler.createEmpty();
+//     await modeler.importXML(emptyBPMN);
+//     hideLoadingSpinner();
+//     hideLoadingOverlay();
+// }
 
 $(function () {
     createNewDiagram();
@@ -462,36 +506,117 @@ function loadDiagram(xml) {
     document.body.removeChild(fileInput);
 }
 
+function addCustomIcons() {
+    const svgElement = document.querySelector('svg[data-element-id^="Collaboration_"]');
+    if (!svgElement)
+        return;
+    const textElements = svgElement.querySelectorAll('g text tspan');
+    textElements.forEach(tspan => {
+        if (tspan.textContent.startsWith('Move to')) {
+            if (!tspan.parentNode.parentNode.querySelector('polygon')) {
+                const arrow = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+                const bbox = tspan.parentNode.parentNode.getBBox();
+                const x = bbox.x + bbox.width - 30;
+                const y = bbox.y + 10;
+                arrow.setAttribute('points', `${x},${y} ${x + 7.5},${y + 7.5} ${x},${y + 15} ${x + 15},${y + 15} ${x + 22.5},${y + 7.5} ${x + 15},${y} ${x},${y}`);
+                arrow.setAttribute('fill', 'white');
+                arrow.setAttribute('stroke', 'black');
+                arrow.setAttribute('stroke-width', '1.5');
+                tspan.parentNode.parentNode.appendChild(arrow);
+            }
+        } else if (tspan.textContent.startsWith('Meet') ||
+            tspan.textContent.startsWith('Accompany') ||
+            tspan.textContent.startsWith('Stay') ||
+            tspan.textContent.startsWith('Get into') ||
+            tspan.textContent.startsWith('Load') ||
+            tspan.textContent.startsWith('Go with')) {
+            if (!tspan.parentNode.parentNode.querySelector('image')) {
+                const bbox = tspan.parentNode.parentNode.getBBox();
+                const x = bbox.x + bbox.width - 45;
+                const y = bbox.y - 10;
+                const icon = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+                icon.setAttribute('href', BindIcon);
+                icon.setAttribute('width', '50');
+                icon.setAttribute('height', '50');
+                icon.setAttribute('x', x);
+                icon.setAttribute('y', y);
+                tspan.parentNode.parentNode.appendChild(icon);
+            }
+        } else if (tspan.textContent.startsWith('Leave') ||
+            tspan.textContent.startsWith('Thank') ||
+            tspan.textContent.startsWith('Arrive') ||
+            tspan.textContent.startsWith('Join')) {
+            if (!tspan.parentNode.parentNode.querySelector('image')) {
+                const bbox = tspan.parentNode.parentNode.getBBox();
+                const x = bbox.x + bbox.width - 50;
+                const y = bbox.y - 10;
+                const icon = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+                icon.setAttribute('href', UbindIcon);
+                icon.setAttribute('width', '50');
+                icon.setAttribute('height', '50');
+                icon.setAttribute('x', x);
+                icon.setAttribute('y', y);
+                tspan.parentNode.parentNode.appendChild(icon);
+            }
+        }
+    });
+}
 
-// async function importFromZip(zipData) {
-//     const zip = await Zip.loadAsync(zipData, { base64: true });
+document.addEventListener('bindFlows', function (event) {
+    event.detail.flows.forEach(flow => {
+        const svgElement = document.querySelector('svg[data-element-id^="Collaboration_"]');
+        if (!svgElement)
+            return;
 
-//     let files = {
-//         space: null,
-//         olcs: null
-//     };
+        const connectionPaths = svgElement.querySelectorAll('g.djs-connection');
+        connectionPaths.forEach(path => {
+            if (path.getAttribute('data-element-id') === flow) {
+                path.querySelectorAll('g > path').forEach(child => {
+                    if (!child.getAttribute('class', 'djs-hit-stroke')) {
+                        // child.setAttribute('style', child.getAttribute('style') + 'marker-start: url("#messageflow-start-white-hsl_225_10_15_-8svbf7f1yeam6uj1nmjn0q53q");');
+                        child.setAttribute('style', child.getAttribute('style') + 'marker-end: url("#messageflow-start-white-hsl_225_10_15_-8svbf7f1yeam6uj1nmjn0q53q");');
+                        child.setAttribute('style', child.getAttribute('style') + 'stroke-dasharray: 0;');
+                    }
+                });
+            }
+        });
+    })
+})
 
-//     // Iterate over all files in the zip
-//     zip.forEach((relativePath, file) => {
-//         if (relativePath.endsWith('.bpmn')) {
-//             files.space = file;
-//         } else if (relativePath.endsWith('.xml')) {
-//             files.olcs = file;
-//         }
-//     });
+setInterval(() => {
+    addCustomIcons();
+}, 500);
 
-//     // Check if the required files are found
-//     Object.keys(files).forEach(key => {
-//         if (!files[key]) {
-//             throw new Error('Missing file: ' + key);
-//         }
-//     });
+async function importFromZip(zipData) {
+    const zip = await Zip.loadAsync(zipData, { base64: true });
 
-//     // Import the XML content of the files
-//     await olcModeler.importXML(await files.olcs.async("string"));
-//     localStorage.setItem('space-model', await files.olcs.async("string"));
-//     await modeler.importXML(await files.space.async("string"));
-// }
+    let files = {
+        collaboration: null,
+        environment: null
+    };
+
+    // Iterate over all files in the zip
+    zip.forEach((relativePath, file) => {
+        if (relativePath.endsWith('.bpmn')) {
+            files.collaboration = file;
+        } else if (relativePath.endsWith('.json')) {
+            files.environment = file;
+        }
+    });
+
+    // Check if the required files are found
+    Object.keys(files).forEach(key => {
+        if (!files[key]) {
+            throw new Error('Missing file: ' + key);
+        }
+    });
+
+    // Import the XML content of the files
+    // await olcModeler.importXML(await files.olcs.async("string"));
+    // localStorage.setItem('spaceModel', await files.environment.async("string"));
+    initMap(JSON.parse(await files.environment.async("string")))
+    await modeler.importXML(await files.collaboration.async("string"));
+}
 
 document.querySelector("#open-diagram").addEventListener('click', () => uploadZIP(async data => {
     if (data.startsWith('data:')) {
@@ -508,9 +633,9 @@ function downloadDiagram() {
     });
 }
 
-document.querySelector("#erase-button").addEventListener('click', () => {
-    createEmptyDiagram()
-});
+// document.querySelector("#erase-button").addEventListener('click', () => {
+//     createEmptyDiagram()
+// });
 
 document.body.addEventListener('keydown', function (event) {
     if (event.code === 'KeyS' && (event.metaKey || event.ctrlKey)) {
@@ -523,14 +648,14 @@ document.body.addEventListener('keydown', function (event) {
     }
 });
 
-// async function exportToZip() {
-//     const zip = new Zip();
-//     const space = (await modeler.saveXML({ format: true })).xml;
-//     zip.file('behaviour.bpmn', space);
-//     const olcs = (await olcModeler.saveXML({ format: true })).xml;
-//     zip.file('space.xml', olcs);
-//     return zip.generateAsync({ type: 'base64' });
-// }
+async function exportToZip() {
+    const zip = new Zip();
+    const space = (await modeler.saveXML({ format: true })).xml;
+    zip.file('collaboration.bpmn', space);
+    const spaceModel = localStorage.getItem('spaceModel');
+    zip.file('environment.json', spaceModel);
+    return zip.generateAsync({ type: 'base64' });
+}
 
 document.querySelector('#download-button').addEventListener('click', () => exportToZip().then(zip => {
     downloadZIP('BEAR.zip', zip, 'base64');
@@ -602,41 +727,110 @@ modeler.get('eventBus').on('element.click', function (event) {
 /********/
 // Map code
 /********/
-localStorage.setItem('spaceModel', JSON.stringify(spaceModel));
+
 const participants = [];
+const binds = {};
 
-const raster = new TileLayer({
-    source: new OSM(),
-});
-const source = new VectorSource();
-const vector = new VectorLayer({
-    source: source,
-    style: {
-        'fill-color': 'rgba(255, 255, 255, 0.2)',
-        'stroke-color': 'red',
-        'stroke-width': 2,
-        'circle-radius': 7,
-        'circle-fill-color': '#ffcc33',
-    },
-});
+let raster
+let source
+let vector
+let map
 
-useGeographic();
+// useGeographic();
 
-let extent = [13.067553, 43.138806, 13.068553, 43.139806]
-const map = new Map({
-    layers: [raster, vector],
-    target: 'map',
-    view: new View({
-        center: [13.068307772123394, 43.139407493133405],
-        zoom: 19,
-        rotation: 0.5,
-        maxZoom: 19,
-        minZoom: 19,
-        extent: extent,
-        constrainOnlyCenter: true,
-        smoothExtentConstraint: true,
-    }),
-});
+
+function initMap(spaceModel) {
+    document.getElementById('map').remove();
+    const newMapDiv = document.createElement('div');
+    newMapDiv.id = 'map';
+    newMapDiv.className = 'map';
+    document
+        .querySelector('.contentRight')
+        .insertBefore(newMapDiv, document.querySelector('.contentRight').firstChild);
+    localStorage.setItem('spaceModel', JSON.stringify(spaceModel));
+
+    raster = new TileLayer({
+        source: new OSM(),
+    });
+    source = new VectorSource();
+    vector = new VectorLayer({
+        source: source,
+        style: {
+            'fill-color': 'rgba(255, 255, 255, 0.2)',
+            'stroke-color': 'red',
+            'stroke-width': 2,
+            'circle-radius': 7,
+            'circle-fill-color': '#ffcc33',
+        },
+    });
+
+    useGeographic();
+
+    map = new Map({
+        layers: [raster, vector],
+        target: 'map',
+        view: new View({
+            center: spaceModel.map.center,
+            // rotation: spaceModel.map.rotation,
+            zoom: spaceModel.map.zoom,
+            minZoom: spaceModel.map.zoom,
+            maxZoom: spaceModel.map.maxZoom,
+            extent: spaceModel.map.extent,
+            // constrainOnlyCenter: true,
+            // smoothExtentConstraint: true,
+        }),
+    });
+
+    spaceModel.places.forEach((place) => {
+        const lineFeature = new Feature({
+            geometry: new LineString(place.boundaries.concat([place.boundaries[0]])),
+        });
+        lineFeature.setId(place.id + '_boundaries');
+        source.addFeature(lineFeature);
+
+        let center
+        place.centroid ? center = place.centroid : center = calculateCenter(place.boundaries);
+        const centerFeature = new Feature({
+            geometry: new Point(center),
+        });
+
+        centerFeature.setStyle(new Style({
+            text: new Text({
+                text: place.name,
+                font: '8px Calibri,sans-serif',
+                fill: new Fill({ color: '#000' }),
+                stroke: new Stroke({
+                    color: '#fff', width: 2
+                }),
+            }),
+        }))
+        centerFeature.setId(place.id + '_centroid');
+        source.addFeature(centerFeature);
+    })
+
+    spaceModel.sets.forEach((set) => {
+        const centerFeature = new Feature({
+            geometry: new Point(set.centroid),
+        });
+
+        centerFeature.setStyle(new Style({
+            text: new Text({
+                text: set.name,
+                font: '11px Calibri,sans-serif',
+                fill: new Fill({ color: '#000' }),
+                stroke: new Stroke({
+                    color: '#fff', width: 3
+                }),
+            }),
+        }))
+        centerFeature.setId(set.id + '_centroid');
+        source.addFeature(centerFeature);
+    })
+
+    drawGraph()
+}
+
+initMap(spaceModel);
 
 function calculateCenter(boundaries) {
     let x = 0;
@@ -647,52 +841,6 @@ function calculateCenter(boundaries) {
     });
     return [x / boundaries.length, y / boundaries.length];
 }
-
-spaceModel.places.forEach((place) => {
-    const lineFeature = new Feature({
-        geometry: new LineString(place.boundaries.concat([place.boundaries[0]])),
-    });
-    lineFeature.setId(place.id + '_boundaries');
-    source.addFeature(lineFeature);
-
-    let center
-    place.centroid ? center = place.centroid : center = calculateCenter(place.boundaries);
-    const centerFeature = new Feature({
-        geometry: new Point(center),
-    });
-
-    centerFeature.setStyle(new Style({
-        text: new Text({
-            text: place.name,
-            font: '8px Calibri,sans-serif',
-            fill: new Fill({ color: '#000' }),
-            stroke: new Stroke({
-                color: '#fff', width: 2
-            }),
-        }),
-    }))
-    centerFeature.setId(place.id + '_centroid');
-    source.addFeature(centerFeature);
-})
-
-spaceModel.sets.forEach((set) => {
-    const centerFeature = new Feature({
-        geometry: new Point(set.centroid),
-    });
-
-    centerFeature.setStyle(new Style({
-        text: new Text({
-            text: set.name,
-            font: '11px Calibri,sans-serif',
-            fill: new Fill({ color: '#000' }),
-            stroke: new Stroke({
-                color: '#fff', width: 3
-            }),
-        }),
-    }))
-    centerFeature.setId(set.id + '_centroid');
-    source.addFeature(centerFeature);
-})
 
 function getSetPlaces(set) {
     const p = spaceModel.sets.find(s => s.id === set);
@@ -801,10 +949,10 @@ document.addEventListener('edgeRemoved', (event) => {
 
 drawGraph();
 
-// map.on('click', function (event) {
-//     const coordinates = event.coordinate;
-//     console.log('Coordinates:', coordinates);
-// });
+map.on('click', function (event) {
+    const coordinates = event.coordinate;
+    console.log('Coordinates:', coordinates);
+});
 
 function animateToken(tokenFeature, start, end, duration, destination) {
     return new Promise((resolve) => {
@@ -851,6 +999,7 @@ async function moveToken(movement) {
         setTimeout(() => {
             document.dispatchEvent(new CustomEvent('movement_stop_' + participant.id, { detail: { cause: "destinationUnreachable" } }));
         }, 1000);
+        // TODO: alert the user that the destination is unreachable
         return;
     }
 
@@ -898,7 +1047,58 @@ async function moveToken(movement) {
     moveToken(movement);
 }
 
-document.addEventListener('movement_start', (event) => moveToken(event.detail));
+document.addEventListener('movement_start', (event) => {
+    let bindKey
+    for (const [key, participants] of Object.entries(binds)) {
+        if (participants.some(participant => participant.id === event.detail.participant.id)) {
+            bindKey = key;
+        }
+    }
+
+    let destination = event.detail.destination;
+    let ps = [event.detail];
+    if (bindKey) {
+        ps = ps.concat(binds[bindKey].map(p => ({ participant: p, destination: destination })));
+    }
+
+    ps
+        .filter((value, index, self) =>
+            index === self.findIndex((t) => (
+                t.participant.id === value.participant.id
+            )))
+        .forEach((participant, index) => {
+            setTimeout(() => {
+                console.log('movement_' + participant.participant.id);
+                moveToken(participant);
+            }, 1000 * index);
+        });
+});
+
+document.addEventListener('bind_start', (event) => bindParticipants(event.detail));
+
+function bindParticipants(detail) {
+    detail.participant.unbind = false;
+    if (binds[detail.bind]) {
+        binds[detail.bind].push(detail.participant);
+        setTimeout(() => {
+            document.dispatchEvent(new CustomEvent('bind_stop_' + detail.bind));
+        }, 1000);
+    } else binds[detail.bind] = [detail.participant];
+}
+
+document.addEventListener('unbind_start', (event) => unbindParticipants(event.detail));
+
+function unbindParticipants(detail) {
+    if (binds[detail.bind]) {
+        binds[detail.bind].find(p => p.id == detail.participant.id).unbind = true;
+        if (binds[detail.bind].every(p => p.unbind)) {
+            delete binds[detail.bind]
+            setTimeout(() => {
+                document.dispatchEvent(new CustomEvent('unbind_stop_' + detail.bind));
+            }, 1000);
+        }
+    };
+}
 
 function placeToken(participant) {
     let tokenFeature = new Feature({
