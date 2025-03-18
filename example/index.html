@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -90,4 +90,71 @@
   <script src="./index.bundle.js"></script>
 </body>
 
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <!-- <title>BEAR | Modeler</title> -->
+    <title>EnvBPMN Animator</title>
+    <link rel="stylesheet" href="./dist/vendor/bpmn-js/assets/diagram-js.css" />
+    <link rel="stylesheet" href="./dist/vendor/bpmn-js/assets/bpmn-js.css" />
+    <link rel="stylesheet" href="./dist/vendor/bpmn-js/assets/bpmn-font/css/bpmn-embedded.css" />
+    <link rel="stylesheet" href="./dist/vendor/bpmn-js-token-simulation/assets/css/bpmn-js-token-simulation.css" />
+    <link rel="stylesheet" href="./dist/vendor/bpmn-js-properties-panel/assets/properties-panel.css" />
+    <link rel="stylesheet" href="./assets/css/navbar.css" />
+    <link rel="stylesheet" href="https://unpkg.com/bpmn-js/dist/assets/diagram-js.css" />
+    <link rel="stylesheet" href="https://unpkg.com/bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css" />
+    <link rel="stylesheet" href="https://unpkg.com/bpmn-js-color-picker/colors/color-picker.css" />
+    <link rel="stylesheet" href="./style.css"/>
+    <!-- <link rel="icon" type="image/png" href="./icons/logo.png" /> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="node_modules/ol/ol.css"> -->
+
+    <style>
+      .map {
+        width: 100%;
+        height: 100vh;
+      }
+    </style>
+
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content="website" />
+    <!-- <meta property="og:site_name" content="BEAR" />
+    <meta property="og:title" content="BEAR" />
+    <meta property="og:url" content="https://bitbucket.org/proslabteam/bear/index.html" /> -->
+</head>
+<body>
+<div id="nav-bar" class="topnav" id="myTopnav">
+    <!-- <a href="index.html" class="active" style="padding: 4px 4px 4px 4px;"><img src="./icons/logo.png" alt="BEAR Web Client" style="height:42px"></img></a> -->
+    <a style="float:right" href="#" class="properties-panel-resize" id="data-panel-toggle" draggable="true"><i class="fa fa-database"></i> Data </a>
+    <a style="float:right" href="#" class="properties-panel-resize" id="properties-panel-toggle" draggable="true"><i class="fa fa-cog"></i> Properties </a>
+    <!-- <a href="https://pros.unicam.it/environmental-bpmn/" class="links" target="_blank" rel="noopener">View on PROSLab</a> -->
+    <a style="float:right" href="#" class="download-button" id="download-button"><i class="fa fa-download"></i> Save</a>
+    <a style="float:right" href="#" class="open-diagram" id="open-diagram"><i class="fa fa-upload"></i> Open</a>
+    <a style="float:right" href="https://anonymous.4open.science/r/qprtwz-F332/casestudies/" class="links" target="_blank" rel="noopener"><i class="fa fa-folder-open"></i> Examples</a>
+    <!-- <a style="float:right" href="#" id="erase-button" class="links" rel="noopener"><i class="fa fa-eraser"></i> Clear</a> -->
+</div>
+
+<div id="loadingOverlay"></div>
+<div id="loading-spinner" class="spinner"></div>
+<div id="main" class="mainContent">
+    <div class="contentLeft">
+        <div class="canvas-parent">
+            <div class="canvas" id="canvas"></div>
+            <div class="properties-panel" id="properties-panel"></div>
+            <div class="properties-panel" id="properties-panel-olc"></div>
+        </div>
+    </div>
+    <div class="divider vertical"></div>
+    <div class="contentRight">
+        <!-- <div class="canvas" id="olc-canvas"></div> -->
+        <div id="map" class="map"></div>
+        <div class="properties-panel" id="data-panel"></div>
+    </div>
+</div>
+<script src="./modeler.bundle.js"></script>
+</body>
 </html>

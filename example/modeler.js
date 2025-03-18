@@ -16,6 +16,7 @@ import Zip from 'jszip';
 import bearBPMN from '../example/resources/ambulance.bpmn';
 import spaceModel from '../example/resources/ambulance.json';
 // import bearBPMN from '../example/resources/Student.bpmn';
+// import spaceModel from '../example/resources/student.json';
 import emptyBPMN from '../example/resources/newDiagram.bpmn';
 import OlcModeler from './lib/olcmodeler/OlcModeler';
 import Mediator from './lib/mediator/Mediator';
@@ -24,7 +25,7 @@ import { downloadZIP, uploadZIP } from './lib/util/FileUtil';
 import { OlcPropertiesPanelModule, OlcPropertiesProviderModule } from "./olc-js-properties-panel";
 import BpmnColorPickerModule from 'bpmn-js-color-picker';
 import BindIcon from './bpmn-bind.svg';
-import UbindIcon from './bpmn-unbind.svg';
+import UnbindIcon from './bpmn-unbind.svg';
 /********/
 // Map imports
 /********/
@@ -35,7 +36,7 @@ import { Style } from 'ol/style';
 import { useGeographic } from 'ol/proj';
 import { OSM, Vector as VectorSource } from 'ol/source.js';
 import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer.js';
-// import { Draw, Snap, Modify, Interaction } from "ol/interaction";
+import { Draw, Snap, Modify, Interaction } from "ol/interaction";
 import Feature from 'ol/Feature.js';
 import LineString from 'ol/geom/LineString.js';
 import Point from 'ol/geom/Point.js';
@@ -220,7 +221,8 @@ function createViews(spaceModel) {
             Object.keys(view.attributes).forEach(attribute => {
                 const aggrFun = view.attributes[attribute];
                 const attributeValues = [];
-                set.places.forEach(placeId => {
+                getSetPlaces(set.id).forEach(placeId => {
+                    // set.places.forEach(placeId => {
                     const place = spaceModel.places.find(p => p.id === placeId);
                     if (place && place.attributes && place.attributes[attribute]) {
                         attributeValues.push(place.attributes[attribute]);
@@ -230,12 +232,22 @@ function createViews(spaceModel) {
                 if (aggrFun == 'AVG') {
                     const sum = attributeValues.reduce((acc, val) => acc + parseFloat(val), 0);
                     const avg = sum / attributeValues.length;
-                    set.attributes[attribute] = avg;
+                    set.attributes[attribute] = avg.toFixed(2);
                 } else if (aggrFun == 'SOME') {
                     set.attributes[attribute] = attributeValues.some(value => value === "on");
                     set.attributes[attribute] ? set.attributes[attribute] = "on" : set.attributes[attribute] = "off";
                 } else if (aggrFun == 'COUNT') {
                     set.attributes[attribute] = attributeValues.filter(value => value === "true").length;
+                } else if (aggrFun == 'SUM') {
+                    set.attributes[attribute] = attributeValues.reduce((acc, val) => acc + parseFloat(val), 0);
+                } else if (aggrFun == 'MF') {
+                    const frequencyMap = attributeValues.reduce((acc, val) => {
+                        acc[val] = (acc[val] || 0) + 1;
+                        return acc;
+                    }, {});
+
+                    const mostFrequent = Object.keys(frequencyMap).reduce((a, b) => frequencyMap[a] > frequencyMap[b] ? a : b);
+                    set.attributes[attribute] = mostFrequent;
                 }
             });
             spaceModel[view.name].push(set)
@@ -410,6 +422,68 @@ if (remoteDiagram) {
     );
 } else {
     openDiagram(initialDiagram);
+    modeler.get('canvas').zoom('fit-viewport');
+
+    setTimeout(() => {
+        const elementRegistry = modeler.get('elementRegistry');
+        const tasks = elementRegistry._elements
+        const tasksArray = Object.values(tasks)
+            .map(element => element.element)
+            .filter(element => element.type === 'bpmn:Task');
+        tasksArray.forEach(task => {
+            if (task.businessObject.$attrs.type) {
+                addCustomIcons(task.id, task.businessObject.$attrs.type);
+            }
+        })
+    }, 500);
+}
+
+
+function addCustomIcons(element, value) {
+    const gElement = document.querySelector('g[data-element-id^="' + element + '"]');
+    if (!gElement)
+        return;
+    const childG = gElement.closest('g');
+
+    const polygons = childG.querySelectorAll('polygon');
+    polygons.forEach(polygon => polygon.remove());
+
+    const images = childG.querySelectorAll('image');
+    images.forEach(image => image.remove());
+
+    if (value === 'movement') {
+        const arrow = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+        const bbox = childG.getBBox();
+        const x = bbox.x + bbox.width - 100;
+        const y = bbox.y + 12;
+        arrow.setAttribute('points', `${x},${y} ${x + 7.5},${y + 7.5} ${x},${y + 15} ${x + 15},${y + 15} ${x + 22.5},${y + 7.5} ${x + 15},${y} ${x},${y}`);
+        arrow.setAttribute('fill', 'white');
+        arrow.setAttribute('stroke', 'black');
+        arrow.setAttribute('stroke-width', '1.5');
+        childG.appendChild(arrow);
+    } else if (value === 'bind') {
+        const bbox = childG.getBBox();
+        const x = bbox.x + bbox.width - 110;
+        const y = bbox.y - 3;
+        const icon = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+        icon.setAttribute('href', BindIcon);
+        icon.setAttribute('width', '50');
+        icon.setAttribute('height', '50');
+        icon.setAttribute('x', x);
+        icon.setAttribute('y', y);
+        childG.appendChild(icon);
+    } else if (value === 'unbind') {
+        const bbox = childG.getBBox();
+        const x = bbox.x + bbox.width - 100;
+        const y = bbox.y - 7;
+        const icon = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+        icon.setAttribute('href', UnbindIcon);
+        icon.setAttribute('width', '50');
+        icon.setAttribute('height', '50');
+        icon.setAttribute('x', x);
+        icon.setAttribute('y', y);
+        childG.appendChild(icon);
+    }
 }
 
 toggleProperties(url.searchParams.has('pp'));
@@ -506,62 +580,7 @@ function loadDiagram(xml) {
     document.body.removeChild(fileInput);
 }
 
-function addCustomIcons() {
-    const svgElement = document.querySelector('svg[data-element-id^="Collaboration_"]');
-    if (!svgElement)
-        return;
-    const textElements = svgElement.querySelectorAll('g text tspan');
-    textElements.forEach(tspan => {
-        if (tspan.textContent.startsWith('Move to')) {
-            if (!tspan.parentNode.parentNode.querySelector('polygon')) {
-                const arrow = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-                const bbox = tspan.parentNode.parentNode.getBBox();
-                const x = bbox.x + bbox.width - 30;
-                const y = bbox.y + 10;
-                arrow.setAttribute('points', `${x},${y} ${x + 7.5},${y + 7.5} ${x},${y + 15} ${x + 15},${y + 15} ${x + 22.5},${y + 7.5} ${x + 15},${y} ${x},${y}`);
-                arrow.setAttribute('fill', 'white');
-                arrow.setAttribute('stroke', 'black');
-                arrow.setAttribute('stroke-width', '1.5');
-                tspan.parentNode.parentNode.appendChild(arrow);
-            }
-        } else if (tspan.textContent.startsWith('Meet') ||
-            tspan.textContent.startsWith('Accompany') ||
-            tspan.textContent.startsWith('Stay') ||
-            tspan.textContent.startsWith('Get into') ||
-            tspan.textContent.startsWith('Load') ||
-            tspan.textContent.startsWith('Go with')) {
-            if (!tspan.parentNode.parentNode.querySelector('image')) {
-                const bbox = tspan.parentNode.parentNode.getBBox();
-                const x = bbox.x + bbox.width - 45;
-                const y = bbox.y - 10;
-                const icon = document.createElementNS('http://www.w3.org/2000/svg', 'image');
-                icon.setAttribute('href', BindIcon);
-                icon.setAttribute('width', '50');
-                icon.setAttribute('height', '50');
-                icon.setAttribute('x', x);
-                icon.setAttribute('y', y);
-                tspan.parentNode.parentNode.appendChild(icon);
-            }
-        } else if (tspan.textContent.startsWith('Leave') ||
-            tspan.textContent.startsWith('Thank') ||
-            tspan.textContent.startsWith('Arrive') ||
-            tspan.textContent.startsWith('Join')) {
-            if (!tspan.parentNode.parentNode.querySelector('image')) {
-                const bbox = tspan.parentNode.parentNode.getBBox();
-                const x = bbox.x + bbox.width - 50;
-                const y = bbox.y - 10;
-                const icon = document.createElementNS('http://www.w3.org/2000/svg', 'image');
-                icon.setAttribute('href', UbindIcon);
-                icon.setAttribute('width', '50');
-                icon.setAttribute('height', '50');
-                icon.setAttribute('x', x);
-                icon.setAttribute('y', y);
-                tspan.parentNode.parentNode.appendChild(icon);
-            }
-        }
-    });
-}
-
+// TODO: togliere sta cagata
 document.addEventListener('bindFlows', function (event) {
     event.detail.flows.forEach(flow => {
         const svgElement = document.querySelector('svg[data-element-id^="Collaboration_"]');
@@ -582,10 +601,6 @@ document.addEventListener('bindFlows', function (event) {
         });
     })
 })
-
-setInterval(() => {
-    addCustomIcons();
-}, 500);
 
 async function importFromZip(zipData) {
     const zip = await Zip.loadAsync(zipData, { base64: true });
@@ -616,6 +631,19 @@ async function importFromZip(zipData) {
     // localStorage.setItem('spaceModel', await files.environment.async("string"));
     initMap(JSON.parse(await files.environment.async("string")))
     await modeler.importXML(await files.collaboration.async("string"));
+
+    setTimeout(() => {
+        const elementRegistry = modeler.get('elementRegistry');
+        const tasks = elementRegistry._elements
+        const tasksArray = Object.values(tasks)
+            .map(element => element.element)
+            .filter(element => element.type === 'bpmn:Task');
+        tasksArray.forEach(task => {
+            if (task.businessObject.$attrs.type && task.businessObject.$attrs.type !== 'regular') {
+                addCustomIcons(task.id, task.businessObject.$attrs.type);
+            }
+        })
+    }, 500);
 }
 
 document.querySelector("#open-diagram").addEventListener('click', () => uploadZIP(async data => {
@@ -735,9 +763,7 @@ let raster
 let source
 let vector
 let map
-
-// useGeographic();
-
+let graph
 
 function initMap(spaceModel) {
     document.getElementById('map').remove();
@@ -747,6 +773,7 @@ function initMap(spaceModel) {
     document
         .querySelector('.contentRight')
         .insertBefore(newMapDiv, document.querySelector('.contentRight').firstChild);
+
     localStorage.setItem('spaceModel', JSON.stringify(spaceModel));
 
     raster = new TileLayer({
@@ -771,15 +798,29 @@ function initMap(spaceModel) {
         target: 'map',
         view: new View({
             center: spaceModel.map.center,
-            // rotation: spaceModel.map.rotation,
-            zoom: spaceModel.map.zoom,
-            minZoom: spaceModel.map.zoom,
-            maxZoom: spaceModel.map.maxZoom,
-            extent: spaceModel.map.extent,
-            // constrainOnlyCenter: true,
-            // smoothExtentConstraint: true,
+            zoom: spaceModel.map.zoom
         }),
     });
+
+    let myExtent = map.getView().calculateExtent(map.getSize());
+    map.setView(
+        new View({
+            center: spaceModel.map.center,
+            zoom: spaceModel.map.zoom,
+            rotation: spaceModel.map.rotation,
+            minZoom: spaceModel.map.zoom,
+            maxZoom: spaceModel.map.maxZoom,
+            extent: myExtent,
+            constrainOnlyCenter: true,
+            smoothExtentConstraint: true,
+        })
+    );
+
+    const overlayContainer = document.querySelector('.ol-overlaycontainer-stopevent');
+    if (overlayContainer) {
+        overlayContainer.remove();
+    }
+
 
     spaceModel.places.forEach((place) => {
         const lineFeature = new Feature({
@@ -808,29 +849,53 @@ function initMap(spaceModel) {
         source.addFeature(centerFeature);
     })
 
-    spaceModel.sets.forEach((set) => {
-        const centerFeature = new Feature({
-            geometry: new Point(set.centroid),
-        });
+    // spaceModel.sets.forEach((set) => {
+    //     const centerFeature = new Feature({
+    //         geometry: new Point(set.centroid),
+    //     });
 
-        centerFeature.setStyle(new Style({
-            text: new Text({
-                text: set.name,
-                font: '11px Calibri,sans-serif',
-                fill: new Fill({ color: '#000' }),
-                stroke: new Stroke({
-                    color: '#fff', width: 3
-                }),
-            }),
-        }))
-        centerFeature.setId(set.id + '_centroid');
-        source.addFeature(centerFeature);
+    //     centerFeature.setStyle(new Style({
+    //         text: new Text({
+    //             text: set.name,
+    //             font: '11px Calibri,sans-serif',
+    //             fill: new Fill({ color: '#000' }),
+    //             stroke: new Stroke({
+    //                 color: '#fff', width: 3
+    //             }),
+    //         }),
+    //     }))
+    //     centerFeature.setId(set.id + '_centroid');
+    //     source.addFeature(centerFeature);
+    // })
+
+    JSON.parse(localStorage.getItem('spaceModel')).edges.forEach((edge) => {
+        graph = new Graph();
+        spaceModel.places.forEach((place) => graph.addNode(place.id, { coordinates: place.centroid || calculateCenter(place.boundaries) }));
+        spaceModel.edges.forEach((edge) => graph.addEdge(edge.source, edge.target, { id: edge.id }));
+        drawGraphEdge(edge);
     })
-
-    drawGraph()
 }
 
 initMap(spaceModel);
+
+// const drawInteraction = new Draw({
+//     source: source,
+//     type: 'Polygon'
+// });
+
+// const snapInteraction = new Snap({
+//     source: source
+// });
+
+// map.addInteraction(drawInteraction);
+// map.addInteraction(snapInteraction);
+
+// drawInteraction.on('drawend', function (event) {
+//     const feature = event.feature;
+//     const coordinates = feature.getGeometry().getCoordinates()[0];
+//     console.log('Drawn polygon coordinates:', coordinates);
+//     // You can add additional logic here to handle the drawn polygon
+// });
 
 function calculateCenter(boundaries) {
     let x = 0;
@@ -842,12 +907,43 @@ function calculateCenter(boundaries) {
     return [x / boundaries.length, y / boundaries.length];
 }
 
+// TODO: unreachable exception if empty
 function getSetPlaces(set) {
-    const p = spaceModel.sets.find(s => s.id === set);
-    return p.places
+    const spaceModel = JSON.parse(localStorage.getItem('spaceModel'));
+    const expression = spaceModel.sets.find(s => s.id === set).expression;
+    const subExpressions = expression.split(' && ').map(subExpr => {
+        const operators = ['===', '>', '<'];
+        for (const operator of operators) {
+            if (subExpr.includes(operator)) {
+                const [attribute, value] = subExpr.split(operator).map(str => str.replace(/['"]/g, '').trim());
+                return { attribute, value, operator };
+            }
+        }
+    });
+
+    const places = spaceModel.places.filter(place => {
+        return subExpressions.every(({ attribute, value, operator }) => {
+            if (operator === '===') {
+                return place.attributes[attribute] === value;
+            } else if (operator === '>') {
+                return parseFloat(place.attributes[attribute]) > parseFloat(value);
+            } else if (operator === '<') {
+                return parseFloat(place.attributes[attribute]) < parseFloat(value);
+            }
+        });
+    }).map(place => place.id);
+
+    return places;
 }
 
+// function getSetPlaces(set) {
+//     const spaceModel = JSON.parse(localStorage.getItem('spaceModel'));
+//     const places = spaceModel.sets.find(s => s.id === set).places;
+//     return places
+// }
+
 function colorPlace(place) {
+    const spaceModel = JSON.parse(localStorage.getItem('spaceModel'));
     const p = spaceModel.places.find(p => p.id === place);
     const polygonFeature = new Feature({
         geometry: new Polygon([p.boundaries.concat([p.boundaries[0]])]),
@@ -904,6 +1000,7 @@ function drawGraph() {
 }
 
 function drawGraphEdge(edge) {
+    let spaceModel = JSON.parse(localStorage.getItem('spaceModel'))
     let sourcePlace = spaceModel.places.find(place => place.id === edge.source);
     let sourceCoords = sourcePlace?.centroid || (sourcePlace?.boundaries ? calculateCenter(sourcePlace.boundaries) : undefined);
     let targetPlace = spaceModel.places.find(place => place.id === edge.target);
@@ -924,9 +1021,11 @@ function drawGraphEdge(edge) {
     }
 }
 
-const graph = new Graph();
-spaceModel.places.forEach((place) => graph.addNode(place.id, { coordinates: place.centroid || calculateCenter(place.boundaries) }));
-spaceModel.edges.forEach((edge) => graph.addEdge(edge.source, edge.target, { id: edge.id, weight: edge.attributes.weight || 1 }));
+function initGraph() {
+    graph = new Graph();
+    spaceModel.places.forEach((place) => graph.addNode(place.id, { coordinates: place.centroid || calculateCenter(place.boundaries) }));
+    spaceModel.edges.forEach((edge) => graph.addEdge(edge.source, edge.target, { id: edge.id }));
+}
 
 document.addEventListener('edgeAdded', (event) => {
     const edge = event.detail;
@@ -936,7 +1035,7 @@ document.addEventListener('edgeAdded', (event) => {
     // console.log('Drawn edge');
     if (!graph.hasEdge(edge.source, edge.target)) {
         // console.log('Adding edge');
-        graph.addEdge(edge.source, edge.target, { id: edge.id, weight: edge.attributes.weight || 1 });
+        graph.addEdge(edge.source, edge.target, { id: edge.id });
         // console.log('edgeAdded', edge);
     }
 })
@@ -956,9 +1055,14 @@ map.on('click', function (event) {
 
 function animateToken(tokenFeature, start, end, duration, destination) {
     return new Promise((resolve) => {
-        const startTime = Date.now();
+        let startTime = Date.now();
+        let paused = false;
+        let pauseStartTime;
+        let elapsedBeforePause = 0;
 
         function animate(event) {
+            if (paused) return;
+
             const elapsed = event.frameState.time - startTime;
             const fraction = easeOut(Math.min(elapsed / duration, 1));
 
@@ -976,6 +1080,19 @@ function animateToken(tokenFeature, start, end, duration, destination) {
             }
         }
 
+        document.addEventListener('pause_sim', (event) => {
+            paused = true;
+            pauseStartTime = Date.now();
+        })
+        
+        document.addEventListener('play_sim', (event) => {
+            // TODO: resume animation by listening to the movement_start event for each participant
+            paused = false;
+            participants.forEach(p => {
+                placeToken(p);
+            });
+        })
+
         let type = 'postrender';
         let func = animate;
         const listenerKey = map.on(type, func);
@@ -984,8 +1101,8 @@ function animateToken(tokenFeature, start, end, duration, destination) {
 
 async function moveToken(movement) {
     let { destination, participant } = movement;
-
     let start = participants.find(p => p.id === participant.id).root
+
     if (!start) {
         setTimeout(() => {
             document.dispatchEvent(new CustomEvent('movement_stop_' + participant.id, { detail: { cause: "noRoot" } }));
@@ -1037,7 +1154,8 @@ async function moveToken(movement) {
         const target = graph.target(edge);
         return (source === path[0] && target === path[1])
     });
-    const duration = 1000 * graph.getEdgeAttribute(edge, 'weight');
+    // const duration = 1000 * graph.getEdgeAttribute(edge, 'weight');
+    const duration = 1000;
     const startTime = Date.now();
 
     await animateToken(tokenFeature, s, e, duration, path[1]);
@@ -1068,21 +1186,32 @@ document.addEventListener('movement_start', (event) => {
             )))
         .forEach((participant, index) => {
             setTimeout(() => {
-                console.log('movement_' + participant.participant.id);
                 moveToken(participant);
-            }, 1000 * index);
+            }, 100 * index);
         });
 });
 
 document.addEventListener('bind_start', (event) => bindParticipants(event.detail));
 
+document.addEventListener('ask_participants', () => {
+    document.dispatchEvent(new CustomEvent('get_participants', { detail: participants }));
+})
+
 function bindParticipants(detail) {
     detail.participant.unbind = false;
     if (binds[detail.bind]) {
-        binds[detail.bind].push(detail.participant);
-        setTimeout(() => {
-            document.dispatchEvent(new CustomEvent('bind_stop_' + detail.bind));
-        }, 1000);
+        const participantRoot = participants.find(p => p.id === detail.participant.id).root;
+        const participantIds = binds[detail.bind].map(p => p.id);
+        const participantRoots = participantIds.map(id => participants.find(p => p.id === id).root);
+        if (participantRoots.some(root => root !== participantRoot)) {
+            console.log('Different positions');
+            document.dispatchEvent(new CustomEvent('bind_stop_' + detail.bind, { detail: { cause: "differentPositions" } }));
+        } else {
+            binds[detail.bind].push(detail.participant);
+            setTimeout(() => {
+                document.dispatchEvent(new CustomEvent('bind_stop_' + detail.bind, { detail: { cause: "bindSuccessful" } }));
+            }, 1000);
+        }
     } else binds[detail.bind] = [detail.participant];
 }
 
@@ -1113,7 +1242,7 @@ function placeToken(participant) {
 
     const tokenStyle = new Style({
         image: new CircleStyle({
-            radius: 7,
+            radius: 9,
             fill: new Fill({ color: participant.color }),
             // stroke: new Stroke({ color: 'black', width: 2 }),
         }),
@@ -1125,6 +1254,10 @@ function placeToken(participant) {
 
 document.addEventListener('process_start', (event) => {
     const participant = event.detail.participant;
-    participants.push(participant);
-    placeToken(participant)
+    
+    if (!participants.some(p => p.id === participant.id))
+        participants.push(participant);
+    // participants.push(participant);
+    if (participant.root)
+        placeToken(participant)
 });

@@ -1,68 +1,147 @@
-# BEAR (BPMN Environmental AnimatoR)
+# Environment-aware BPMN Animator
 
-## Description
+Business processes, in particular collaborations, describe how various participants interact and behave to achieve specific objectives.
+Depending on the business scenario, process participants operate in a specific environment characterized by spatial and contextual dimensions.
+Participants can interact with and modify the environment, which in turn may influence process execution.
+Indeed, there exists a bidirectional relationship between business processes and the environment, which involves the necessity of representing the environment in a way that allows business processes to benefit from its awareness.
+Despite extensive research on environment modeling, the seamless integration of business processes and the environment model is not fully explored yet.
+To address this gap, we propose a tool for animating environment-aware BPMN collaborations with the aid of geographical maps (see figure below). 
 
-Modern business processes are heavily influenced by the physical environment in which they act. Participants occupy a position and move in the environment, and their activities and choices can depend on and influence its state. BPMN is a widely used standard for representing multi-party business processes in terms of collaboration diagrams, providing clear and expressive notation. However, BPMN and its extensions lack support for integrating the physical environment. To overcome this issue we provide a novel model animator tool, called BEAR, developed to support designers in achieving a more precise understanding of the interplay between collaboration process control flow and the environment. 
+![Environment-aware BPMN Animator GUI](./ui-1.png)
+
+## Table of Contents
+- [Installation](#installation)
+    - [Manual installation](#manual-installation)
+    - [Docker installation](#docker-installation)
+- [Animating and Debugging environment-aware BPMN collaborations](#animating-and-debugging-environment-aware-bpmn-collaborations)
+    - [Student-Tutor Collaboration](#student-tutor-collaboration)
+    - [Emergency Response Scenario](#emergency-response-scenario)
+- [Modeling environment-aware BPMN collaborations](#modeling-environment-aware-bpmn-collaborations)
+    - [Environment Modeling](#environment-modeling)
+    - [BPMN Collaborations modeling](#bpmn-collaborations-modeling)
+- [License](#license)
 
 ## Installation
-
 ### Manual installation
-
-To install BEAR, follow these steps:
-
-1. Download the repository.
-2. Run `npm install` to install the dependencies.
-3. Run `npm run start` to start a [local instance](http://localhost:8080).
+To install the tool, follow these steps:
+1. Run `npm install` to install the dependencies.
+2. Run `npm run start` to start a [local instance](http://localhost:8080).
 
 ### Docker installation
+To install Environment-aware BPMN Animator, follow these steps:
+1. Run `docker build -t envbpmnanimator .` to build the Docker image.
+2. Run `docker run -p 8080:8080 envbpmnanimator` to start a [local instance](http://localhost:8080).
 
-To install BEAR, follow these steps:
+## Animating and Debugging environment-aware BPMN collaborations
 
-1. Run `docker build -t bear .` to build the Docker image.
-2. Run `docker run -p 8080:8080 bear` to start a [local instance](http://localhost:8080).
+Environment-aware BPMN Animator embeds an animator capable of representing step-by-step the environment-aware BPMN collaboration execution. By selecting the Token Simulation button top-left corner, a play button will appear over each fireable start event. Once this button is clicked, one process is activated. This creates a new token in the form of a small colored circle at the start event of the BPMN collaboration and another token in place of the environment model corresponding to the set position of the pool, which starts to cross the two models.
+  
+The **data panel** in the right side of the Environment-aware BPMN Animator interface allows users to keep track of the environment evolution throughout the animation. At any time, the animation can be paused by the user to check the distribution of the tokens in the environment and in the BPMN collaboration.
 
-## **Modeling with BEAR**
+The animation terminates once all tokens cannot move forward. In the case of deadlocks or potential deadlock situations, Environment-aware BPMN Animator will highlight the cause using either <span style="color:yellow;">yellow</span> or <span style="color:red;">red</span> color.
 
-BEAR embeds a user-friendly modeler capable of representing environmental BPMN collaborations.  
-The modeler is divided into two parts: 
+Environment-aware BPMN Animator makes it possible to upload an environment-aware BPMN collaboration model by clicking on the ***Open*** button. 
+When uploading a model, a `.zip` file containing the `.bpmn` file and the space `.json` file will have to be provided by the user.
+You can find `.zip` files of test case studies in the `case studies` of this repository. 
+Each case study is available in a fully functional variant and others with intentional modeling errors to showcase the tool’s capabilities:
 
-*   **BPMN modeler** (on the left) used to design the BPMN collaboration processes
-*   **Environment modeler** (on the right) used to design the environment in the form of place graphs
+### University Compound
+This case study illustrates a scenario where a student seeks guidance from their tutor. The collaboration involves a `Student` and a `Tutor` and it takes place in a university compound.
+- `student.zip` <span style="color:green;">(happy path)</span>
+- `student_unreachable.zip`  <span style="color:red;">(unreachable destination)</span>
 
-On the left of each modeler, BEAR shows an **element palette** used to design the two models. 
-For each element in the modelers, it is possible to define additional properties using the property panel. One or more **environmental attributes** can be set for a place in the environmental model by using the associated property panel. In order to define an environmental attribute, it is necessary to define its name and its initial value. Environmental attributes can be referenced by other elements in the models by using the following notation: `place_name.attribute_name`. Other attributes can be defined by using data objects in the BPMN modeler, which will only be accessible by the elements that belong to that specific pool, using the `attribute_name` notation.
+### Hospital
+This case study demonstrates a situation where an injured patient requires medical assistance. The collaboration involves an `Injured Patient`, `Emergency Nurse`, `Emergency Doctor` and `Ambulance`. It takes place in a hospital and its sorroundings.
+- `ambulance.zip` <span style="color:green;">(happy path)</span>
+- `ambulance_guard.zip` <span style="color:red;">(violated guard)</span>
+
+## Modeling environment-aware BPMN collaborations
+### Environment Modeling
+The environment is modeled in JSON (JavaScript Object Notation) and overlaid onto a geographic map for enhanced visualization. 
+Thanks to its lightweight and language-independent nature, JSON is
+widely used for data interchange, making this model representation reusable across different applications. 
+The model can be generated with the assistance of online tools for [JSON formatting](https://jsonformatter.org/json-editor) and [coordinate extrapolation](https://www.keene.edu/campus/maps/tool/).
+
+The model attains to the following structure:
+```
+{
+    "map": {
+        "center": [latitude, longitude], // Center coordinates of the map
+        "extent": [minLongitude, minLatitude, maxLongitude, maxLatitude], // Extent of the map
+        "zoom": zoomLevel, // Zoom level of the map
+        "rotation": rotationAngle // Rotation angle of the map
+    },
+    "places": [
+        {
+            "id": "uniquePlaceId", // Unique identifier for the place
+            "name": "placeName", // Name of the place
+            "extent": [
+                [latitude, longitude], // Coordinates defining the boundaries of the place
+                ...
+            ],
+            "attributes": {
+                "attribute1": "value",
+                "attribute2": "value",
+                ...
+                "attribute_n": "value"
+            } //Edge attributes (optional)
+        },
+        ...
+    ],
+    "edges": [
+        {
+            "id": "uniqueEdgeId", // Unique identifier for the edge
+            "name": "edgeName", // Name of the edge
+            "source": "sourcePlaceId", // Source place ID
+            "target": "targetPlaceId", // Target place ID,
+            "attributes": {
+                "attribute1": "value",
+                "attribute2": "value",
+                ...
+                "attribute_n": "value"
+            } //Edge attributes (optional)
+        },
+        ...
+    ],
+    "sets": [
+        {
+            "id": "uniqueLogicalPlaceId", // Unique identifier for the logical place
+            "name": "logicalPlaceName", // Name of the logical place
+            "expression": "filterExpression", // Expression to filter places (e.g., "zone === 'A'")
+        },
+        ...
+    ],
+    "views": [
+        {
+            "id": "uniqueViewId", // Unique identifier for the view
+            "name": "viewName", // Name of the view
+            "sets": ["setId1", "setId2"], // List of logical place IDs included in the view
+            "aggregation": {
+                "attribute1": "aggrFun" // Aggregation function (optional)
+            },
+            "disaggregation": {
+                "attribute1": "disaggrFun" // Disaggregation function (optional)
+            }
+        },
+        ...
+    ]
+}
+```
+
+### BPMN Collaboration modeling
+
+Environment-aware BPMN Animator embeds a user-friendly modeler (on the left) used to design the BPMN collaboration processes.
+For each element, it is possible to define additional properties using the **element palette**. One or more **environmental attributes** can be set for a place in the environmental model by using the associated property panel. In order to define an environmental attribute, it is necessary to define its name and its initial value. Environmental attributes can be referenced by other elements in the models by using the following notation: `place_name.attribute_name`.
 
 An **initial position** corresponding to one of the places in the environmental model can be set for each **pool**, which represents participant in the collaboration.
 
-**Tasks** in the model will include three new properties:
+**Tasks** in the model will include a new **Assignments** property used to modify the value of environmental attributes. Assignments are defined by specifying the name of a defined attribute (e.g. `place1.temperature`) and its new value (e.g. `25`).
+**Tasks** will also include a **Guards** property used to assess the value of environmental attributes prior to execution. Guards are defined by specifying the name of a defined attribute (e.g. `place1.temperature`), a logical operator (e.g. `=<`) and a value (e.g. `25`).
 
-*   **Guard** constrains the execution of a task to an environmental status. The guard expression has to be defined by specifying the name of a defined attribute and the value that activates the condition (e.g., `place_name.attribute_name == value`).
-*   **Destination** indicates the place that the participant wants to reach from its current position. The destination has to be defined by selecting one of the places defined in the environmental model or by specifying the name of an attribute that contains the name of a place.
-*   **Assignments** are used to modify the environment topology (by connecting or disconnecting places) and the value of its attributes. Assignments are defined by specifying the name of a defined attribute and its new value. To connect or disconnect places in the environmental model, it is possible to use the `connect` and `disconnect` keywords as attributes and dot separated pairs of places (e.g., `place1.place2`) as the values to be assigned.
+New types of **Tasks** are also introduced in the modeler:
+*   **Movement Tasks** are used to move a participant within the environment, modifying its position. A **Destination** attribute indicates the place that the participant wants to reach from its current position. The destination has to be defined by selecting one of the places defined in the environmental model or by specifying the name of an attribute that contains the name of a place.
+*   **Binding Tasks** and **Unbinding Tasks** are used to synchronize movements between participants. **Movement Tasks** performed after a **Binding Task** will affect all the bound participants, until they reach the next **Unbinding Task**.
 
-For both start and boundary **conditional events**, the **condition** property can be used to activate the event. The condition must be a boolean expression over data object (e.g., `attribute_name == value`) or place attributes (e.g., `place_name.attribute_name == value`).
+## License
 
-For a **message event** it is possible to set some properties: 
-
-* **Send Message Events** may define a message payload, which can contain an attribute or any other arbitrary value, such as numbers and text.
-* **Receive Message Events** will in turn specify the name of the attribute to associate with the payload of the corresponding send message event.
-
-
-Attributes which contain the name of a place can be used in guards by using `$` sign followed by the name of the attribute. For example, if the value of `attribute1` is `place1`, writing `$attribute1.attribute_name == value` is the same as writing `place1.attribute_name == value`. The same approach can also be used for assignments.
-
-Moreover, it is possible to refer to an environmental attribute related to more places by using the `PLACES` keyword. For example, using the `PLACES.attribute_name == value` expression as a guard, will return `true` if least one place will have 'attribute_name' set to `value`, `false` otherwise. When using this approach for performing assignments, the name of the first place that has `attribute_name` set to `value` will be returned, `null` otherwise.
-
-BEAR makes it possible to save an environmental BPMN collaboration model by clicking on the ***Save*** button and to upload one by clicking on the **_Open_** button. When uploading a model, a .zip file containing the .bpmn file and the space .xml file will have to be provided by the user.
-
-## **Animation with BEAR**
-
-BEAR embeds an animator capable of representing step-by-step the environmental BPMN collaboration execution. By selecting the Token Simulation button in the BEAR interface, a play button will appear over each fireable start event. Once this button is clicked, one process is activated. This creates a new token in the form of a small colored circle at the start event of the BPMN collaboration and another token in place of the environmental model corresponding to the set position of the pool, which starts to cross the two models.
-  
-The animation terminates once all tokens cannot move forward. In the case of a token remaining blocked due to environmental conditions (e.g., a guard condition violation) BEAR will highlight the issue using the red color.  
-
-The **data panel** in the top-right corner of the BEAR interface allows users to keep track of the evolution of the values related to data objects and environmental attributes throughout the animation. At any time, the animation can be paused by the user to check the distribution of the tokens in the environment and in the BPMN collaboration.
-
-### License
-
-This project is licensed under the [MIT License](LICENSE).
-
+Environment-aware BPMN Animator © 2025 is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/?ref=chooser-v1) 

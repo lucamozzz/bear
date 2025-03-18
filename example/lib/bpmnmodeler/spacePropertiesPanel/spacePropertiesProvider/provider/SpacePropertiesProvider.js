@@ -22,7 +22,7 @@ export default function SpacePropertiesProvider(propertiesPanel, translate, even
       if (is(element, 'bpmn:DataObjectReference')) {
         groups.push(createSpaceGroup(element, translate));
       }
-      if (is(element, 'bpmn:SequenceFlow')) {
+      if (is(element, 'bpmn:SequenceFlow') || is(element, 'bpmn:MessageFlow')) {
         groups.push(createSpaceGroup(element, translate));
       }
       if (is(element, 'bpmn:Participant')) {

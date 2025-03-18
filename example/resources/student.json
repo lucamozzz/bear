@@ -16,7 +16,7 @@
     "places": [
         {
             "id": "place1",
-            "name": "B2",
+            "name": "R2",
             "boundaries": [
                 [
                     13.067744928731921,
@@ -36,16 +36,14 @@
                 ]
             ],
             "attributes": {
-                "temperature": "23",
-                "humidity": "50",
-                "lights": "on",
-                "building": "A",
-                "available": "true"
+                "zone": "A",
+                "purpose": "studying",
+                "freeSeats": 0
             }
         },
         {
             "id": "place2",
-            "name": "LB1",
+            "name": "R3",
             "boundaries": [
                 [
                     13.067813325061795,
@@ -65,16 +63,13 @@
                 ]
             ],
             "attributes": {
-                "temperature": "22",
-                "humidity": "47",
-                "lights": "on",
-                "building": "A",
-                "available": "true"
+                "zone": "A",
+                "purpose": "phd"
             }
         },
         {
             "id": "place3",
-            "name": "T1",
+            "name": "R6",
             "boundaries": [
                 [
                     13.067813325061795,
@@ -94,16 +89,13 @@
                 ]
             ],
             "attributes": {
-                "temperature": "19",
-                "humidity": "50",
-                "lights": "on",
-                "building": "A",
-                "available": "false"
+                "zone": "A",
+                "purpose": "phd"
             }
         },
         {
             "id": "place4",
-            "name": "PhD",
+            "name": "R8",
             "boundaries": [
                 [
                     13.067934024467466,
@@ -123,16 +115,14 @@
                 ]
             ],
             "attributes": {
-                "temperature": "23",
-                "humidity": "50",
-                "lights": "on",
-                "building": "A",
-                "available": "false"
+                "zone": "A",
+                "purpose": "teaching",
+                "freeSeats": 17
             }
         },
         {
             "id": "place5",
-            "name": "E2",
+            "name": "R7",
             "boundaries": [
                 [
                     13.068007785215384,
@@ -152,16 +142,14 @@
                 ]
             ],
             "attributes": {
-                "temperature": "20",
-                "humidity": "53",
-                "lights": "on",
-                "building": "A",
-                "available": "true"
+                "zone": "A",
+                "purpose": "teaching",
+                "freeSeats": 50
             }
         },
         {
             "id": "place6",
-            "name": "SR2",
+            "name": "R5",
             "boundaries": [
                 [
                     13.067934024467466,
@@ -181,16 +169,14 @@
                 ]
             ],
             "attributes": {
-                "temperature": "20",
-                "humidity": "52",
-                "lights": "on",
-                "building": "A",
-                "available": "true"
+                "zone": "A",
+                "purpose": "studying",
+                "freeSeats": 5
             }
         },
         {
             "id": "place7",
-            "name": "SR1",
+            "name": "R4",
             "boundaries": [
                 [
                     13.067755657567977,
@@ -210,16 +196,14 @@
                 ]
             ],
             "attributes": {
-                "temperature": "23",
-                "humidity": "50",
-                "lights": "on",
-                "building": "A",
-                "available": "false"
+                "zone": "A",
+                "purpose": "studying",
+                "freeSeats": 3
             }
         },
         {
             "id": "place8",
-            "name": "B1",
+            "name": "R1",
             "boundaries": [
                 [
                     13.067467320098876,
@@ -239,16 +223,14 @@
                 ]
             ],
             "attributes": {
-                "temperature": "22",
-                "humidity": "49",
-                "lights": "on",
-                "building": "A",
-                "available": "false"
+                "zone": "A",
+                "purpose": "studying",
+                "freeSeats": 0
             }
         },
         {
             "id": "place9",
-            "name": "TL",
+            "name": "R10",
             "boundaries": [
                 [
                     13.06861530555725,
@@ -268,16 +250,14 @@
                 ]
             ],
             "attributes": {
-                "temperature": "18",
-                "humidity": "60",
-                "lights": "on",
-                "building": "B",
-                "available": "false"
+                "zone": "B",
+                "purpose": "teaching",
+                "freeSeats": 15
             }
         },
         {
             "id": "place10",
-            "name": "FO",
+            "name": "R12",
             "boundaries": [
                 [
                     13.068734663858413,
@@ -297,16 +277,14 @@
                 ]
             ],
             "attributes": {
-                "temperature": "23",
-                "humidity": "50",
-                "lights": "on",
-                "building": "B",
-                "available": "false"
+                "zone": "B",
+                "purpose": "teaching",
+                "freeSeats": 15
             }
         },
         {
             "id": "place11",
-            "name": "T2",
+            "name": "R14",
             "boundaries": [
                 [
                     13.068870115413665,
@@ -326,16 +304,14 @@
                 ]
             ],
             "attributes": {
-                "temperature": "24",
-                "humidity": "51",
-                "lights": "on",
-                "building": "B",
-                "available": "true"
+                "zone": "B",
+                "purpose": "teaching",
+                "freeSeats": 10
             }
         },
         {
             "id": "place12",
-            "name": "PR3",
+            "name": "R16",
             "boundaries": [
                 [
                     13.068949240579604,
@@ -355,16 +331,14 @@
                 ]
             ],
             "attributes": {
-                "temperature": "22",
-                "humidity": "54",
-                "lights": "on",
-                "building": "B",
-                "available": "true"
+                "zone": "B",
+                "purpose": "studying",
+                "freeSeats": 0
             }
         },
         {
             "id": "place13",
-            "name": "PR2",
+            "name": "R15",
             "boundaries": [
                 [
                     13.068949240579604,
@@ -384,16 +358,13 @@
                 ]
             ],
             "attributes": {
-                "temperature": "23",
-                "humidity": "50",
-                "lights": "on",
-                "building": "B",
-                "available": "false"
+                "zone": "B",
+                "purpose": "tutor"
             }
         },
         {
             "id": "place14",
-            "name": "PR1",
+            "name": "R13",
             "boundaries": [
                 [
                     13.068949240579604,
@@ -413,16 +384,14 @@
                 ]
             ],
             "attributes": {
-                "temperature": "20",
-                "humidity": "52",
-                "lights": "on",
-                "building": "B",
-                "available": "true"
+                "zone": "B",
+                "purpose": "studying",
+                "freeSeats": 0
             }
         },
         {
             "id": "place15",
-            "name": "E1",
+            "name": "R11",
             "boundaries": [
                 [
                     13.068780261411666,
@@ -442,16 +411,14 @@
                 ]
             ],
             "attributes": {
-                "temperature": "22",
-                "humidity": "55",
-                "lights": "on",
-                "building": "B",
-                "available": "false"
+                "zone": "B",
+                "purpose": "teaching",
+                "freeSeats": 35
             }
         },
         {
             "id": "place16",
-            "name": "AA1",
+            "name": "R9",
             "boundaries": [
                 [
                     13.06855093254089,
@@ -471,63 +438,50 @@
                 ]
             ],
             "attributes": {
-                "temperature": "23",
-                "humidity": "50",
-                "lights": "on",
-                "building": "B",
-                "available": "false"
+                "zone": "B",
+                "purpose": "teaching",
+                "freeSeats": 35
             }
         },
         {
             "id": "place17",
-            "name": "Parking 1",
-            "centroid": [
-                13.068248569276804,
-                43.13954238519685
-            ],
+            "name": "P",
             "boundaries": [
                 [
-                    13.06842084540367,
-                    43.13966764475222
+                    13.068072158231741,
+                    43.1391949843059
                 ],
                 [
-                    13.068491923942565,
-                    43.13954629956183
+                    13.068135190143584,
+                    43.139151926029825
+                ],
+                [
+                    13.068651987920552,
+                    43.13936026404642
                 ],
                 [
                     13.06861530555725,
                     43.13940342507735
                 ],
                 [
-                    13.06863480737495,
-                    43.139375323590315
+                    13.068491923942565,
+                    43.13954629956183
                 ],
                 [
-                    13.068259912862777,
-                    43.13922336360767
+                    13.068963377979273,
+                    43.139760610662535
                 ],
                 [
-                    13.06806411160469,
-                    43.13953357787469
-                ]
-            ],
-            "attributes": {
-                "temperature": "13",
-                "humidity": "70",
-                "lights": "on"
-            }
-        },
-        {
-            "id": "place18",
-            "name": "Parking 2",
-            "centroid": [
-                13.068070585476775,
-                43.13942046885077
-            ],
-            "boundaries": [
+                    13.069003116127497,
+                    43.13976434766818
+                ],
                 [
-                    13.06806411160469,
-                    43.13953357787469
+                    13.06906964779499,
+                    43.13979977253226
+                ],
+                [
+                    13.068989436927854,
+                    43.139882704976316
                 ],
                 [
                     13.067934024467466,
@@ -544,56 +498,9 @@
                 [
                     13.068072158231741,
                     43.1391949843059
-                ],
-                [
-                    13.068135190143584,
-                    43.139151926029825
-                ],
-                [
-                    13.068259912862777,
-                    43.13922336360767
                 ]
             ],
-            "attributes": {
-                "temperature": "13",
-                "humidity": "72",
-                "lights": "on"
-            }
-        },
-        {
-            "id": "place19",
-            "name": "Parking 3",
-            "centroid": [
-                13.068663897498467,
-                43.1396858906908
-            ],
-            "boundaries": [
-                [
-                    13.06906530192184,
-                    43.13980366851004
-                ],
-                [
-                    13.068994223382946,
-                    43.13988293401346
-                ],
-                [
-                    13.06842084540367,
-                    43.13966764475222
-                ],
-                [
-                    13.068491923942565,
-                    43.13954629956183
-                ],
-                [
-                    13.068963377979273,
-                    43.139760610662535
-                ]
-            ],
-            "attributes": {
-                "temperature": "12",
-                "humidity": "75",
-                "lights": "on"
-            }
+            "attributes": {}
         }
     ],
     "edges": [
@@ -602,414 +509,318 @@
             "name": "Edge 1",
             "source": "place1",
             "target": "place2",
-            "attributes": {
-                "weight": 1
-            }
+            "attributes": {}
         },
         {
             "id": "edge2",
             "name": "Edge 2",
             "source": "place2",
             "target": "place3",
-            "attributes": {
-                "weight": 1
-            }
+            "attributes": {}
         },
         {
             "id": "edge3",
             "name": "Edge 3",
             "source": "place3",
-            "target": "place4",
-            "attributes": {
-                "weight": 1
-            }
+            "target": "place5",
+            "attributes": {}
         },
         {
             "id": "edge4",
             "name": "Edge 4",
             "source": "place4",
             "target": "place5",
-            "attributes": {
-                "weight": 1
-            }
+            "attributes": {}
         },
         {
             "id": "edge5",
             "name": "Edge 5",
             "source": "place5",
             "target": "place6",
-            "attributes": {
-                "weight": 1
-            }
+            "attributes": {}
         },
         {
             "id": "edge6",
             "name": "Edge 6",
             "source": "place8",
-            "target": "place7",
-            "attributes": {
-                "weight": 1
-            }
+            "target": "place1",
+            "attributes": {}
         },
         {
             "id": "edge7",
             "name": "Edge 7",
             "source": "place6",
-            "target": "place7",
-            "attributes": {
-                "weight": 1
-            }
+            "target": "place3",
+            "attributes": {}
         },
         {
             "id": "edge8",
             "name": "Edge 8",
             "source": "place2",
             "target": "place7",
-            "attributes": {
-                "weight": 1
-            }
+            "attributes": {}
         },
         {
             "id": "edge9",
             "name": "Edge 9",
-            "source": "place18",
-            "target": "place5",
-            "attributes": {
-                "weight": 2
-            }
+            "source": "place17",
+            "target": "place4",
+            "attributes": {}
         },
         {
             "id": "edge10",
             "name": "Edge 10",
             "source": "place9",
             "target": "place10",
-            "attributes": {
-                "weight": 1
-            }
+            "attributes": {}
         },
         {
             "id": "edge11",
             "name": "Edge 11",
             "source": "place10",
             "target": "place11",
-            "attributes": {
-                "weight": 1
-            }
+            "attributes": {}
         },
         {
             "id": "edge12",
             "name": "Edge 12",
             "source": "place11",
             "target": "place12",
-            "attributes": {
-                "weight": 1
-            }
+            "attributes": {}
         },
         {
             "id": "edge13",
             "name": "Edge 13",
-            "source": "place12",
-            "target": "place13",
-            "attributes": {
-                "weight": 1
-            }
+            "source": "place11",
+            "target": "place14",
+            "attributes": {}
         },
         {
             "id": "edge14",
             "name": "Edge 14",
             "source": "place13",
             "target": "place14",
-            "attributes": {
-                "weight": 1
-            }
+            "attributes": {}
         },
         {
             "id": "edge15",
             "name": "Edge 15",
             "source": "place14",
             "target": "place15",
-            "attributes": {
-                "weight": 1
-            }
+            "attributes": {}
         },
         {
             "id": "edge16",
             "name": "Edge 16",
             "source": "place15",
             "target": "place16",
-            "attributes": {
-                "weight": 1
-            }
+            "attributes": {}
         },
         {
             "id": "edge17",
             "name": "Edge 17",
-            "source": "place15",
-            "target": "place19",
-            "attributes": {
-                "weight": 2
-            }
+            "source": "place9",
+            "target": "place15",
+            "attributes": {}
         },
         {
             "id": "edge18",
             "name": "Edge 18",
-            "source": "place17",
-            "target": "place18",
-            "attributes": {
-                "weight": 2
-            }
+            "source": "place15",
+            "target": "place9",
+            "attributes": {}
         },
         {
             "id": "edge19",
             "name": "Edge 19",
-            "source": "place17",
-            "target": "place19",
-            "attributes": {
-                "weight": 2
-            }
+            "source": "place11",
+            "target": "place15",
+            "attributes": {}
         },
         {
             "id": "edge20",
             "name": "Edge 20",
             "source": "place10",
             "target": "place15",
-            "attributes": {
-                "weight": 1
-            }
+            "attributes": {}
         },
         {
             "id": "edge21",
             "name": "Edge 21",
             "source": "place2",
             "target": "place1",
-            "attributes": {
-                "weight": 1
-            }
+            "attributes": {}
         },
         {
             "id": "edge22",
             "name": "Edge 22",
             "source": "place3",
             "target": "place2",
-            "attributes": {
-                "weight": 1
-            }
+            "attributes": {}
         },
         {
             "id": "edge23",
             "name": "Edge 23",
-            "source": "place4",
+            "source": "place5",
             "target": "place3",
-            "attributes": {
-                "weight": 1
-            }
+            "attributes": {}
         },
         {
             "id": "edge24",
             "name": "Edge 24",
             "source": "place5",
             "target": "place4",
-            "attributes": {
-                "weight": 1
-            }
+            "attributes": {}
         },
         {
             "id": "edge25",
             "name": "Edge 25",
             "source": "place6",
             "target": "place5",
-            "attributes": {
-                "weight": 1
-            }
+            "attributes": {}
         },
         {
             "id": "edge26",
             "name": "Edge 26",
-            "source": "place7",
+            "source": "place1",
             "target": "place8",
-            "attributes": {
-                "weight": 1
-            }
+            "attributes": {}
         },
         {
             "id": "edge27",
             "name": "Edge 27",
-            "source": "place7",
+            "source": "place3",
             "target": "place6",
-            "attributes": {
-                "weight": 1
-            }
+            "attributes": {}
         },
         {
             "id": "edge28",
             "name": "Edge 28",
             "source": "place7",
             "target": "place2",
-            "attributes": {
-                "weight": 1
-            }
+            "attributes": {}
         },
         {
             "id": "edge29",
             "name": "Edge 29",
-            "source": "place5",
-            "target": "place18",
-            "attributes": {
-                "weight": 2
-            }
+            "source": "place4",
+            "target": "place17",
+            "attributes": {}
         },
         {
             "id": "edge30",
             "name": "Edge 30",
             "source": "place10",
             "target": "place9",
-            "attributes": {
-                "weight": 1
-            }
+            "attributes": {}
         },
         {
             "id": "edge31",
             "name": "Edge 31",
             "source": "place11",
             "target": "place10",
-            "attributes": {
-                "weight": 1
-            }
+            "attributes": {}
         },
         {
             "id": "edge32",
             "name": "Edge 32",
             "source": "place12",
             "target": "place11",
-            "attributes": {
-                "weight": 1
-            }
+            "attributes": {}
         },
         {
             "id": "edge33",
             "name": "Edge 33",
-            "source": "place13",
-            "target": "place12",
-            "attributes": {
-                "weight": 1
-            }
+            "source": "place14",
+            "target": "place11",
+            "attributes": {}
         },
         {
             "id": "edge34",
             "name": "Edge 34",
             "source": "place14",
             "target": "place13",
-            "attributes": {
-                "weight": 1
-            }
+            "attributes": {}
         },
         {
             "id": "edge35",
             "name": "Edge 35",
             "source": "place15",
             "target": "place14",
-            "attributes": {
-                "weight": 1
-            }
+            "attributes": {}
         },
         {
             "id": "edge36",
             "name": "Edge 36",
             "source": "place16",
             "target": "place15",
-            "attributes": {
-                "weight": 1
-            }
+            "attributes": {}
         },
         {
             "id": "edge37",
             "name": "Edge 37",
-            "source": "place19",
-            "target": "place15",
-            "attributes": {
-                "weight": 2
-            }
+            "source": "place17",
+            "target": "place9",
+            "attributes": {}
         },
         {
             "id": "edge38",
             "name": "Edge 38",
-            "source": "place18",
+            "source": "place9",
             "target": "place17",
-            "attributes": {
-                "weight": 2
-            }
+            "attributes": {}
         },
         {
             "id": "edge39",
             "name": "Edge 39",
-            "source": "place19",
-            "target": "place17",
-            "attributes": {
-                "weight": 2
-            }
+            "source": "place15",
+            "target": "place11",
+            "attributes": {}
         },
         {
             "id": "edge40",
             "name": "Edge 40",
             "source": "place15",
             "target": "place10",
-            "attributes": {
-                "weight": 1
-            }
+            "attributes": {}
         }
     ],
     "sets": [
         {
             "id": "set1",
             "name": "Building A",
-            "centroid": [
-                13.068820336449491,
-                43.13958235468772
-            ],
-            "place": "place13",
-            "places": [
-                "place9",
-                "place10",
-                "place11",
-                "place12",
-                "place13",
-                "place14",
-                "place15",
-                "place16"
-            ]
+            "expression": "zone === 'A'",
+            "place": "place13"
         },
         {
             "id": "set2",
             "name": "Building B",
-            "centroid": [
-                13.067817685536893,
-                43.139164091666345
-            ],
-            "place": "place5",
-            "places": [
-                "place1",
-                "place2",
-                "place3",
-                "place4",
-                "place5",
-                "place6",
-                "place7",
-                "place8"
-            ]
+            "expression": "zone === 'B'",
+            "place": "place5"
         },
         {
             "id": "set3",
-            "name": "Parking",
-            "centroid": [
-                13.068323730701053,
-                43.13943284630676
-            ],
-            "place": "place19",
-            "places": [
-                "place17",
-                "place18",
-                "place19"
-            ]
+            "name": "Available Study Rooms",
+            "expression": "purpose === 'studying' && freeSeats > 0",
+            "place": "place6"
+        },
+        {
+            "id": "set4",
+            "name": "Available Classrooms",
+            "expression": "purpose === 'teaching' && freeSeats > 30",
+            "place": "place4"
+        },
+        {
+            "id": "set5",
+            "name": "PhD Office",
+            "expression": "purpose === 'phd'",
+            "place": "place2"
+        },
+        {
+            "id": "set6",
+            "name": "Tutor Office",
+            "expression": "purpose === 'tutor'",
+            "place": "place13"
         }
     ],
     "views": [
@@ -1020,12 +831,27 @@
                 "set1",
                 "set2"
             ],
+            "attributes": {}
+        },
+        {
+            "id": "view2",
+            "name": "Available Rooms",
+            "sets": [
+                "set3",
+                "set4"
+            ],
             "attributes": {
-                "temperature": "AVG",
-                "humidity": "AVG",
-                "lights": "SOME",
-                "available": "COUNT"
+                "freeSeats": "SUM"
             }
+        },
+        {
+            "id": "view3",
+            "name": "Offices",
+            "sets": [
+                "set5",
+                "set6"
+            ],
+            "attributes": {}
         }
     ]
 }
