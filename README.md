@@ -38,7 +38,7 @@ Environment-aware BPMN Animator embeds an animator capable of representing step-
   
 The **data panel** in the right side of the Environment-aware BPMN Animator interface allows users to keep track of the environment evolution throughout the animation. At any time, the animation can be paused by the user to check the distribution of the tokens in the environment and in the BPMN collaboration.
 
-The animation terminates once all tokens cannot move forward. In the case of deadlocks or potential deadlock situations, Environment-aware BPMN Animator will highlight the cause using either <span style="color:yellow;">yellow</span> or <span style="color:red;">red</span> color.
+The animation terminates once all tokens cannot move forward. In the case of deadlocks or potential deadlock situations, Environment-aware BPMN Animator will highlight the cause using either <span style="color:#FFDE21;">yellow</span> or <span style="color:red;">red</span> color.
 
 Environment-aware BPMN Animator makes it possible to upload an environment-aware BPMN collaboration model by clicking on the ***Open*** button. 
 When uploading a model, a `.zip` file containing the `.bpmn` file and the space `.json` file will have to be provided by the user.
@@ -48,12 +48,15 @@ Each case study is available in a fully functional variant and others with inten
 ### University Compound
 This case study illustrates a scenario where a student seeks guidance from their tutor. The collaboration involves a `Student` and a `Tutor` and it takes place in a university compound.
 - `student.zip` <span style="color:green;">(happy path)</span>
-- `student_unreachable.zip`  <span style="color:red;">(unreachable destination)</span>
+- `student_different.zip`  <span style="color:#FFDE21;">(different positions)</span>
+- `student_unreachable.zip`  <span style="color:#FFDE21;">(unreachable destination)</span>
+- `student_discordant.zip`  <span style="color:red;">(discordant movements)</span>
 
 ### Hospital
 This case study demonstrates a situation where an injured patient requires medical assistance. The collaboration involves an `Injured Patient`, `Emergency Nurse`, `Emergency Doctor` and `Ambulance`. It takes place in a hospital and its sorroundings.
 - `ambulance.zip` <span style="color:green;">(happy path)</span>
-- `ambulance_guard.zip` <span style="color:red;">(violated guard)</span>
+- `ambulance_guard.zip` <span style="color:#FFDE21;">(violated guard)</span>
+- `ambulance_missing.zip` <span style="color:red;">(missing position)</span>
 
 ## Modeling environment-aware BPMN collaborations
 ### Environment Modeling

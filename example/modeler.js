@@ -13,10 +13,10 @@ import fileDrop from 'file-drops';
 import fileOpen from 'file-open';
 import download from 'downloadjs';
 import Zip from 'jszip';
-import bearBPMN from '../example/resources/ambulance.bpmn';
-import spaceModel from '../example/resources/ambulance.json';
-// import bearBPMN from '../example/resources/Student.bpmn';
-// import spaceModel from '../example/resources/student.json';
+// import bearBPMN from '../example/resources/ambulance.bpmn';
+// import spaceModel from '../example/resources/ambulance.json';
+import bearBPMN from '../example/resources/Student.bpmn';
+import spaceModel from '../example/resources/student.json';
 import emptyBPMN from '../example/resources/newDiagram.bpmn';
 import OlcModeler from './lib/olcmodeler/OlcModeler';
 import Mediator from './lib/mediator/Mediator';
@@ -1084,7 +1084,7 @@ function animateToken(tokenFeature, start, end, duration, destination) {
             paused = true;
             pauseStartTime = Date.now();
         })
-        
+
         document.addEventListener('play_sim', (event) => {
             // TODO: resume animation by listening to the movement_start event for each participant
             paused = false;
@@ -1116,7 +1116,6 @@ async function moveToken(movement) {
         setTimeout(() => {
             document.dispatchEvent(new CustomEvent('movement_stop_' + participant.id, { detail: { cause: "destinationUnreachable" } }));
         }, 1000);
-        // TODO: alert the user that the destination is unreachable
         return;
     }
 
@@ -1124,6 +1123,14 @@ async function moveToken(movement) {
         setTimeout(() => {
             document.dispatchEvent(new CustomEvent('movement_stop_' + participant.id, { detail: { cause: "destinationReached" } }));
         }, 1000);
+        let bindKey
+        for (const [key, participants] of Object.entries(binds)) {
+            if (participants.some(participant => participant.id === participant.id)) {
+                bindKey = key;
+            }
+        }
+        if (bindKey)
+            movingBinds[bindKey] = false;
         return;
     }
 
@@ -1165,6 +1172,7 @@ async function moveToken(movement) {
     moveToken(movement);
 }
 
+let movingBinds = {}
 document.addEventListener('movement_start', (event) => {
     let bindKey
     for (const [key, participants] of Object.entries(binds)) {
@@ -1178,6 +1186,15 @@ document.addEventListener('movement_start', (event) => {
     if (bindKey) {
         ps = ps.concat(binds[bindKey].map(p => ({ participant: p, destination: destination })));
     }
+
+    if (movingBinds[bindKey]) {
+        ps.forEach(p => {
+            setTimeout(() => {
+                document.dispatchEvent(new CustomEvent('movement_stop_' + p.participant.id, { detail: { cause: "discordantMovements" } }));
+            }, 1000);
+        })
+        return;
+    } else movingBinds[bindKey] = true;
 
     ps
         .filter((value, index, self) =>
@@ -1254,7 +1271,7 @@ function placeToken(participant) {
 
 document.addEventListener('process_start', (event) => {
     const participant = event.detail.participant;
-    
+
     if (!participants.some(p => p.id === participant.id))
         participants.push(participant);
     // participants.push(participant);
