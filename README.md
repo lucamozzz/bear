@@ -17,7 +17,7 @@ The .zip files can be uploaded in the tool by clicking on the (top-right) Open b
 ([Technical_report.pdf](https://anonymous.4open.science/api/repo/qprtwz-F332/file/Technical_report.pdf))
 <span style="color:red;font-weight:800;"> provides an in-depth explanation of the core concepts and details of Environment-aware BPMN Collaborations.</span>
 
-![Environment-aware BPMN Animator GUI](./images/ui.png)
+![Environment-aware BPMN Animator GUI](./images/ui2.png)
 
 ## Table of Contents
 - [Environment-aware BPMN Animator](#environment-aware-bpmn-animator)

@@ -791,11 +791,20 @@ function initMap(spaceModel) {
             'circle-fill-color': '#ffcc33',
         },
     });
+    let Esri_WorldImagery = new TileLayer({
+        source: new OSM({
+            url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+            attributions: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+        }),
+    });
+
+    // map.addLayer(Esri_WorldImagery);
 
     useGeographic();
 
     map = new Map({
         layers: [raster, vector],
+        // layers: [Esri_WorldImagery, vector],
         target: 'map',
         view: new View({
             center: spaceModel.map.center,
