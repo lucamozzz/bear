@@ -6,21 +6,25 @@ Participants can interact with and modify the environment, which in turn may inf
 Indeed, there exists a bidirectional relationship between business processes and the environment, which involves the necessity of representing the environment in a way that allows business processes to benefit from its awareness.
 Despite extensive research on environment modeling, the seamless integration of business processes and the environment model is not fully explored yet.
 To address this gap, we propose a tool for animating environment-aware BPMN collaborations with the aid of geographical maps (see figure below). 
+In this repository, you can find the <span style="color:red;font-weight:900;">case studies</span> folder and a the detailed <span style="color:red;font-weight:900;">technical report</span>. The <span style="color:red;font-weight:900;">case studies</span> folder contains `.zip` files for various scenarios, including both functional and intentionally erroneous models, to demonstrate the tool's capabilities. The <span style="color:red;font-weight:900;">technical report</span> provides an in-depth explanation of the concepts, architecture, and implementation details of Environment-aware BPMN Collaborations.
 
 ![Environment-aware BPMN Animator GUI](./images/ui.png)
 <!-- <img src="./images/ui.png" alt="Environment-aware BPMN Animator GUI" width="800"> -->
 
 ## Table of Contents
-- [Installation](#installation)
-    - [Manual installation](#manual-installation)
-    - [Docker installation](#docker-installation)
-- [Animating and Debugging environment-aware BPMN collaborations](#animating-and-debugging-environment-aware-bpmn-collaborations)
-    - [Student-Tutor Collaboration](#student-tutor-collaboration)
-    - [Emergency Response Scenario](#emergency-response-scenario)
-- [Modeling environment-aware BPMN collaborations](#modeling-environment-aware-bpmn-collaborations)
-    - [Environment Modeling](#environment-modeling)
-    - [BPMN Collaborations modeling](#bpmn-collaborations-modeling)
-- [License](#license)
+- [Environment-aware BPMN Animator](#environment-aware-bpmn-animator)
+    - [Table of Contents](#table-of-contents)
+    - [Installation](#installation)
+        - [Manual installation](#manual-installation)
+        - [Docker installation](#docker-installation)
+    - [Animating and Debugging environment-aware BPMN collaborations](#animating-and-debugging-environment-aware-bpmn-collaborations)
+        - [Case studies](#case-studies)
+            - [University Compound](#university-compound)
+            - [Hospital](#hospital)
+    - [Modeling environment-aware BPMN collaborations](#modeling-environment-aware-bpmn-collaborations)
+        - [Environment Modeling](#environment-modeling)
+        - [BPMN Collaboration Modeling](#bpmn-collaboration-modeling)
+    - [License](#license)
 
 ## Installation
 ### Manual installation
