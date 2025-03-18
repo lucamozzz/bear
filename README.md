@@ -42,17 +42,20 @@ The animation terminates once all tokens cannot move forward. In the case of dea
 
 Environment-aware BPMN Animator makes it possible to upload an environment-aware BPMN collaboration model by clicking on the ***Open*** button. 
 When uploading a model, a `.zip` file containing the `.bpmn` file and the space `.json` file will have to be provided by the user.
-You can find `.zip` files of test case studies in the `case studies` of this repository. 
+
+### Case studies
+
+You can find `.zip` files of test case studies in the `case studies` folder of this repository. 
 Each case study is available in a fully functional variant and others with intentional modeling errors to showcase the tool’s capabilities:
 
-### University Compound
+#### University Compound
 This case study illustrates a scenario where a student seeks guidance from their tutor. The collaboration involves a `Student` and a `Tutor` and it takes place in a university compound.
 - `student.zip` <span style="color:green;">(happy path)</span>
 - `student_different.zip`  <span style="color:#FFDE21;">(different positions)</span>
 - `student_unreachable.zip`  <span style="color:#FFDE21;">(unreachable destination)</span>
 - `student_discordant.zip`  <span style="color:red;">(discordant movements)</span>
 
-### Hospital
+#### Hospital
 This case study demonstrates a situation where an injured patient requires medical assistance. The collaboration involves an `Injured Patient`, `Emergency Nurse`, `Emergency Doctor` and `Ambulance`. It takes place in a hospital and its sorroundings.
 - `ambulance.zip` <span style="color:green;">(happy path)</span>
 - `ambulance_guard.zip` <span style="color:#FFDE21;">(violated guard)</span>
