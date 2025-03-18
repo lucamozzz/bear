@@ -5,11 +5,13 @@ Depending on the business scenario, process participants operate in a specific e
 Participants can interact with and modify the environment, which in turn may influence process execution.
 Indeed, there exists a bidirectional relationship between business processes and the environment, which involves the necessity of representing the environment in a way that allows business processes to benefit from its awareness.
 Despite extensive research on environment modeling, the seamless integration of business processes and the environment model is not fully explored yet.
-To address this gap, we propose a tool for animating environment-aware BPMN collaborations with the aid of geographical maps (see figure below). 
-In this repository, you can find the <span style="color:red;font-weight:900;">case studies</span> folder and a the detailed <span style="color:red;font-weight:900;">technical report</span>. The <span style="color:red;font-weight:900;">case studies</span> folder contains `.zip` files for various scenarios, including both functional and intentionally erroneous models, to demonstrate the tool's capabilities. The <span style="color:red;font-weight:900;">technical report</span> provides an in-depth explanation of the concepts, architecture, and implementation details of Environment-aware BPMN Collaborations.
+To address this gap, we propose a tool for animating environment-aware BPMN collaborations with the aid of geographical maps (see figure below).
+
+In this repository, beyond the tool's source code, you can find a <span style="color:red;font-weight:900;">case studies</span> folder and a detailed <span style="color:red;font-weight:900;">technical report</span>. The <span style="color:red;font-weight:900;">case studies</span> folder contains `.zip` files for various scenarios, including both functional and intentionally erroneous models, to demonstrate the tool's capabilities.
+The .zip files can be uploaded in the tool by clicking on the ***Open*** button. 
+The <span style="color:red;font-weight:900;">technical report</span> provides an in-depth explanation of the concepts, architecture, and implementation details of Environment-aware BPMN Collaborations.
 
 ![Environment-aware BPMN Animator GUI](./images/ui.png)
-<!-- <img src="./images/ui.png" alt="Environment-aware BPMN Animator GUI" width="800"> -->
 
 ## Table of Contents
 - [Environment-aware BPMN Animator](#environment-aware-bpmn-animator)
@@ -17,10 +19,10 @@ In this repository, you can find the <span style="color:red;font-weight:900;">ca
     - [Installation](#installation)
         - [Manual installation](#manual-installation)
         - [Docker installation](#docker-installation)
+    - [Case studies](#case-studies)
+        - [University Compound](#university-compound)
+        - [Hospital](#hospital)
     - [Animating and Debugging environment-aware BPMN collaborations](#animating-and-debugging-environment-aware-bpmn-collaborations)
-        - [Case studies](#case-studies)
-            - [University Compound](#university-compound)
-            - [Hospital](#hospital)
     - [Modeling environment-aware BPMN collaborations](#modeling-environment-aware-bpmn-collaborations)
         - [Environment Modeling](#environment-modeling)
         - [BPMN Collaboration Modeling](#bpmn-collaboration-modeling)
@@ -37,34 +39,23 @@ To install Environment-aware BPMN Animator, follow these steps:
 1. Run `docker build -t envbpmnanimator .` to build the Docker image.
 2. Run `docker run -p 8080:8080 envbpmnanimator` to start a [local instance](http://localhost:8080).
 
-## Animating and Debugging environment-aware BPMN collaborations
-
-Environment-aware BPMN Animator embeds an animator capable of representing step-by-step the environment-aware BPMN collaboration execution. By selecting the Token Simulation button top-left corner, a play button will appear over each fireable start event. Once this button is clicked, one process is activated. This creates a new token in the form of a small colored circle at the start event of the BPMN collaboration and another token in place of the environment model corresponding to the set position of the pool, which starts to cross the two models.
-  
-The **data panel** in the right side of the Environment-aware BPMN Animator interface allows users to keep track of the environment evolution throughout the animation. At any time, the animation can be paused by the user to check the distribution of the tokens in the environment and in the BPMN collaboration.
-
-The animation terminates once all tokens cannot move forward. In the case of deadlocks or potential deadlock situations, Environment-aware BPMN Animator will highlight the cause using either <span style="color:#FFDE21;">yellow</span> or <span style="color:red;">red</span> color.
-
+## Case studies
 Environment-aware BPMN Animator makes it possible to upload an environment-aware BPMN collaboration model by clicking on the ***Open*** button. 
 When uploading a model, a `.zip` file containing the `.bpmn` file and the space `.json` file will have to be provided by the user.
 You can find `.zip` files of case studies in the `case studies` folder of this repository. 
 Each case study is available in a fully functional variant and others with intentional modeling errors to showcase the tool’s capabilities.
 
-### Case studies
-#### University Compound
+### University Compound
 This case study illustrates a scenario where a student seeks guidance from their tutor. The collaboration involves a `Student` and a `Tutor` and it takes place in a university compound.
 - `student.zip` <span style="color:green;">(happy path)</span>
 - `student_different.zip`  <span style="color:#FFDE21;">(different positions)</span>
 - `student_unreachable.zip`  <span style="color:#FFDE21;">(unreachable destination)</span>
 - `student_discordant.zip`  <span style="color:red;">(discordant movements)</span>
 
-<!-- <img src="./images/student_col.png" alt="Student BPMN Collaboration" width="550">
-<img src="./images/student_env.png" alt="Student Environment" width="550"> -->
-
 ![Student BPMN Collaboration](./images/student_col.png)
 ![Student Environment](./images/student_env.png)
 
-#### Hospital
+### Hospital
 This case study demonstrates a situation where an injured patient requires medical assistance. The collaboration involves an `Injured Patient`, `Emergency Nurse`, `Emergency Doctor` and `Ambulance`. It takes place in a hospital and its sorroundings.
 - `ambulance.zip` <span style="color:green;">(happy path)</span>
 - `ambulance_guard.zip` <span style="color:#FFDE21;">(violated guard)</span>
@@ -72,8 +63,14 @@ This case study demonstrates a situation where an injured patient requires medic
 
 ![Student BPMN Collaboration](./images/ambulance_col.png)
 ![Student Environment](./images/ambulance_env.png)
-<!-- <img src="./images/ambulance_col.png" alt="Ambulance BPMN Collaboration" width="550"> -->
-<!-- <img src="./images/ambulance_env.png" alt="Ambulance Environment" width="550"> -->
+
+## Animating and Debugging environment-aware BPMN collaborations
+
+Environment-aware BPMN Animator embeds an animator capable of representing step-by-step the environment-aware BPMN collaboration execution. By selecting the Token Simulation button top-left corner, a play button will appear over each fireable start event. Once this button is clicked, one process is activated. This creates a new token in the form of a small colored circle at the start event of the BPMN collaboration and another token in place of the environment model corresponding to the set position of the pool, which starts to cross the two models.
+  
+The **data panel** in the right side of the Environment-aware BPMN Animator interface allows users to keep track of the environment evolution throughout the animation. At any time, the animation can be paused by the user to check the distribution of the tokens in the environment and in the BPMN collaboration.
+
+The animation terminates once all tokens cannot move forward. In the case of deadlocks or potential deadlock situations, Environment-aware BPMN Animator will highlight the cause using either <span style="color:#FFDE21;">yellow</span> or <span style="color:red;">red</span> color.
 
 ## Modeling environment-aware BPMN collaborations
 ### Environment Modeling
