@@ -7,7 +7,8 @@ Indeed, there exists a bidirectional relationship between business processes and
 Despite extensive research on environment modeling, the seamless integration of business processes and the environment model is not fully explored yet.
 To address this gap, we propose a tool for animating environment-aware BPMN collaborations with the aid of geographical maps (see figure below). 
 
-![Environment-aware BPMN Animator GUI](./ui-1.png)
+<!-- ![Environment-aware BPMN Animator GUI](./images/ui.png) -->
+<img src="./images/ui.png" alt="Environment-aware BPMN Animator GUI" width="800">
 
 ## Table of Contents
 - [Installation](#installation)
@@ -55,11 +56,22 @@ This case study illustrates a scenario where a student seeks guidance from their
 - `student_unreachable.zip`  <span style="color:#FFDE21;">(unreachable destination)</span>
 - `student_discordant.zip`  <span style="color:red;">(discordant movements)</span>
 
+<img src="./images/student_col.png" alt="Student BPMN Collaboration" width="550">
+<img src="./images/student_env.png" alt="Student Environment" width="550">
+
+<!-- ![Student BPMN Collaboration](./images/student_col.png)
+![Student Environment](./images/student_env.png) -->
+
 #### Hospital
 This case study demonstrates a situation where an injured patient requires medical assistance. The collaboration involves an `Injured Patient`, `Emergency Nurse`, `Emergency Doctor` and `Ambulance`. It takes place in a hospital and its sorroundings.
 - `ambulance.zip` <span style="color:green;">(happy path)</span>
 - `ambulance_guard.zip` <span style="color:#FFDE21;">(violated guard)</span>
 - `ambulance_missing.zip` <span style="color:red;">(missing position)</span>
+
+<!-- ![Student BPMN Collaboration](./images/ambulance_col.png)
+![Student Environment](./images/ambulance_env.png) -->
+<img src="./images/ambulance_col.png" alt="Ambulance BPMN Collaboration" width="550">
+<img src="./images/ambulance_env.png" alt="Ambulance Environment" width="550">
 
 ## Modeling environment-aware BPMN collaborations
 ### Environment Modeling
@@ -134,7 +146,7 @@ The model attains to the following structure:
 }
 ```
 
-### BPMN Collaboration modeling
+### BPMN Collaboration Modeling
 
 Environment-aware BPMN Animator embeds a user-friendly modeler (on the left) used to design the BPMN collaboration processes.
 For each element, it is possible to define additional properties using the **element palette**. One or more **environmental attributes** can be set for a place in the environmental model by using the associated property panel. In order to define an environmental attribute, it is necessary to define its name and its initial value. Environmental attributes can be referenced by other elements in the models by using the following notation: `place_name.attribute_name`.
