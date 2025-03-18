@@ -9,10 +9,13 @@ To address this gap, we propose a tool for animating environment-aware BPMN coll
 
 <span style="color:red;font-weight:800;">
 NOTE FOR REVIEWERS: in this repository, beyond the tool's source code, you can find a case studies folder.
-The case studies folder contains .zip files for various scenarios, including both functional and intentionally erroneous models, to demonstrate the tool's capabilities.
+To demonstrate the tool's capabilities, the case studies folder contains .zip files for both functional and intentionally erroneous models. 
 The .zip files can be uploaded in the tool by clicking on the (top-right) Open button.
-In addition, a detailed technical report (Technical_report.pdf) provides an in-depth explanation of the core concepts and details of Environment-aware BPMN Collaborations.
 </span>
+
+<span style="color:red;font-weight:800;"> In addition, a detailed technical report </span>
+([Technical_report.pdf](https://anonymous.4open.science/api/repo/qprtwz-F332/file/Technical_report.pdf))
+<span style="color:red;font-weight:800;"> provides an in-depth explanation of the core concepts and details of Environment-aware BPMN Collaborations.</span>
 
 ![Environment-aware BPMN Animator GUI](./images/ui.png)
 

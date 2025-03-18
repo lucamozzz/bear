@@ -254,7 +254,8 @@ function createViews(spaceModel) {
         })
     })
 
-    delete spaceModel.map;
+    if (spaceModel.map)
+        delete spaceModel.map;
     delete spaceModel.views;
     delete spaceModel.sets;
     return spaceModel;
