@@ -8,7 +8,7 @@ Despite extensive research on environment modeling, the seamless integration of 
 To address this gap, we propose a tool for animating environment-aware BPMN collaborations with the aid of geographical maps (see figure below).
 
 <span style="color:red;font-weight:750;">
-In this repository, beyond the tool's source code, you can find a case studies folder containing .zip files for various scenario. 
+In this repository, beyond the tool's source code, you can find a case studies folder. 
 The case studies folder contains .zip files for various scenarios, including both functional and intentionally erroneous models, to demonstrate the tool's capabilities.
 The .zip files can be uploaded in the tool by clicking on the (top-right) Open button.</span>
 
