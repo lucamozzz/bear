@@ -14,7 +14,7 @@ The .zip files can be uploaded in the tool by clicking on the (top-right) Open b
 </span>
 
 <span style="color:red;font-weight:800;"> In addition, a detailed technical report </span>
-([Technical_report.pdf](https://anonymous.4open.science/api/repo/qprtwz-F332/file/Technical_report.pdf))
+([Technical_report.pdf](https://anonymous.4open.science/api/repo/qprtwz-F332/file/Technical_report.pdf?v=5165769c))
 <span style="color:red;font-weight:800;"> provides an in-depth explanation of the core concepts and details of Environment-aware BPMN Collaborations.</span>
 
 ![Environment-aware BPMN Animator GUI](./images/ui2.png)
@@ -77,6 +77,8 @@ Environment-aware BPMN Animator embeds an animator capable of representing step-
 The **data panel** in the right side of the Environment-aware BPMN Animator interface allows users to keep track of the environment evolution throughout the animation. At any time, the animation can be paused by the user to check the distribution of the tokens in the environment and in the BPMN collaboration.
 
 The animation terminates once all tokens cannot move forward. In the case of deadlocks or potential deadlock situations, Environment-aware BPMN Animator will highlight the cause using either <span style="color:#FFDE21;">yellow</span> or <span style="color:red;">red</span> color.
+
+![Error message](./images/messages.png)
 
 ## Modeling environment-aware BPMN collaborations
 ### Environment Modeling
