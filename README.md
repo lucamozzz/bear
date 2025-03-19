@@ -7,10 +7,11 @@ Indeed, there exists a bidirectional relationship between business processes and
 Despite extensive research on environment modeling, the seamless integration of business processes and the environment model is not fully explored yet.
 To address this gap, we propose a tool for animating environment-aware BPMN collaborations with the aid of geographical maps (see figure below).
 
-<span style="color:red;font-weight:750;"> NOTE FOR REVIEWERS: in this repository, beyond the tool's source code, you can find a *case studies* folder.
-To demonstrate the tool's capabilities, the case studies folder contains .zip files for both functional and intentionally erroneous models. 
-The .zip files can be uploaded in the tool by clicking on the (top-right) Open button.
-In addition, a detailed technical report (*Technical_report.pdf*) provides an in-depth explanation of the core concepts and details of Environment-aware BPMN Collaborations.</span>
+<span style="color:red;font-weight:750;"> NOTE FOR REVIEWERS: in this repository you can find a tool demonstration video (*tool_demonstration_video.mp4*), a *case studies* folder and a detailed technical report (*Technical_report.pdf*):
+The demonstration video highlights the tool's capabilities.
+The case studies folder contains .zip files for both functional and intentionally erroneous models. The .zip files can be uploaded in the tool by clicking on the (top-right) *Open* button.
+The detailed technical report provides an in-depth explanation of the core concepts and details of Environment-aware BPMN Collaborations.
+</span>
 
 ![Environment-aware BPMN Animator GUI](./images/ui2.png)
 
