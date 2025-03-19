@@ -62,8 +62,8 @@ This case study demonstrates a situation where an injured patient requires medic
 - `ambulance_guard.zip` <span style="color:#FFDE21;">(violated guard)</span>
 - `ambulance_missing.zip` <span style="color:red;">(missing position)</span>
 
-![Student BPMN Collaboration](./images/ambulance_col.png)
-![Student Environment](./images/ambulance_env.png)
+![Hospital BPMN Collaboration](./images/ambulance_col.png)
+![Hospital Environment](./images/ambulance_env.png)
 
 ## Animating and Debugging environment-aware BPMN collaborations
 
