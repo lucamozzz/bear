@@ -13,10 +13,10 @@ import fileDrop from 'file-drops';
 import fileOpen from 'file-open';
 import download from 'downloadjs';
 import Zip from 'jszip';
-import bearBPMN from '../example/resources/ambulance.bpmn';
-import spaceModel from '../example/resources/ambulance.json';
-// import bearBPMN from '../example/resources/Student.bpmn';
-// import spaceModel from '../example/resources/student.json';
+//import bearBPMN from '../example/resources/ambulance.bpmn';
+//import spaceModel from '../example/resources/ambulance.json';
+ import bearBPMN from '../example/resources/Student.bpmn';
+ import spaceModel from '../example/resources/student.json';
 import emptyBPMN from '../example/resources/newDiagram.bpmn';
 import OlcModeler from './lib/olcmodeler/OlcModeler';
 import Mediator from './lib/mediator/Mediator';
@@ -50,6 +50,11 @@ const url = new URL(window.location.href);
 const persistent = url.searchParams.has('p');
 const active = url.searchParams.has('e');
 const presentationMode = url.searchParams.has('pm');
+
+// TODO: Data objects attributes
+// TODO: Gateway conditions
+// TODO: Message exchange
+// TODO: Graph Visualization
 
 let fileName = 'diagram.bpmn';
 
@@ -888,24 +893,24 @@ function initMap(spaceModel) {
 
 initMap(spaceModel);
 
-// const drawInteraction = new Draw({
-//     source: source,
-//     type: 'Polygon'
-// });
+const drawInteraction = new Draw({
+    source: source,
+    type: 'Polygon'
+});
 
-// const snapInteraction = new Snap({
-//     source: source
-// });
+const snapInteraction = new Snap({
+    source: source
+});
 
-// map.addInteraction(drawInteraction);
-// map.addInteraction(snapInteraction);
+map.addInteraction(drawInteraction);
+map.addInteraction(snapInteraction);
 
-// drawInteraction.on('drawend', function (event) {
-//     const feature = event.feature;
-//     const coordinates = feature.getGeometry().getCoordinates()[0];
-//     console.log('Drawn polygon coordinates:', coordinates);
-//     // You can add additional logic here to handle the drawn polygon
-// });
+drawInteraction.on('drawend', function (event) {
+    const feature = event.feature;
+    const coordinates = feature.getGeometry().getCoordinates()[0];
+    console.log('Drawn polygon coordinates:', coordinates);
+    // You can add additional logic here to handle the drawn polygon
+});
 
 function calculateCenter(boundaries) {
     let x = 0;
