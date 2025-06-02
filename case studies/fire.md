@@ -1,0 +1,4 @@
+The collaboration involves five participants: a Sensor, a Fire Control System, a Firefighter, a Rescue Firefighter, and a Person.
+When the Sensor detects a fire, it immediately sends a message with the fire location to the Fire Control System. The Fire Control System activates an alarm and forwards the location of the house and the fire to the Firefighter.
+Upon receiving the information, the Firefighter moves toward the house and uses a dedicated system to check if there is a person in the area affected by the fire. If no one is detected, the Firefighter proceeds to extinguish the fire and notify the fire control system, which deactivates the alarm. If a person is found in the danger zone, the Firefighter alerts a Rescue Firefighter.
+The Rescue Firefighter enters the house, finds the Person, and escorts them to safety by guiding them outside.

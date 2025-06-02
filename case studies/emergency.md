@@ -1,0 +1,3 @@
+The collaboration involves five participants: a Sensor, a Fire Control System, a Fire-fighter robot, a Warehouse responsible
+When the Sensor detects a fire, it immediately sends a message with the fire location to the Fire Control System. The Fire Control System activates an alarm and at the same time forwards the fire location to the  fire-fighter robot and to the warehouse responsible.
+Upon receiving the information, the fire-fighter robot moves toward the warehouse and extinguishes the fire and notifies the fire control system, which deactivates the alarm. At the same time the warehouse responsible move to the electrical panel, turn-off the electricity and then move to a secure area. 

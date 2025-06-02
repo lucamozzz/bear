@@ -1,0 +1,4 @@
+Description: The collaboration involves two participants: a Client and a Car Rental.
+The collaboration begins when the client arrives at the rental location and requests to rent a vehicle. At this point, the client is presented with several options to customize their rental experience, including the choice of fuel type, such as methane, diesel, electric, or gasoline, along with other vehicle preferences.
+Based on the client's selections, the car rental guides the client to the designated parking area, where vehicles are organized according to fuel type. Once in the appropriate section, the client is invited to choose a specific car from the available options.
+After selecting a vehicle, the client is free to use the car for their intended activities. Upon completing the trip, the client returns the car to the rental office and proceeds with the payment process, thus concluding the rental experience.

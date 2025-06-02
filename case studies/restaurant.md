@@ -1,0 +1,3 @@
+Description: The collaboration involves three participants: a Customer, a Waiterand a Chef. 
+The collaboration begins when the client arrives at the restaurant and asks if a table is available. The waiter checks the current table availability and responds accordingly. If a table is available, the client is invited to follow the waiter and is shown to their seat.
+Once seated, the client places its order with the waiter, who then submits it to the chef. After the chef prepares the meal, the waiter serves the food to the client. The client enjoys its meal, and at the end of the dining experience, proceeds to pay the bill before leaving the restaurant.

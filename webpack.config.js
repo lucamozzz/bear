@@ -85,7 +85,10 @@ module.exports = (env, argv) => {
       modules: [
         'node_modules',
         absoluteBasePath
-      ]
+      ],
+      fallback: {
+        "path": require.resolve("path-browserify")
+      }
     },
     // Aggiunge plugin a Webpack
     plugins: [

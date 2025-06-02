@@ -1,0 +1,1 @@
+The collaboration concerns two participants: a Student and a Tutor Buddy. Since the student needs course assistance, they visit the tutor’s office. The tutor buddy guides the student there and provides information before they part ways. The environment is composed of two buildings, Building A and Building B, and a parking lot between them.

@@ -13,12 +13,8 @@ import fileDrop from 'file-drops';
 import fileOpen from 'file-open';
 import download from 'downloadjs';
 import Zip from 'jszip';
-//import bearBPMN from '../example/resources/ambulance.bpmn';
-//import spaceModel from '../example/resources/ambulance.json';
- import bearBPMN from '../example/resources/Student.bpmn';
- import spaceModel from '../example/resources/student.json';
-import emptyBPMN from '../example/resources/newDiagram.bpmn';
-import OlcModeler from './lib/olcmodeler/OlcModeler';
+import bearBPMN from '../example/resources/taxi.bpmn';
+import spaceModel from '../example/resources/taxi.json';
 import Mediator from './lib/mediator/Mediator';
 import BpmnSpaceModeler from './lib/bpmnmodeler/bpmnSpaceModeler';
 import { downloadZIP, uploadZIP } from './lib/util/FileUtil';
@@ -136,6 +132,8 @@ var modeler = new BpmnSpaceModeler({
         parent: '#properties-panel'
     }
 });
+
+const path = require('path');
 
 localStorage.setItem('processStateMap', '{}');
 
@@ -763,6 +761,7 @@ modeler.get('eventBus').on('element.click', function (event) {
 /********/
 
 const participants = [];
+const bindings = [];
 const binds = {};
 
 let raster
@@ -817,7 +816,7 @@ function initMap(spaceModel) {
         }),
     });
 
-    let myExtent = map.getView().calculateExtent(map.getSize());
+    // let myExtent = map.getView().calculateExtent(map.getSize());
     map.setView(
         new View({
             center: spaceModel.map.center,
@@ -825,7 +824,7 @@ function initMap(spaceModel) {
             rotation: spaceModel.map.rotation,
             minZoom: spaceModel.map.zoom,
             maxZoom: spaceModel.map.maxZoom,
-            extent: myExtent,
+            // extent: myExtent,
             constrainOnlyCenter: true,
             smoothExtentConstraint: true,
         })
@@ -902,8 +901,8 @@ const snapInteraction = new Snap({
     source: source
 });
 
-map.addInteraction(drawInteraction);
-map.addInteraction(snapInteraction);
+// map.addInteraction(drawInteraction);
+// map.addInteraction(snapInteraction);
 
 drawInteraction.on('drawend', function (event) {
     const feature = event.feature;
@@ -1138,14 +1137,17 @@ async function moveToken(movement) {
         setTimeout(() => {
             document.dispatchEvent(new CustomEvent('movement_stop_' + participant.id, { detail: { cause: "destinationReached" } }));
         }, 1000);
-        let bindKey
+        let bindKeys = []
         for (const [key, participants] of Object.entries(binds)) {
-            if (participants.some(participant => participant.id === participant.id)) {
-                bindKey = key;
-            }
+            if (participants.some(participant => participant.id === participant.id))
+                bindKeys.push(key);
         }
-        if (bindKey)
-            movingBinds[bindKey] = false;
+
+        if (bindKeys.length > 0) {
+            bindKeys.forEach(bindKey => {
+                movingBinds[bindKey] = false;
+            })
+        }
         return;
     }
 
@@ -1189,27 +1191,31 @@ async function moveToken(movement) {
 
 let movingBinds = {}
 document.addEventListener('movement_start', (event) => {
-    let bindKey
+    let bindKeys = []
     for (const [key, participants] of Object.entries(binds)) {
-        if (participants.some(participant => participant.id === event.detail.participant.id)) {
-            bindKey = key;
-        }
+        if (participants.some(participant => participant.id === event.detail.participant.id))
+            bindKeys.push(key);
     }
 
     let destination = event.detail.destination;
     let ps = [event.detail];
-    if (bindKey) {
-        ps = ps.concat(binds[bindKey].map(p => ({ participant: p, destination: destination })));
+
+    if (bindKeys.length > 0) {
+        bindKeys.forEach(bindKey => {
+            ps = ps.concat(binds[bindKey].map(p => ({ participant: p, destination: destination })));
+        });
     }
 
-    if (movingBinds[bindKey]) {
-        ps.forEach(p => {
-            setTimeout(() => {
-                document.dispatchEvent(new CustomEvent('movement_stop_' + p.participant.id, { detail: { cause: "discordantMovements" } }));
-            }, 1000);
-        })
-        return;
-    } else movingBinds[bindKey] = true;
+    bindKeys.forEach(bindKey => {
+        if (movingBinds[bindKey]) {
+            ps.forEach(p => {
+                setTimeout(() => {
+                    document.dispatchEvent(new CustomEvent('movement_stop_' + p.participant.id, { detail: { cause: "discordantMovements" } }));
+                }, 1000);
+            })
+            return;
+        } else movingBinds[bindKey] = true;
+    });
 
     ps
         .filter((value, index, self) =>

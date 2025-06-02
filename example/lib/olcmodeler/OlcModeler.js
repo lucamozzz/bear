@@ -20,7 +20,7 @@ import EditorActionsModule from '../common/editor-actions';
 import CopyPasteModule from 'diagram-js/lib/features/copy-paste';
 import KeyboardModule from '../common/keyboard';
 
-import bearXML from '../../resources/bear.xml';
+import bearXML from '../../resources/old/bear.xml';
 
 // import {OlcPropertiesPanelModule} from '../example/olc-js-properties-panel';
 import OlcPaletteModule from './palette';

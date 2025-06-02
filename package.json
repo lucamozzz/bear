@@ -69,12 +69,18 @@
     "diagram-js": "^14.0.0",
     "diagram-js-direct-editing": "^2.1.2",
     "focus-trap": "^7.5.4",
+    "graphology": "^0.26.0",
+    "graphology-shortest-path": "^2.1.0",
     "inherits": "^2.0.4",
     "jquery": "^3.6.4",
     "jszip": "^3.10.1",
+    "leaflet": "1.0",
+    "leaflet-draw": "^0.3.2",
     "lodash": "^4.17.21",
     "min-dash": "^4.1.0",
     "min-dom": "^4.1.0",
+    "ol": "^10.2.1",
+    "path-browserify": "^1.0.1",
     "preact": "^10.20.1",
     "randomcolor": "^0.6.2",
     "raw-loader": "^4.0.2",
@@ -82,11 +88,9 @@
     "tiny-svg": "^3.0.1",
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0",
-    "webpack-dev-server": "^4.11.1",
-    "graphology": "^0.26.0",
-    "graphology-shortest-path": "^2.1.0",
-    "leaflet": "1.0",
-    "leaflet-draw": "^0.3.2",
-    "ol": "^10.2.1"
+    "webpack-dev-server": "^4.11.1"
+  },
+  "browser": {
+    "crypto": false
   }
 }
