@@ -7,11 +7,11 @@ Indeed, there exists a bidirectional relationship between business processes and
 Despite extensive research on environment modeling, the seamless integration of business processes and the environment model is not fully explored yet.
 To address this gap, we propose a tool for animating environment-aware BPMN collaborations with the aid of geographical maps (see figure below).
 
-<span style="color:red;font-weight:750;"> NOTE FOR REVIEWERS: in this repository you can find a tool demonstration video (*tool_demonstration_video.mp4*), a *case studies* folder and a detailed technical report (*Technical_report.pdf*):
+<!-- <span style="color:red;font-weight:750;"> NOTE FOR REVIEWERS: in this repository you can find a tool demonstration video (*tool_demonstration_video.mp4*), a *case studies* folder and a detailed technical report (*Technical_report.pdf*):
 The demonstration video highlights the tool's capabilities.
 The case studies folder contains .zip files for both functional and intentionally erroneous models. The .zip files can be uploaded in the tool by clicking on the (top-right) *Open* button.
 The detailed technical report provides an in-depth explanation of the core concepts and details of Environment-aware BPMN Collaborations.
-</span>
+</span> -->
 
 ![Environment-aware BPMN Animator GUI](./images/ui2.png)
 
@@ -20,7 +20,6 @@ The detailed technical report provides an in-depth explanation of the core conce
     - [Table of Contents](#table-of-contents)
     - [Installation](#installation)
         - [Manual installation](#manual-installation)
-        - [Docker installation](#docker-installation)
     - [Case studies](#case-studies)
         - [University Compound](#university-compound)
         - [Hospital](#hospital)
@@ -36,32 +35,18 @@ To install the tool, follow these steps:
 1. Run `npm install` to install the dependencies.
 2. Run `npm run start` to start a [local instance](http://localhost:8080).
 
-### Docker installation
-To install Environment-aware BPMN Animator, follow these steps:
-1. Run `docker build -t envbpmnanimator .` to build the Docker image.
-2. Run `docker run -p 8080:8080 envbpmnanimator` to start a [local instance](http://localhost:8080).
-
 ## Case studies
-Environment-aware BPMN Animator makes it possible to upload an environment-aware BPMN collaboration model by clicking on the ***Open*** button. 
+BEAR makes it possible to upload an environment-aware BPMN collaboration model by clicking on the ***Open*** button.
 When uploading a model, a `.zip` file containing the `.bpmn` file and the space `.json` file will have to be provided by the user.
-You can find `.zip` files of case studies in the `case studies` folder of this repository. 
-Each case study is available in a fully functional variant and others with intentional modeling errors to showcase the tool’s capabilities.
+By clicking on the ***Examples*** button, you will be redirected to the following [repository](https://bitbucket.org/proslabteam/environmental-bpmn-collaboration-models/src/main/BEAR2.0/), where you will find `.zip` files of varioues case studies ranging different scenariox. 
+Each case study is available in a fully functional variant and others with intentional modeling errors to showcase the tool’s capabilities, following the same naming convention:
+- `case_study.zip` <span style="color:green;">(happy path)</span>
+- `case_study_different.zip`  <span style="color:#FFDE21;">(different positions)</span>
+- `case_study_unreachable.zip`  <span style="color:#FFDE21;">(unreachable destination)</span>
+- `case_study_discordant.zip`  <span style="color:red;">(discordant movements)</span>
 
-### University Compound
-This case study illustrates a scenario where a student seeks guidance from their tutor. The collaboration involves a `Student` and a `Tutor` and it takes place in a university compound.
-- `student.zip` <span style="color:green;">(happy path)</span>
-- `student_different.zip`  <span style="color:#FFDE21;">(different positions)</span>
-- `student_unreachable.zip`  <span style="color:#FFDE21;">(unreachable destination)</span>
-- `student_discordant.zip`  <span style="color:red;">(discordant movements)</span>
-
-![Student BPMN Collaboration](./images/student_col.png)
-![Student Environment](./images/student_env.png)
-
-### Hospital
+### Example: Hospital
 This case study demonstrates a situation where an injured patient requires medical assistance. The collaboration involves an `Injured Patient`, `Emergency Nurse`, `Emergency Doctor` and `Ambulance`. It takes place in a hospital and its sorroundings.
-- `ambulance.zip` <span style="color:green;">(happy path)</span>
-- `ambulance_guard.zip` <span style="color:#FFDE21;">(violated guard)</span>
-- `ambulance_missing.zip` <span style="color:red;">(missing position)</span>
 
 ![Hospital BPMN Collaboration](./images/ambulance_col.png)
 ![Hospital Environment](./images/ambulance_env.png)
@@ -96,8 +81,8 @@ The model attains to the following structure:
         {
             "id": "uniquePlaceId", // Unique identifier for the place
             "name": "placeName", // Name of the place
-            "extent": [
-                [latitude, longitude], // Coordinates defining the boundaries of the place
+            "cooridnates": [
+                [latitude, longitude], // Coordinates defining the extent of the place
                 ...
             ],
             "attributes": {
@@ -124,7 +109,7 @@ The model attains to the following structure:
         },
         ...
     ],
-    "sets": [
+    "logicalPlaces": [
         {
             "id": "uniqueLogicalPlaceId", // Unique identifier for the logical place
             "name": "logicalPlaceName", // Name of the logical place
@@ -136,7 +121,7 @@ The model attains to the following structure:
         {
             "id": "uniqueViewId", // Unique identifier for the view
             "name": "viewName", // Name of the view
-            "sets": ["setId1", "setId2"], // List of logical place IDs included in the view
+            "logicalPlaces": ["logicalPlaceId1", "logicalPlaceId2"], // List of logical place IDs included in the view
             "aggregation": {
                 "attribute1": "aggrFun" // Aggregation function (optional)
             },

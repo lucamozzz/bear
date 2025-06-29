@@ -395,6 +395,7 @@ body:not(.presentation-mode) .bts-notifications {
   background-color: #fff;
   border-radius: 3px;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
 }
 
 #data-panel .entry:hover {

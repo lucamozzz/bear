@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'preact/hooks';
 import { TextFieldEntry, NumberFieldEntry, isTextFieldEntryEdited, isNumberFieldEntryEdited, SelectEntry, isSelectEntryEdited } from '@bpmn-io/properties-panel';
 import { useService } from 'bpmn-js-properties-panel';
 import { is } from "../../../../util/Util";
@@ -15,7 +16,7 @@ export default function SpaceProps(element, modeler) {
       element,
       modeler,
       component: Root,
-      isEdited: isSelectEntryEdited
+      isEdited: isTextFieldEntryEdited
     });
   } else if (is(element, 'bpmn:Task')) {
     properties.push(
@@ -202,7 +203,7 @@ function Root(props) {
       options = []
     } = overrides;
 
-    let sets = JSON.parse(localStorage.getItem('spaceModel')).sets.map((set) => {
+    let sets = JSON.parse(localStorage.getItem('spaceModel')).logicalPlaces.map((set) => {
       return {
         name: set.name,
         // TODO: valutare destination in real time con l'expression
@@ -242,15 +243,25 @@ function Root(props) {
 
   // console.log(element.businessObject)
 
-  return <SelectEntry
+  return <TextFieldEntry
     id={id}
     element={element}
-    label={translate('Initial Position')}
+    label={translate('Root')}
+    description={translate('e.g. place_ID')}
     getValue={getValue}
-    getOptions={getOptions}
     setValue={setValue}
     debounce={debounce}
   />
+
+  // return <SelectEntry
+  //   id={id}
+  //   element={element}
+  //   label={translate('Initial Position')}
+  //   getValue={getValue}
+  //   getOptions={getOptions}
+  //   setValue={setValue}
+  //   debounce={debounce}
+  // />
 }
 
 function Destination(props) {
@@ -271,7 +282,7 @@ function Destination(props) {
       options = []
     } = overrides;
 
-    let sets = JSON.parse(localStorage.getItem('spaceModel')).sets.map((set) => {
+    let sets = JSON.parse(localStorage.getItem('spaceModel')).logicalPlaces.map((set) => {
       return {
         name: set.name,
         id: set.place
@@ -311,19 +322,19 @@ function Destination(props) {
 
   return (
     <div>
-      <SelectEntry
+      {/* <SelectEntry
         id={id}
         element={element}
-        label={translate('Destination')}
         getValue={getValue}
         getOptions={getOptions}
         setValue={setValue}
         debounce={debounce}
-      />
+        /> */}
       <TextFieldEntry
         id={id}
         element={element}
-        description={translate('Variable name')}
+        label={translate('Destination')}
+        description={translate('e.g. place_ID')}
         getValue={getValue}
         setValue={setValue}
         debounce={debounce}

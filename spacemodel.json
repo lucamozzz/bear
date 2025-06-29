@@ -1,0 +1,112 @@
+{
+  "places": [
+    {
+      "id": "place_1750173356280",
+      "name": "place_1750173356280",
+      "coordinates": [
+        [
+          13.066947990712567,
+          43.13922338711211
+        ],
+        [
+          13.06730920236033,
+          43.13888788238424
+        ],
+        [
+          13.067756628608278,
+          43.13956803866401
+        ],
+        [
+          13.066947990712567,
+          43.13922338711211
+        ]
+      ],
+      "attributes": {
+        "a": "1",
+        "b": "1",
+        "c": "5",
+        "d": "ciao"
+      }
+    },
+    {
+      "id": "place_1750173358817",
+      "name": "place_1750173358817",
+      "coordinates": [
+        [
+          13.067870554813181,
+          43.139040290418365
+        ],
+        [
+          13.068277683172782,
+          43.139541576816185
+        ],
+        [
+          13.068371294981029,
+          43.13922875162248
+        ],
+        [
+          13.067870554813181,
+          43.139040290418365
+        ]
+      ],
+      "attributes": {
+        "a": "1",
+        "b": "1",
+        "c": "5",
+        "d": "ciao"
+      }
+    }
+  ],
+  "edges": [],
+  "logicalPlaces": [
+    {
+      "id": "logical-1750173387202",
+      "name": "a",
+      "description": "Place logica creata dall'espressione: a",
+      "conditions": [
+        {
+          "attribute": "a",
+          "operator": "==",
+          "value": "1"
+        },
+        {
+          "attribute": "b",
+          "operator": ">",
+          "value": "0"
+        },
+        {
+          "attribute": "c",
+          "operator": "<",
+          "value": "10"
+        },
+        {
+          "attribute": "d",
+          "operator": "==",
+          "value": "cia"
+        }
+      ],
+      "operator": "AND",
+      "physicalPlaces": [
+        {
+          "id": "place_1750173356280",
+          "attributes": {
+            "a": "1"
+          }
+        }
+      ]
+    }
+  ],
+  "views": [
+    {
+      "id": "view-1750173392250",
+      "name": "a",
+      "description": "",
+      "logicalPlaces": [
+        "logical-1750173387202"
+      ],
+      "attributes": {
+        "a": "SUM"
+      }
+    }
+  ]
+}

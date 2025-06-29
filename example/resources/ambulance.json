@@ -1,18 +1,9 @@
 {
-    "map": {
-        "center": [
-            13.05317139908237,
-            43.12731409610771
-        ],
-        "zoom": 17,
-        "maxZoom": 20,
-        "rotation": 0
-    },
     "places": [
         {
             "id": "place1",
             "name": "S1",
-            "boundaries": [
+            "coordinates": [
                 [
                     13.05292253387132,
                     43.12836753709999
@@ -49,7 +40,7 @@
         {
             "id": "place2",
             "name": "S2",
-            "boundaries": [
+            "coordinates": [
                 [
                     13.052267349554098,
                     43.12770053221763
@@ -78,7 +69,7 @@
         {
             "id": "place3",
             "name": "S3",
-            "boundaries": [
+            "coordinates": [
                 [
                     13.052267349554098,
                     43.12770053221763
@@ -107,7 +98,7 @@
         {
             "id": "place4",
             "name": "S4",
-            "boundaries": [
+            "coordinates": [
                 [
                     13.051963414355967,
                     43.12722373139073
@@ -136,7 +127,7 @@
         {
             "id": "place5",
             "name": "S5",
-            "boundaries": [
+            "coordinates": [
                 [
                     13.051415841061944,
                     43.12709216311438
@@ -165,7 +156,7 @@
         {
             "id": "place6",
             "name": "S6",
-            "boundaries": [
+            "coordinates": [
                 [
                     13.050381891955768,
                     43.12695533164094
@@ -194,7 +185,7 @@
         {
             "id": "place7",
             "name": "S7",
-            "boundaries": [
+            "coordinates": [
                 [
                     13.049937817757556,
                     43.12661638552717
@@ -223,7 +214,7 @@
         {
             "id": "place8",
             "name": "S8",
-            "boundaries": [
+            "coordinates": [
                 [
                     13.05292253387132,
                     43.12836753709999
@@ -252,7 +243,7 @@
         {
             "id": "place9",
             "name": "S9",
-            "boundaries": [
+            "coordinates": [
                 [
                     13.053844473707422,
                     43.12837055842752
@@ -281,7 +272,7 @@
         {
             "id": "place10",
             "name": "S10",
-            "boundaries": [
+            "coordinates": [
                 [
                     13.054921282236457,
                     43.128483116881455
@@ -318,7 +309,7 @@
         {
             "id": "place11",
             "name": "S11",
-            "boundaries": [
+            "coordinates": [
                 [
                     13.055674377298043,
                     43.1275899231463
@@ -347,7 +338,7 @@
         {
             "id": "place12",
             "name": "S12",
-            "boundaries": [
+            "coordinates": [
                 [
                     13.05673848021438,
                     43.126850088604755
@@ -376,7 +367,7 @@
         {
             "id": "place13",
             "name": "S13",
-            "boundaries": [
+            "coordinates": [
                 [
                     13.056841246404854,
                     43.12617792599653
@@ -405,7 +396,7 @@
         {
             "id": "place14",
             "name": "S14",
-            "boundaries": [
+            "coordinates": [
                 [
                     13.052636852543113,
                     43.12863076452095
@@ -438,7 +429,7 @@
         {
             "id": "place15",
             "name": "S15",
-            "boundaries": [
+            "coordinates": [
                 [
                     13.0528464591529,
                     43.12870257365998
@@ -467,7 +458,7 @@
         {
             "id": "place16",
             "name": "S16",
-            "boundaries": [
+            "coordinates": [
                 [
                     13.052922617734941,
                     43.129020587385355
@@ -496,7 +487,7 @@
         {
             "id": "place17",
             "name": "S17",
-            "boundaries": [
+            "coordinates": [
                 [
                     13.053644138153912,
                     43.129339631617285
@@ -529,7 +520,7 @@
         {
             "id": "place18",
             "name": "P",
-            "boundaries": [
+            "coordinates": [
                 [
                     13.05026511843899,
                     43.127022373533805
@@ -580,7 +571,7 @@
         {
             "id": "place19",
             "name": "H1",
-            "boundaries": [
+            "coordinates": [
                 [
                     13.050844895179402,
                     43.12759277606844
@@ -623,7 +614,7 @@
         {
             "id": "place20",
             "name": "H2",
-            "boundaries": [
+            "coordinates": [
                 [
                     13.050548049391642,
                     43.12761685576734
@@ -653,7 +644,7 @@
         {
             "id": "place22",
             "name": "H5",
-            "boundaries": [
+            "coordinates": [
                 [
                     13.050179319589908,
                     43.12790082148524
@@ -687,7 +678,7 @@
                 13.051172868555968,
                 43.12778131595226
             ],
-            "boundaries": [
+            "coordinates": [
                 [
                     13.050870905631555,
                     43.12778521616181
@@ -718,7 +709,7 @@
         {
             "id": "place23",
             "name": "H9",
-            "boundaries": [
+            "coordinates": [
                 [
                     13.050179319589908,
                     43.12790082148524
@@ -752,7 +743,7 @@
         {
             "id": "place24",
             "name": "H10",
-            "boundaries": [
+            "coordinates": [
                 [
                     13.050179319589908,
                     43.12790082148524
@@ -782,7 +773,7 @@
         {
             "id": "place25",
             "name": "H13",
-            "boundaries": [
+            "coordinates": [
                 [
                     13.050323664497908,
                     43.127980695969256
@@ -806,13 +797,13 @@
             ],
             "attributes": {
                 "department": "emergency",
-                "available": 1
+                "available": "1"
             }
         },
         {
             "id": "place26",
             "name": "H14",
-            "boundaries": [
+            "coordinates": [
                 [
                     13.050792893397329,
                     43.12785161874368
@@ -842,7 +833,7 @@
         {
             "id": "place27",
             "name": "H6",
-            "boundaries": [
+            "coordinates": [
                 [
                     13.050805764842872,
                     43.12793936941992
@@ -872,7 +863,7 @@
         {
             "id": "place28",
             "name": "H7",
-            "boundaries": [
+            "coordinates": [
                 [
                     13.05133235710826,
                     43.12789656612421
@@ -902,7 +893,7 @@
         {
             "id": "place29",
             "name": "H8",
-            "boundaries": [
+            "coordinates": [
                 [
                     13.051386584530839,
                     43.12826966127693
@@ -932,7 +923,7 @@
         {
             "id": "place30",
             "name": "H3",
-            "boundaries": [
+            "coordinates": [
                 [
                     13.051373246134977,
                     43.12817789074532
@@ -962,7 +953,7 @@
         {
             "id": "place31",
             "name": "H11",
-            "boundaries": [
+            "coordinates": [
                 [
                     13.051529174250897,
                     43.1280740348044
@@ -992,7 +983,7 @@
         {
             "id": "place32",
             "name": "H12",
-            "boundaries": [
+            "coordinates": [
                 [
                     13.051513339756319,
                     43.12798919867427
@@ -1456,40 +1447,92 @@
             "attributes": {}
         }
     ],
-    "sets": [
+    "logicalPlaces": [
         {
             "id": "set1",
             "name": "SP17",
+            "conditions": [
+                {
+                    "attribute": "zone",
+                    "operator": "==",
+                    "value": "SP17"
+                }
+            ],
             "expression": "zone === 'SP17'",
             "place": "place1"
         },
         {
             "id": "set2",
             "name": "SP256",
+            "conditions": [
+                {
+                    "attribute": "zone",
+                    "operator": "==",
+                    "value": "SP256"
+                }
+            ],
             "expression": "zone === 'SP256'",
             "place": "place8"
         },
         {
             "id": "set3",
             "name": "Emergency Department",
+            "conditions": [
+                {
+                    "attribute": "department",
+                    "operator": "==",
+                    "value": "emergency"
+                }
+            ],
             "expression": "department === 'emergency'",
             "place": "place20"
         },
         {
             "id": "set4",
             "name": "Radiology Department",
+            "conditions": [
+                {
+                    "attribute": "department",
+                    "operator": "==",
+                    "value": "radiology"
+                }
+            ],
             "expression": "department === 'radiology'",
             "place": "place27"
         },
         {
             "id": "set5",
             "name": "Available Emergency Rooms",
+            "conditions": [
+                {
+                    "attribute": "department",
+                    "operator": "==",
+                    "value": "emergency"
+                },
+                {
+                    "attribute": "available",
+                    "operator": ">",
+                    "value": 0
+                }
+            ],
             "expression": "department === 'emergency' && available > 0",
             "place": "place25"
         },
         {
             "id": "set6",
             "name": "Available Radiology Rooms",
+            "conditions": [
+                {
+                    "attribute": "department",
+                    "operator": "==",
+                    "value": "radiology"
+                },
+                {
+                    "attribute": "available",
+                    "operator": ">",
+                    "value": 0
+                }
+            ],
             "expression": "department === 'radiology' && available > 0",
             "place": "place31"
         }
@@ -1498,7 +1541,7 @@
         {
             "id": "view1",
             "name": "Roads",
-            "sets": [
+            "logicalPlaces": [
                 "set1",
                 "set2"
             ],
@@ -1507,7 +1550,7 @@
         {
             "id": "view2",
             "name": "Departments",
-            "sets": [
+            "logicalPlaces": [
                 "set3",
                 "set4"
             ],
@@ -1516,7 +1559,7 @@
         {
             "id": "view3",
             "name": "Available Rooms",
-            "sets": [
+            "logicalPlaces": [
                 "set5",
                 "set6"
             ],

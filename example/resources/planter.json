@@ -17,7 +17,7 @@
     {
       "id": "place_1748362654953",
       "name": "Field 1",
-      "boundaries": [
+      "coordinates": [
         [
           13.075355209395829,
           43.13760502163987
@@ -60,7 +60,7 @@
     {
       "id": "place_1748362510723",
       "name": "Field 2",
-      "boundaries": [
+      "coordinates": [
         [
           13.07520686284199,
           43.13727427092664
@@ -91,7 +91,7 @@
     {
       "id": "place_1748362552114",
       "name": "Field 3",
-      "boundaries": [
+      "coordinates": [
         [
           13.075221632755515,
           43.13734538080291
@@ -122,7 +122,7 @@
     {
       "id": "place_1748362573785",
       "name": "Field 4",
-      "boundaries": [
+      "coordinates": [
         [
           13.075232456854415,
           43.13742048400999
@@ -153,7 +153,7 @@
     {
       "id": "place_1748362634706",
       "name": "Field 5",
-      "boundaries": [
+      "coordinates": [
         [
           13.074664043773875,
           43.13738682332442
@@ -196,7 +196,7 @@
     {
       "id": "place_1748362529547",
       "name": "Field 6",
-      "boundaries": [
+      "coordinates": [
         [
           13.074994756286893,
           43.13736553098363
@@ -227,7 +227,7 @@
     {
       "id": "place_1748362614631",
       "name": "Warehouse",
-      "boundaries": [
+      "coordinates": [
         [
           13.075232456854415,
           43.13742048400999
@@ -254,7 +254,7 @@
     {
       "id": "place_1748362662848",
       "name": "Field 8",
-      "boundaries": [
+      "coordinates": [
         [
           13.075242130561033,
           43.13774568297947
@@ -289,7 +289,7 @@
     {
       "id": "place_1748362516130",
       "name": "Field 9",
-      "boundaries": [
+      "coordinates": [
         [
           13.075221632755515,
           43.13734538080291
@@ -320,7 +320,7 @@
     {
       "id": "place_1748362736800",
       "name": "Field 10",
-      "boundaries": [
+      "coordinates": [
         [
           13.074677503136497,
           43.13761307480593
@@ -355,7 +355,7 @@
     {
       "id": "place_1748362757791",
       "name": "Field 11",
-      "boundaries": [
+      "coordinates": [
         [
           13.074964942663375,
           43.13787196588558
@@ -386,7 +386,7 @@
     {
       "id": "place_1748362767727",
       "name": "Field 12",
-      "boundaries": [
+      "coordinates": [
         [
           13.074741873350685,
           43.13785331479079
@@ -425,7 +425,7 @@
     {
       "id": "place_1748362793457",
       "name": "Farm",
-      "boundaries": [
+      "coordinates": [
         [
           13.074550066835148,
           43.13776692746421
@@ -540,7 +540,7 @@
       "name": "Edge 1",
       "source": "place_1748362793457",
       "target": "place_1748362736800",
-      "boundaries": [
+      "coordinates": [
         [
           13.074587849579423,
           43.137582696351686
@@ -557,7 +557,7 @@
       "name": "Edge 2",
       "source": "place_1748362736800",
       "target": "place_1748362793457",
-      "boundaries": [
+      "coordinates": [
         [
           13.074757681956484,
           43.13765888250682
@@ -574,7 +574,7 @@
       "name": "Edge 3",
       "source": "place_1748362634706",
       "target": "place_1748362793457",
-      "boundaries": [
+      "coordinates": [
         [
           13.074587849579423,
           43.137582696351686
@@ -591,7 +591,7 @@
       "name": "Edge 4",
       "source": "place_1748362793457",
       "target": "place_1748362634706",
-      "boundaries": [
+      "coordinates": [
         [
           13.074965279078008,
           43.13760267857302
@@ -608,7 +608,7 @@
       "name": "Edge 5",
       "source": "place_1748362793457",
       "target": "place_1748362654953",
-      "boundaries": [
+      "coordinates": [
         [
           13.074965279078008,
           43.13760267857302
@@ -625,7 +625,7 @@
       "name": "Edge 6",
       "source": "place_1748362654953",
       "target": "place_1748362793457",
-      "boundaries": [
+      "coordinates": [
         [
           13.075269583140468,
           43.13765418648164
@@ -642,7 +642,7 @@
       "name": "Edge 7",
       "source": "place_1748362793457",
       "target": "place_1748362662848",
-      "boundaries": [
+      "coordinates": [
         [
           13.074965279078008,
           43.13760267857302
@@ -659,7 +659,7 @@
       "name": "Edge 8",
       "source": "place_1748362662848",
       "target": "place_1748362793457",
-      "boundaries": [
+      "coordinates": [
         [
           13.075137222620386,
           43.137804057295966
@@ -676,7 +676,7 @@
       "name": "Edge 9",
       "source": "place_1748362793457",
       "target": "place_1748362757791",
-      "boundaries": [
+      "coordinates": [
         [
           13.074965279078008,
           43.13760267857302
@@ -693,7 +693,7 @@
       "name": "Edge 10",
       "source": "place_1748362757791",
       "target": "place_1748362793457",
-      "boundaries": [
+      "coordinates": [
         [
           13.074971323897746,
           43.137780400071705
@@ -710,7 +710,7 @@
       "name": "Edge 11",
       "source": "place_1748362793457",
       "target": "place_1748362767727",
-      "boundaries": [
+      "coordinates": [
         [
           13.074965279078008,
           43.13760267857302
@@ -727,7 +727,7 @@
       "name": "Edge 12",
       "source": "place_1748362767727",
       "target": "place_1748362793457",
-      "boundaries": [
+      "coordinates": [
         [
           13.07466828896541,
           43.13780959978014
@@ -744,7 +744,7 @@
       "name": "Edge 13",
       "source": "place_1748362793457",
       "target": "place_1748362510723",
-      "boundaries": [
+      "coordinates": [
         [
           13.074965279078008,
           43.13760267857302
@@ -761,7 +761,7 @@
       "name": "Edge 14",
       "source": "place_1748362510723",
       "target": "place_1748362793457",
-      "boundaries": [
+      "coordinates": [
         [
           13.075309864632398,
           43.137292929900795
@@ -778,7 +778,7 @@
       "name": "Edge 15",
       "source": "place_1748362793457",
       "target": "place_1748362516130",
-      "boundaries": [
+      "coordinates": [
         [
           13.074965279078008,
           43.13760267857302
@@ -795,7 +795,7 @@
       "name": "Edge 16",
       "source": "place_1748362516130",
       "target": "place_1748362793457",
-      "boundaries": [
+      "coordinates": [
         [
           13.075125054557338,
           43.13732644683025
@@ -812,7 +812,7 @@
       "name": "Edge 17",
       "source": "place_1748362793457",
       "target": "place_1748362529547",
-      "boundaries": [
+      "coordinates": [
         [
           13.074965279078008,
           43.13760267857302
@@ -829,7 +829,7 @@
       "name": "Edge 18",
       "source": "place_1748362529547",
       "target": "place_1748362793457",
-      "boundaries": [
+      "coordinates": [
         [
           13.074890773490935,
           43.13734818237758
@@ -846,7 +846,7 @@
       "name": "Edge 19",
       "source": "place_1748362793457",
       "target": "place_1748362552114",
-      "boundaries": [
+      "coordinates": [
         [
           13.074965279078008,
           43.13760267857302
@@ -863,7 +863,7 @@
       "name": "Edge 20",
       "source": "place_1748362552114",
       "target": "place_1748362793457",
-      "boundaries": [
+      "coordinates": [
         [
           13.07532076720712,
           43.13736869464269
@@ -880,7 +880,7 @@
       "name": "Edge 21",
       "source": "place_1748362793457",
       "target": "place_1748362573785",
-      "boundaries": [
+      "coordinates": [
         [
           13.074965279078008,
           43.13760267857302
@@ -897,7 +897,7 @@
       "name": "Edge 22",
       "source": "place_1748362573785",
       "target": "place_1748362793457",
-      "boundaries": [
+      "coordinates": [
         [
           13.075330223823652,
           43.137449249732626
@@ -914,7 +914,7 @@
       "name": "Edge 23",
       "source": "place_1748362793457",
       "target": "place_1748362614631",
-      "boundaries": [
+      "coordinates": [
         [
           13.074965279078008,
           43.13760267857302
@@ -931,7 +931,7 @@
       "name": "Edge 24",
       "source": "place_1748362614631",
       "target": "place_1748362793457",
-      "boundaries": [
+      "coordinates": [
         [
           13.075116147483353,
           43.13746060752331
@@ -944,7 +944,7 @@
       "attributes": {}
     }
   ],
-  "sets": [
+  "logicalPlaces": [
     {
       "id": "set1",
       "name": "Ripe Tomatoes",
@@ -1022,7 +1022,7 @@
     {
       "id": "view1",
       "name": "Ripe Vegetables",
-      "sets": [
+      "logicalPlaces": [
         "set1",
         "set2",
         "set3"
@@ -1032,7 +1032,7 @@
     {
       "id": "view2",
       "name": "Free Fields",
-      "sets": [
+      "logicalPlaces": [
         "set4",
         "set5",
         "set6"
@@ -1042,7 +1042,7 @@
     {
       "id": "view4",
       "name": "Planted Fields",
-      "sets": [
+      "logicalPlaces": [
         "set10",
         "set11",
         "set12"
@@ -1052,7 +1052,7 @@
     {
       "id": "view3",
       "name": "Dry Fields",
-      "sets": [
+      "logicalPlaces": [
         "set7",
         "set8",
         "set9"

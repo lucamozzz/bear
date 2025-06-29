@@ -8,7 +8,9 @@
     "build": "webpack",
     "bundle": "webpack",
     "bundle:watch": "webpack -w",
-    "start": "cross-env SINGLE_START=modeler npm run dev",
+    "start": "concurrently \"npm run serve-modeler\" \"cross-env SINGLE_START=modeler npm run dev\"",
+    "start_dev": "cross-env SINGLE_START=modeler npm run dev",
+    "serve-modeler": "cd ./example/bpenv-modeler && npx serve -p 3000 dist",
     "lint": "eslint .",
     "test": "karma start",
     "dev": "webpack serve --static-directory ./example --open"
@@ -88,7 +90,14 @@
     "tiny-svg": "^3.0.1",
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0",
-    "webpack-dev-server": "^4.11.1"
+    "webpack-dev-server": "^4.11.1",
+    "serve": "^14.0.1",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "cytoscape": "^3.32.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   },
   "browser": {
     "crypto": false

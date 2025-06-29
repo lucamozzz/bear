@@ -13,8 +13,10 @@ import fileDrop from 'file-drops';
 import fileOpen from 'file-open';
 import download from 'downloadjs';
 import Zip from 'jszip';
-import bearBPMN from '../example/resources/restaurant.bpmn';
-import spaceModel from '../example/resources/restaurant.json';
+import bearBPMN from '../example/resources/start.bpmn';
+// import bearBPMN from '../example/resources/student.bpmn';
+// import spaceModel from '../example/resources/ambulance.json';
+// import spaceModel from '../spacemodel.json';
 import Mediator from './lib/mediator/Mediator';
 import BpmnSpaceModeler from './lib/bpmnmodeler/bpmnSpaceModeler';
 import { downloadZIP, uploadZIP } from './lib/util/FileUtil';
@@ -204,6 +206,14 @@ document.addEventListener('processStateMapUpdate', () => {
 
 function toggleDataProperties(open) {
     if (dataPanel) {
+        // const iframe = document.getElementById('modeler-frame');
+        // iframe?.contentWindow?.postMessage('callExportModel', 'http://localhost:3000');
+        // window.addEventListener('message', (event) => {
+        //     if (event.origin !== 'http://localhost:3000') return;
+        //     if (event.data?.type === 'exportModelResult')
+        //         spaceModel = JSON.parse(event.data.payload)
+        //     localStorage.setItem('spaceModel', JSON.stringify(spaceModel));
+        // });
         history.replaceState({}, document.title, url.toString());
         dataPanel.classList.toggle('open', open);
         if (open)
@@ -216,9 +226,9 @@ document.addEventListener('spaceModelUpdated', (event) => updateDataProperties()
 function createViews(spaceModel) {
     spaceModel.views.forEach(view => {
         spaceModel[view.name] = [];
-        view.sets.forEach(setId => {
+        view.logicalPlaces.forEach(setId => {
             let values = []
-            const set = spaceModel.sets.find(s => s.id === setId);
+            const set = spaceModel.logicalPlaces.find(s => s.id === setId);
             set["attributes"] = {};
 
             Object.keys(view.attributes).forEach(attribute => {
@@ -260,12 +270,13 @@ function createViews(spaceModel) {
     if (spaceModel.map)
         delete spaceModel.map;
     delete spaceModel.views;
-    delete spaceModel.sets;
+    delete spaceModel.logicalPlaces;
     return spaceModel;
 }
 
 function updateDataProperties() {
     const spaceModel = createViews(JSON.parse(localStorage.getItem('spaceModel')));
+
     dataPanel.innerHTML = "";
     if (spaceModel) {
         Object.keys(spaceModel).sort((a, b) => {
@@ -305,7 +316,7 @@ function updateDataProperties() {
                 }
 
                 entryDiv.addEventListener('mouseover', () => {
-                    if (element.id.startsWith("set"))
+                    if (element.id.startsWith("logical"))
                         getSetPlaces(element.id).forEach(place => colorPlace(place));
                     else if (element.id.startsWith("place"))
                         colorPlace(element.id);
@@ -314,7 +325,7 @@ function updateDataProperties() {
                 });
 
                 entryDiv.addEventListener('mouseout', () => {
-                    if (element.id.startsWith("set"))
+                    if (element.id.startsWith("logical"))
                         getSetPlaces(element.id).forEach(place => uncolorPlace(place));
                     else if (element.id.startsWith("place"))
                         uncolorPlace(element.id);
@@ -606,6 +617,42 @@ document.addEventListener('bindFlows', function (event) {
     })
 })
 
+// import spaceModelString from '../example/resources/ambulance.json';
+// async function importFromZip(zipData) {
+//     const zip = await Zip.loadAsync(zipData, { base64: true });
+
+//     let files = {
+//         collaboration: null,
+//         environment: null
+//     };
+
+//     // Iterate over all files in the zip
+//     zip.forEach((relativePath, file) => {
+//         if (relativePath.endsWith('.bpmn')) {
+//             files.collaboration = file;
+//         } else if (relativePath.endsWith('.json')) {
+//             files.environment = file;
+//         }
+//     });
+
+//     // Check if the required files are found
+//     Object.keys(files).forEach(key => {
+//         if (!files[key]) {
+//             throw new Error('Missing file: ' + key);
+//         }
+//     });
+
+//     // Import the XML content of the files
+//     // await olcModeler.importXML(await files.olcs.async("string"));
+//     // localStorage.setItem('spaceModel', await files.environment.async("string"));
+//     await modeler.importXML(await files.collaboration.async("string"));
+//     const spaceModelString = await files.environment.async("string");
+
+//     // console.log(spaceModelString);
+
+//     // localStorage.setItem('spaceModel', JSON.stringify(spaceModelString));
+//     localStorage.setItem('spaceModel', spaceModelString);
+
 async function importFromZip(zipData) {
     const zip = await Zip.loadAsync(zipData, { base64: true });
 
@@ -616,9 +663,14 @@ async function importFromZip(zipData) {
 
     // Iterate over all files in the zip
     zip.forEach((relativePath, file) => {
-        if (relativePath.endsWith('.bpmn')) {
+        // Skip macOS metadata folders
+        if (relativePath.startsWith('__MACOSX') || file.dir) return;
+
+        const lowerPath = relativePath.toLowerCase();
+
+        if (lowerPath.endsWith('.bpmn') && !files.collaboration) {
             files.collaboration = file;
-        } else if (relativePath.endsWith('.json')) {
+        } else if (lowerPath.endsWith('.json') && !files.environment) {
             files.environment = file;
         }
     });
@@ -630,11 +682,19 @@ async function importFromZip(zipData) {
         }
     });
 
-    // Import the XML content of the files
-    // await olcModeler.importXML(await files.olcs.async("string"));
-    // localStorage.setItem('spaceModel', await files.environment.async("string"));
-    initMap(JSON.parse(await files.environment.async("string")))
+    // Parse content
     await modeler.importXML(await files.collaboration.async("string"));
+    const spaceModelString = await files.environment.async("string");
+    localStorage.setItem('spaceModel', spaceModelString);
+
+    if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.postMessage({
+            type: 'importModel',
+            // payload: JSON.stringify(spaceModelString)
+            payload: spaceModelString
+        }, 'http://localhost:3000');
+    }
+    // initMap(JSON.parse(spaceModelString))
 
     setTimeout(() => {
         const elementRegistry = modeler.get('elementRegistry');
@@ -682,12 +742,58 @@ document.body.addEventListener('keydown', function (event) {
 
 async function exportToZip() {
     const zip = new Zip();
+
+    // 1. Salva il modello BPMN
     const space = (await modeler.saveXML({ format: true })).xml;
     zip.file('collaboration.bpmn', space);
-    const spaceModel = localStorage.getItem('spaceModel');
-    zip.file('environment.json', spaceModel);
+
+    // 2. Chiedi il modello spaziale
+    const spaceModel = await requestSpaceModelFromIframe();
+
+    // 3. Aggiungi il file solo quando è disponibile
+    zip.file('environment.json', JSON.stringify(spaceModel));
+
+    // 4. Genera lo zip
     return zip.generateAsync({ type: 'base64' });
 }
+
+// Funzione helper che restituisce una Promise per attendere la risposta dal messaggio
+function requestSpaceModelFromIframe() {
+    return new Promise((resolve, reject) => {
+        const listener = (event) => {
+            // if (event.origin !== 'http://localhost:3000') return;
+            if (event.data?.type === 'exportModelResult') {
+                window.removeEventListener('message', listener);
+                try {
+                    const model = JSON.parse(event.data.payload);
+                    resolve(model);
+                } catch (e) {
+                    reject(e);
+                }
+            }
+        };
+        window.addEventListener('message', listener);
+
+        // Invia la richiesta all'iframe
+        iframe?.contentWindow?.postMessage('callExportModel', 'http://localhost:3000');
+    });
+}
+
+// async function exportToZip() {
+//     const zip = new Zip();
+//     const space = (await modeler.saveXML({ format: true })).xml;
+//     zip.file('collaboration.bpmn', space);
+//     iframe?.contentWindow?.postMessage('callExportModel', 'http://localhost:3000');
+//     let spaceModel = localStorage.getItem('spaceModel');
+//     window.addEventListener('message', async (event) => {
+//         if (event.origin !== 'http://localhost:3000') return; // Optional origin check
+//         if (event.data?.type === 'exportModelResult')
+//             spaceModel = JSON.parse(event.data.payload)
+//         localStorage.setItem('spaceModel', JSON.stringify(spaceModel));
+//     })
+//     zip.file('environment.json', spaceModel);
+//     return zip.generateAsync({ type: 'base64' });
+// }
 
 document.querySelector('#download-button').addEventListener('click', () => exportToZip().then(zip => {
     downloadZIP('BEAR.zip', zip, 'base64');
@@ -769,8 +875,70 @@ let source
 let vector
 let map
 let graph
+let showingMap = false;
+let spaceModel = {
+    "places": [],
+    "edges": [],
+    "views": [],
+    "logicalPlaces": [],
+}
+const iframe = document.getElementById('modeler-frame');
+const mapDiv = document.getElementById('map');
+const dataToggle = document.getElementById('data-panel-toggle');
+iframe.style.display = 'block';
+mapDiv.style.display = 'none';
+dataToggle.style.display = 'none';
+// localStorage.setItem('spaceModel', JSON.stringify(spaceModel));
 
-function initMap(spaceModel) {
+modeler.get('eventBus').on('tokenSimulation.toggleMode', async event => {
+    if (event.active) {
+        iframe?.contentWindow?.postMessage('callExportModel', 'http://localhost:3000');
+
+        const spaceModel = await new Promise((resolve) => {
+            const handler = (event) => {
+                if (event.origin !== 'http://localhost:3000') return;
+                if (event.data?.type === 'exportModelResult') {
+                    window.removeEventListener('message', handler); // Clean up
+                    resolve(JSON.parse(event.data.payload));
+                }
+            };
+            window.addEventListener('message', handler);
+        });
+        
+        iframe.style.display = 'none';
+        dataToggle.style.display = 'block';
+        
+        localStorage.setItem('spaceModel', JSON.stringify(spaceModel));
+        await initMap(spaceModel);
+
+        const bpmnPanelOpen = propertiesPanel && propertiesPanel.classList.contains('open');
+        if (bpmnPanelOpen)
+            toggleProperties(false);
+
+        drawGraph();
+    } else {
+        const mapDiv = document.getElementById('map');
+
+        iframe.style.display = 'block';
+        mapDiv.style.display = 'none';
+        dataToggle.style.display = 'none';
+
+        const dataPanelOpen = dataPanel && dataPanel.classList.contains('open');
+        if (dataPanelOpen)
+            toggleDataProperties(false);
+
+        // const spaceModel = JSON.parse(localStorage.getItem('spaceModel'));
+        const spaceModel = localStorage.getItem('spaceModel');
+        if (spaceModel && iframe?.contentWindow) {
+            iframe.contentWindow.postMessage({
+                type: 'importModel',
+                payload: spaceModel
+            }, 'http://localhost:3000');
+        }
+    }
+});
+
+async function initMap(spaceModel) {
     document.getElementById('map').remove();
     const newMapDiv = document.createElement('div');
     newMapDiv.id = 'map';
@@ -778,8 +946,6 @@ function initMap(spaceModel) {
     document
         .querySelector('.contentRight')
         .insertBefore(newMapDiv, document.querySelector('.contentRight').firstChild);
-
-    localStorage.setItem('spaceModel', JSON.stringify(spaceModel));
 
     raster = new TileLayer({
         source: new OSM(),
@@ -805,46 +971,42 @@ function initMap(spaceModel) {
     // map.addLayer(Esri_WorldImagery);
 
     useGeographic();
-
     map = new Map({
         layers: [raster, vector],
-        // layers: [Esri_WorldImagery, vector],
         target: 'map',
         view: new View({
-            center: spaceModel.map.center,
-            zoom: spaceModel.map.zoom
+            center: [0, 0], // temporary, will fit to features below
+            zoom: 2 // temporary, will fit to features below
         }),
     });
 
-    // let myExtent = map.getView().calculateExtent(map.getSize());
-    map.setView(
-        new View({
-            center: spaceModel.map.center,
-            zoom: spaceModel.map.zoom,
-            rotation: spaceModel.map.rotation,
-            minZoom: spaceModel.map.zoom,
-            maxZoom: spaceModel.map.maxZoom,
-            // extent: myExtent,
-            constrainOnlyCenter: true,
-            smoothExtentConstraint: true,
-        })
-    );
+    // Wait for features to be added, then fit the view to all features
+    setTimeout(() => {
+        const features = source.getFeatures();
+        if (features.length > 0) {
+            const extent = source.getExtent();
+            map.getView().fit(extent, {
+                padding: [40, 40, 40, 40],
+                maxZoom: 18,
+                duration: 500
+            });
+        }
+    }, 0);
 
     const overlayContainer = document.querySelector('.ol-overlaycontainer-stopevent');
     if (overlayContainer) {
         overlayContainer.remove();
     }
 
-
     spaceModel.places.forEach((place) => {
         const lineFeature = new Feature({
-            geometry: new LineString(place.boundaries.concat([place.boundaries[0]])),
+            geometry: new LineString(place.coordinates.concat([place.coordinates[0]])),
         });
-        lineFeature.setId(place.id + '_boundaries');
+        lineFeature.setId(place.id + '_coordinates');
         source.addFeature(lineFeature);
 
         let center
-        place.centroid ? center = place.centroid : center = calculateCenter(place.boundaries);
+        place.centroid ? center = place.centroid : center = calculateCenter(place.coordinates);
         const centerFeature = new Feature({
             geometry: new Point(center),
         });
@@ -863,7 +1025,7 @@ function initMap(spaceModel) {
         source.addFeature(centerFeature);
     })
 
-    // spaceModel.sets.forEach((set) => {
+    // spaceModel.logicalPlaces.forEach((set) => {
     //     const centerFeature = new Feature({
     //         geometry: new Point(set.centroid),
     //     });
@@ -882,15 +1044,21 @@ function initMap(spaceModel) {
     //     source.addFeature(centerFeature);
     // })
 
+    if (!JSON.parse(localStorage.getItem('spaceModel')))
+        localStorage.setItem('spaceModel', JSON.stringify({
+            "places": [],
+            "edges": [],
+            "views": [],
+            "logicalPlaces": [],
+        }));
+
     JSON.parse(localStorage.getItem('spaceModel')).edges.forEach((edge) => {
         graph = new Graph();
-        spaceModel.places.forEach((place) => graph.addNode(place.id, { coordinates: place.centroid || calculateCenter(place.boundaries) }));
+        spaceModel.places.forEach((place) => graph.addNode(place.id, { coordinates: place.centroid || calculateCenter(place.coordinates) }));
         spaceModel.edges.forEach((edge) => graph.addEdge(edge.source, edge.target, { id: edge.id }));
         drawGraphEdge(edge);
     })
 }
-
-initMap(spaceModel);
 
 const drawInteraction = new Draw({
     source: source,
@@ -911,33 +1079,41 @@ drawInteraction.on('drawend', function (event) {
     // You can add additional logic here to handle the drawn polygon
 });
 
-function calculateCenter(boundaries) {
+function calculateCenter(coordinates) {
     let x = 0;
     let y = 0;
-    boundaries.forEach((coordinate) => {
+    coordinates.forEach((coordinate) => {
         x += coordinate[0];
         y += coordinate[1];
     });
-    return [x / boundaries.length, y / boundaries.length];
+    return [x / coordinates.length, y / coordinates.length];
 }
 
 // TODO: unreachable exception if empty
 function getSetPlaces(set) {
     const spaceModel = JSON.parse(localStorage.getItem('spaceModel'));
-    const expression = spaceModel.sets.find(s => s.id === set).expression;
-    const subExpressions = expression.split(' && ').map(subExpr => {
-        const operators = ['===', '>', '<'];
-        for (const operator of operators) {
-            if (subExpr.includes(operator)) {
-                const [attribute, value] = subExpr.split(operator).map(str => str.replace(/['"]/g, '').trim());
-                return { attribute, value, operator };
-            }
-        }
-    });
+    // const expression = spaceModel.logicalPlaces.find(s => s.id === set).expression;
+    const conditions = spaceModel.logicalPlaces.find(s => s.id === set).conditions;
+
+    // console.log(expression);
+
+    // const subExpressions = expression.split(' && ').map(subExpr => {
+    //     const operators = ['===', '>', '<'];
+    //     for (const operator of operators) {
+    //         if (subExpr.includes(operator)) {
+    //             const [attribute, value] = subExpr.split(operator).map(str => str.replace(/['"]/g, '').trim());
+    //             return { attribute, value, operator };
+    //         }
+    //     }
+    // });
 
     const places = spaceModel.places.filter(place => {
-        return subExpressions.every(({ attribute, value, operator }) => {
-            if (operator === '===') {
+        // return subExpressions.every(({ attribute, value, operator }) => {
+        // const { attribute, value, operator } = conditions[0]; // Assuming only one condition for simplicity
+        // console.log(attribute, value, operator);
+        return conditions.every(({ attribute, value, operator }) => {
+            console.log('Checking equality for', place.attributes[attribute], value);
+            if (operator === '==') {
                 return place.attributes[attribute] === value;
             } else if (operator === '>') {
                 return parseFloat(place.attributes[attribute]) > parseFloat(value);
@@ -950,17 +1126,13 @@ function getSetPlaces(set) {
     return places;
 }
 
-// function getSetPlaces(set) {
-//     const spaceModel = JSON.parse(localStorage.getItem('spaceModel'));
-//     const places = spaceModel.sets.find(s => s.id === set).places;
-//     return places
-// }
-
 function colorPlace(place) {
+    console.log('Coloring place:', place);
+
     const spaceModel = JSON.parse(localStorage.getItem('spaceModel'));
     const p = spaceModel.places.find(p => p.id === place);
     const polygonFeature = new Feature({
-        geometry: new Polygon([p.boundaries.concat([p.boundaries[0]])]),
+        geometry: new Polygon([p.coordinates.concat([p.coordinates[0]])]),
     });
     polygonFeature.setStyle(new Style({
         fill: new Fill({
@@ -985,8 +1157,8 @@ function colorEdge(edge) {
         const sourcePlace = spaceModel.places.find(place => place.id === e.source);
         const targetPlace = spaceModel.places.find(place => place.id === e.target);
 
-        const sourceCoords = sourcePlace?.centroid || (sourcePlace?.boundaries ? calculateCenter(sourcePlace.boundaries) : undefined);
-        const targetCoords = targetPlace?.centroid || (targetPlace?.boundaries ? calculateCenter(targetPlace.boundaries) : undefined);
+        const sourceCoords = sourcePlace?.centroid || (sourcePlace?.coordinates ? calculateCenter(sourcePlace.coordinates) : undefined);
+        const targetCoords = targetPlace?.centroid || (targetPlace?.coordinates ? calculateCenter(targetPlace.coordinates) : undefined);
         if (sourceCoords && targetCoords) {
             const lineFeature = new Feature({
                 geometry: new LineString([sourceCoords, targetCoords]),
@@ -1008,17 +1180,19 @@ function uncolorEdge(edge) {
 }
 
 function drawGraph() {
-    spaceModel.edges.forEach((edge) => {
-        drawGraphEdge(edge);
-    })
+    if (spaceModel && spaceModel.places && spaceModel.edges) {
+        spaceModel.edges.forEach((edge) => {
+            drawGraphEdge(edge);
+        })
+    }
 }
 
 function drawGraphEdge(edge) {
     let spaceModel = JSON.parse(localStorage.getItem('spaceModel'))
     let sourcePlace = spaceModel.places.find(place => place.id === edge.source);
-    let sourceCoords = sourcePlace?.centroid || (sourcePlace?.boundaries ? calculateCenter(sourcePlace.boundaries) : undefined);
+    let sourceCoords = sourcePlace?.centroid || (sourcePlace?.coordinates ? calculateCenter(sourcePlace.coordinates) : undefined);
     let targetPlace = spaceModel.places.find(place => place.id === edge.target);
-    let targetCoords = targetPlace?.centroid || (targetPlace?.boundaries ? calculateCenter(targetPlace.boundaries) : undefined);
+    let targetCoords = targetPlace?.centroid || (targetPlace?.coordinates ? calculateCenter(targetPlace.coordinates) : undefined);
     if (sourceCoords && targetCoords) {
         const lineFeature = new Feature({
             geometry: new LineString([sourceCoords, targetCoords]),
@@ -1037,7 +1211,7 @@ function drawGraphEdge(edge) {
 
 function initGraph() {
     graph = new Graph();
-    spaceModel.places.forEach((place) => graph.addNode(place.id, { coordinates: place.centroid || calculateCenter(place.boundaries) }));
+    spaceModel.places.forEach((place) => graph.addNode(place.id, { coordinates: place.centroid || calculateCenter(place.coordinates) }));
     spaceModel.edges.forEach((edge) => graph.addEdge(edge.source, edge.target, { id: edge.id }));
 }
 
@@ -1058,13 +1232,6 @@ document.addEventListener('edgeRemoved', (event) => {
     const edge = event.detail;
     graph.dropEdge(edge.source, edge.target);
     source.removeFeature(source.getFeatureById(edge.id))
-});
-
-drawGraph();
-
-map.on('click', function (event) {
-    const coordinates = event.coordinate;
-    console.log('Coordinates:', coordinates);
 });
 
 function animateToken(tokenFeature, start, end, duration, destination) {
