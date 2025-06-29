@@ -297,7 +297,7 @@ function updateDataProperties() {
                 entryDiv.className = 'entry';
 
                 const keySpan = document.createElement('h6');
-                keySpan.textContent = element.name;
+                keySpan.textContent = element.name || element.id;
                 entryDiv.appendChild(keySpan);
 
                 if (element.attributes) {
@@ -316,7 +316,7 @@ function updateDataProperties() {
                 }
 
                 entryDiv.addEventListener('mouseover', () => {
-                    if (element.id.startsWith("logical"))
+                    if (element.id.startsWith("set"))
                         getSetPlaces(element.id).forEach(place => colorPlace(place));
                     else if (element.id.startsWith("place"))
                         colorPlace(element.id);
@@ -325,7 +325,7 @@ function updateDataProperties() {
                 });
 
                 entryDiv.addEventListener('mouseout', () => {
-                    if (element.id.startsWith("logical"))
+                    if (element.id.startsWith("set"))
                         getSetPlaces(element.id).forEach(place => uncolorPlace(place));
                     else if (element.id.startsWith("place"))
                         uncolorPlace(element.id);
@@ -1054,7 +1054,7 @@ async function initMap(spaceModel) {
 
     JSON.parse(localStorage.getItem('spaceModel')).edges.forEach((edge) => {
         graph = new Graph();
-        spaceModel.places.forEach((place) => graph.addNode(place.id, { coordinates: place.centroid || calculateCenter(place.coordinates) }));
+        spaceModel.places.forEach((place) => graph.addNode(place.id, { coordinates: place.centroid || calculateCenter(place.coordinates), name: place.name }));
         spaceModel.edges.forEach((edge) => graph.addEdge(edge.source, edge.target, { id: edge.id }));
         drawGraphEdge(edge);
     })
@@ -1122,6 +1122,8 @@ function getSetPlaces(set) {
             }
         });
     }).map(place => place.id);
+
+    console.log(places);
 
     return places;
 }

@@ -95,6 +95,19 @@ class PolygonManager {
     this.placeSource.on('addfeature', (event: VectorSourceEvent<Feature<Geometry>>) => {
       if (event.feature) {
         this.addToHistory('add_place', event.feature);
+
+        setTimeout(() => {
+          const features = this.placeSource.getFeatures();
+
+          if (features.length > 0) {
+            const extent = this.placeSource.getExtent();
+            this.map.getView().fit(extent, {
+              padding: [40, 40, 40, 40],
+              maxZoom: 18,
+              duration: 500
+            });
+          }
+        }, 1000);
       }
     });
   }

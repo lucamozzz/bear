@@ -7,11 +7,12 @@ Indeed, there exists a bidirectional relationship between business processes and
 Despite extensive research on environment modeling, the seamless integration of business processes and the environment model is not fully explored yet.
 To address this gap, we propose a tool for animating environment-aware BPMN collaborations with the aid of geographical maps (see figure below).
 
-<!-- <span style="color:red;font-weight:750;"> NOTE FOR REVIEWERS: in this repository you can find a tool demonstration video (*tool_demonstration_video.mp4*), a *case studies* folder and a detailed technical report (*Technical_report.pdf*):
-The demonstration video highlights the tool's capabilities.
-The case studies folder contains .zip files for both functional and intentionally erroneous models. The .zip files can be uploaded in the tool by clicking on the (top-right) *Open* button.
-The detailed technical report provides an in-depth explanation of the core concepts and details of Environment-aware BPMN Collaborations.
-</span> -->
+<span style="color:red;font-weight:750;">
+
+NOTE FOR REVIEWERS:
+You can find several case studies in [the following repository](https://bitbucket.org/proslabteam/environmental-bpmn-collaboration-models/src/main/BEAR2.0/2025). Each .zip file includes both a BPMN collaboration model and its corresponding environment model. These .zip files can be downloaded and directly uploaded into the tool—ready for animation—by clicking the Open button in the top-right corner.
+
+</span>
 
 ![Environment-aware BPMN Animator GUI](./images/ui2.png)
 
@@ -71,12 +72,6 @@ The model can be generated with the assistance of online tools for [JSON formatt
 The model attains to the following structure:
 ```
 {
-    "map": {
-        "center": [latitude, longitude], // Center coordinates of the map
-        "extent": [minLongitude, minLatitude, maxLongitude, maxLatitude], // Extent of the map
-        "zoom": zoomLevel, // Zoom level of the map
-        "rotation": rotationAngle // Rotation angle of the map
-    },
     "places": [
         {
             "id": "uniquePlaceId", // Unique identifier for the place

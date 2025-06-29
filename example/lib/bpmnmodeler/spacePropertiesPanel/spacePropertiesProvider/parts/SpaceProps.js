@@ -243,25 +243,25 @@ function Root(props) {
 
   // console.log(element.businessObject)
 
-  return <TextFieldEntry
-    id={id}
-    element={element}
-    label={translate('Root')}
-    description={translate('e.g. place_ID')}
-    getValue={getValue}
-    setValue={setValue}
-    debounce={debounce}
-  />
-
-  // return <SelectEntry
+  // return <TextFieldEntry
   //   id={id}
   //   element={element}
-  //   label={translate('Initial Position')}
+  //   label={translate('Root')}
+  //   description={translate('e.g. place_ID')}
   //   getValue={getValue}
-  //   getOptions={getOptions}
   //   setValue={setValue}
   //   debounce={debounce}
   // />
+
+  return <SelectEntry
+    id={id}
+    element={element}
+    label={translate('Initial Position')}
+    getValue={getValue}
+    getOptions={getOptions}
+    setValue={setValue}
+    debounce={debounce}
+  />
 }
 
 function Destination(props) {
@@ -322,15 +322,15 @@ function Destination(props) {
 
   return (
     <div>
-      {/* <SelectEntry
+      <SelectEntry
         id={id}
         element={element}
         getValue={getValue}
         getOptions={getOptions}
         setValue={setValue}
         debounce={debounce}
-        /> */}
-      <TextFieldEntry
+        />
+      {/* <TextFieldEntry
         id={id}
         element={element}
         label={translate('Destination')}
@@ -338,7 +338,7 @@ function Destination(props) {
         getValue={getValue}
         setValue={setValue}
         debounce={debounce}
-      />
+      /> */}
     </div>
   );
 }
