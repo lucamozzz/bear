@@ -1,0 +1,399 @@
+.sidebar2 {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 100vh;
+  background-color: white;
+  padding: 15px;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  z-index: 1000;
+  display: block !important;
+  transition: transform 0.3s ease-in-out;
+}
+
+.sidebar2.sidebar2-hidden {
+  transform: translateX(290px);
+}
+
+.sidebar2-toggle-button {
+  position: absolute;
+  top: 10px;
+  right: 300px;
+  width: 24px;
+  height: 40px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-right: none;
+  border-radius: 4px 0 0 4px;
+  cursor: pointer;
+  z-index: 1001;
+  transition: right 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar2-toggle-button.sidebar2-hidden {
+  right: 10px;
+}
+
+.sidebar2 h3 {
+  font-size: 1.2rem;
+  margin-top: 15px;
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+  border-bottom: 2px solid #f0f0f0;
+  color: #333;
+}
+
+.sidebar2-section {
+  margin-bottom: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+.sidebar2-items {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.sidebar2-item {
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.sidebar2-item:hover, .sidebar2-item.hovered {
+  background-color: #f5f5f5;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar2-item h6 {
+  margin-top: 0;
+  margin-bottom: 5px;
+  font-size: 1rem;
+  color: #0066cc;
+}
+
+.sidebar2-attribute {
+  font-size: 0.9rem;
+  margin-bottom: 3px;
+  color: #555;
+}
+
+.sidebar2-attribute span {
+  font-weight: bold;
+  color: #333;
+}
+
+.sidebar2-available {
+  font-size: 1rem;
+  margin-bottom: 10px;
+  padding: 5px;
+  background-color: #e6f7ff;
+  border-radius: 4px;
+  color: #0066cc;
+}
+
+.sidebar2-available span {
+  font-weight: bold;
+}
+
+/* Stili specifici per le diverse sezioni */
+.sidebar2-section:nth-child(1) {
+  border-left: 4px solid #ffcc33; /* Colore per Roads */
+}
+
+.sidebar2-section:nth-child(2) {
+  border-left: 4px solid #33cc99; /* Colore per Departments */
+}
+
+.sidebar2-section:nth-child(3) {
+  border-left: 4px solid #ff6666; /* Colore per Emergency Rooms */
+}
+
+.sidebar2-section:nth-child(4) {
+  border-left: 4px solid #9966cc; /* Colore per Radiology Rooms */
+}
+
+.sidebar2-section:nth-child(5) {
+  border-left: 4px solid #3399ff; /* Colore per Places */
+}
+
+.sidebar2-section:nth-child(6) {
+  border-left: 4px solid #ff9933; /* Colore per Edges */
+}
+
+/* Assicura che il container della sidebar2 sia visibile */
+#sidebar2-container {
+  display: block !important;
+  position: absolute;
+  top: 0;
+  right: 0;
+  /* width: 300px; */
+  height: 100vh;
+  z-index: 1000;
+}
+
+/* Stile per il pulsante di aggiornamento */
+.sidebar2-refresh-button {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  margin-bottom: 15px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.sidebar2-refresh-button:hover {
+  background-color: #45a049;
+}
+
+.sidebar2-refresh-button:active {
+  background-color: #3e8e41;
+}
+
+/* Stili per le place logiche */
+.logical-places-section {
+  border-left: 4px solid #6a0dad !important; /* Viola per le place logiche */
+}
+
+.sidebar2-logical-place {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+}
+
+.sidebar2-logical-place-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+.sidebar2-logical-place-header h6 {
+  margin: 0;
+  color: #6a0dad;
+}
+
+.sidebar2-logical-place-description {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 8px;
+  font-style: italic;
+}
+
+.sidebar2-logical-place-conditions {
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+
+.sidebar2-logical-place-conditions ul {
+  margin-top: 5px;
+  padding-left: 20px;
+}
+
+.sidebar2-logical-place-physical {
+  font-size: 0.9rem;
+}
+
+.sidebar2-logical-place-physical-list {
+  margin-top: 5px;
+  max-height: 100px;
+  overflow-y: auto;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  padding: 5px;
+}
+
+.sidebar2-logical-place-physical-item {
+  padding: 3px 5px;
+  margin-bottom: 2px;
+  background-color: #f5f5f5;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.sidebar2-logical-place-physical-item:hover {
+  background-color: #e6f7ff;
+}
+
+/* Stili per l'editor di place logiche */
+.sidebar2-logical-place-editor {
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+}
+
+.conditions-container {
+  margin-top: 15px;
+}
+
+.condition-row {
+  padding: 8px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+}
+
+/* Stili per la modalità di selezione */
+.sidebar2-item.selected {
+  background-color: #e6f7ff;
+  border: 2px solid #1890ff;
+}
+
+.selected-places-list {
+  max-height: 150px;
+  overflow-y: auto;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: 8px;
+  margin-top: 8px;
+}
+
+.selected-place-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 8px;
+  margin-bottom: 4px;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+}
+
+.manual-selection-interface {
+  margin-bottom: 20px;
+  border-left: 4px solid #52c41a !important;
+}
+
+/* Stili per gli attributi aggregati nelle view */
+.sidebar2-view-aggregated-attributes {
+  margin-top: 10px;
+  padding: 5px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+}
+
+.aggregated-attribute-item {
+  margin: 5px 0;
+  padding: 3px;
+}
+
+.aggregated-attribute-name {
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+
+.aggregated-attribute-values {
+  padding-left: 10px;
+  font-size: 0.9em;
+}
+
+.aggregated-value {
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.attribute-item {
+  padding: 5px;
+  margin: 2px 0;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.attribute-item:hover {
+  background-color: #f0f0f0;
+}
+
+.attribute-item.selected {
+  background-color: #e2f0ff;
+}
+
+/* Stili per la lista di attributi disponibili */
+.available-attributes-list {
+  max-height: 150px;
+  overflow-y: auto;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: 8px;
+  margin-top: 8px;
+}
+
+/* Stili per le views */
+.views-section {
+  border-left: 4px solid #1890ff !important; /* Blu per le views */
+}
+
+.sidebar2-view {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+}
+
+.sidebar2-view-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.sidebar2-view-header h6 {
+  margin: 0;
+  color: #1890ff;
+}
+
+.sidebar2-view-description {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 8px;
+  font-style: italic;
+}
+
+.sidebar2-view-logical-places {
+  font-size: 0.9rem;
+  margin-bottom: 8px;
+}
+
+.sidebar2-view-logical-places-list {
+  margin-top: 5px;
+  max-height: 100px;
+  overflow-y: auto;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  padding: 5px;
+}
+
+.sidebar2-view-logical-place-item {
+  padding: 3px 5px;
+  margin-bottom: 2px;
+  background-color: #f5f5f5;
+  border-radius: 3px;
+}
+
+.sidebar2-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.sidebar2-header h3 {
+  white-space: nowrap;
+}
