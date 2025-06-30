@@ -692,7 +692,7 @@ async function importFromZip(zipData) {
             type: 'importModel',
             // payload: JSON.stringify(spaceModelString)
             payload: spaceModelString
-        }, 'http://localhost:3000');
+        }, 'http://prostool.unicam.it:3000');
     }
     // initMap(JSON.parse(spaceModelString))
 
@@ -775,7 +775,7 @@ function requestSpaceModelFromIframe() {
         window.addEventListener('message', listener);
 
         // Invia la richiesta all'iframe
-        iframe?.contentWindow?.postMessage('callExportModel', 'http://localhost:3000');
+        iframe?.contentWindow?.postMessage('callExportModel', 'http://prostool.unicam.it:3000');
     });
 }
 
@@ -892,11 +892,11 @@ dataToggle.style.display = 'none';
 
 modeler.get('eventBus').on('tokenSimulation.toggleMode', async event => {
     if (event.active) {
-        iframe?.contentWindow?.postMessage('callExportModel', 'http://localhost:3000');
+        iframe?.contentWindow?.postMessage('callExportModel', 'http://prostool.unicam.it:3000');
 
         const spaceModel = await new Promise((resolve) => {
             const handler = (event) => {
-                if (event.origin !== 'http://localhost:3000') return;
+                if (event.origin !== 'http://prostool.unicam.it:3000') return;
                 if (event.data?.type === 'exportModelResult') {
                     window.removeEventListener('message', handler); // Clean up
                     resolve(JSON.parse(event.data.payload));
@@ -933,7 +933,7 @@ modeler.get('eventBus').on('tokenSimulation.toggleMode', async event => {
             iframe.contentWindow.postMessage({
                 type: 'importModel',
                 payload: spaceModel
-            }, 'http://localhost:3000');
+            }, 'http://prostool.unicam.it:3000');
         }
     }
 });

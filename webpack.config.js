@@ -17,6 +17,9 @@ module.exports = (env, argv) => {
 
   return {
     mode,
+    devServer: {
+      allowedHosts: "all"
+    },
     // Definisce i punti di ingresso dell'applicazione
     entry: {
       viewer: './example/viewer.js',
