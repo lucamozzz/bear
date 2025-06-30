@@ -528,8 +528,11 @@ async function createNewDiagram() {
     showLoadingOverlay();
     // await olcModeler.createNew();
     await modeler.importXML(bearBPMN);
-    hideLoadingSpinner();
-    hideLoadingOverlay();
+    setTimeout(() => {
+        importFromGitHub();
+        hideLoadingSpinner();
+        hideLoadingOverlay();
+    }, 1500);
 }
 
 // async function createEmptyDiagram() {
@@ -652,6 +655,37 @@ document.addEventListener('bindFlows', function (event) {
 
 //     // localStorage.setItem('spaceModel', JSON.stringify(spaceModelString));
 //     localStorage.setItem('spaceModel', spaceModelString);
+
+
+async function importFromGitHub() {
+    const bpmnUrl = 'https://raw.githubusercontent.com/lucamozzz/bear/refs/heads/bear-bpm/example/resources/ambulance.bpmn';
+    const jsonUrl = 'https://raw.githubusercontent.com/lucamozzz/bear/refs/heads/bear-bpm/example/resources/ambulance.json';
+    try {
+        const [bpmnResponse, jsonResponse] = await Promise.all([
+            fetch(bpmnUrl),
+            fetch(jsonUrl)
+        ]);
+
+        if (!bpmnResponse.ok || !jsonResponse.ok) {
+            throw new Error('Failed to fetch one or both files.');
+        }
+
+        const bpmnText = await bpmnResponse.text();
+        const jsonText = await jsonResponse.text();
+
+        await modeler.importXML(bpmnText);
+        localStorage.setItem('spaceModel', jsonText);
+
+        if (iframe && iframe.contentWindow) {
+            iframe.contentWindow.postMessage({
+                type: 'importModel',
+                payload: jsonText
+            }, 'http://localhost:3000');
+        }
+    } catch (err) {
+        console.error('Import failed:', err);
+    }
+}
 
 async function importFromZip(zipData) {
     const zip = await Zip.loadAsync(zipData, { base64: true });
@@ -904,10 +938,10 @@ modeler.get('eventBus').on('tokenSimulation.toggleMode', async event => {
             };
             window.addEventListener('message', handler);
         });
-        
+
         iframe.style.display = 'none';
         dataToggle.style.display = 'block';
-        
+
         localStorage.setItem('spaceModel', JSON.stringify(spaceModel));
         await initMap(spaceModel);
 
