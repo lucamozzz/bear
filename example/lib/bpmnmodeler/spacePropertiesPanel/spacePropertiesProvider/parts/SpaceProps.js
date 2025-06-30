@@ -324,12 +324,13 @@ function Destination(props) {
     <div>
       <SelectEntry
         id={id}
+        label={translate('Destination')}
         element={element}
         getValue={getValue}
         getOptions={getOptions}
         setValue={setValue}
         debounce={debounce}
-        />
+      />
       {/* <TextFieldEntry
         id={id}
         element={element}
