@@ -24,16 +24,6 @@ To install the tool, follow these steps:
 1. Run `npm install` to install the dependencies.
 2. Run `npm run start` to start a [local instance](http://localhost:8080).
 
-## Case studies
-BEAR makes it possible to upload an environment-aware BPMN collaboration model by clicking on the ***Open*** button.
-When uploading a model, a `.zip` file containing the `.bpmn` file and the space `.json` file will have to be provided by the user.
-By clicking on the ***Examples*** button, you will be redirected to the [following repository](https://bitbucket.org/proslabteam/environmental-bpmn-collaboration-models/src/main/BEAR2.0/2025), where you will find `.zip` files of varioues case studies ranging different scenariox. 
-Each case study is available in a fully functional variant and others with intentional modeling errors to showcase the tool’s capabilities, following the same naming convention:
-- `case_study.zip` <span style="color:green;">(happy path)</span>
-- `case_study_different.zip`  <span style="color:#FFDE21;">(different positions)</span>
-- `case_study_unreachable.zip`  <span style="color:#FFDE21;">(unreachable destination)</span>
-- `case_study_discordant.zip`  <span style="color:red;">(discordant movements)</span>
-
 ## License
 
 A detailed user guide, screenshots and a tool demonstration video are avilable at the [following website](https://pros.unicam.it/environmental-bpmn/).
