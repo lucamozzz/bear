@@ -682,6 +682,19 @@ async function importFromGitHub() {
                 payload: jsonText
             }, 'http://localhost:3000');
         }
+
+        setTimeout(() => {
+            const elementRegistry = modeler.get('elementRegistry');
+            const tasks = elementRegistry._elements
+            const tasksArray = Object.values(tasks)
+                .map(element => element.element)
+                .filter(element => element.type === 'bpmn:Task');
+            tasksArray.forEach(task => {
+                if (task.businessObject.$attrs.type && task.businessObject.$attrs.type !== 'regular') {
+                    addCustomIcons(task.id, task.businessObject.$attrs.type);
+                }
+            })
+        }, 500);
     } catch (err) {
         console.error('Import failed:', err);
     }
