@@ -36,4 +36,8 @@ Each case study is available in a fully functional variant and others with inten
 
 ## License
 
+A detailed user guide, screenshots and a tool demonstration video are avilable at the [following website](https://pros.unicam.it/environmental-bpmn/).
+
+## License
+
 Environment-aware BPMN Animator © 2025 is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/?ref=chooser-v1) 
