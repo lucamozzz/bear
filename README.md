@@ -24,7 +24,7 @@ To install the tool, follow these steps:
 1. Run `npm install` to install the dependencies.
 2. Run `npm run start` to start a [local instance](http://localhost:8080).
 
-## License
+## User guide
 
 A detailed user guide, screenshots and a tool demonstration video are avilable at the [following website](https://pros.unicam.it/environmental-bpmn/).
 
