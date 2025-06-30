@@ -680,7 +680,7 @@ async function importFromGitHub() {
             iframe.contentWindow.postMessage({
                 type: 'importModel',
                 payload: jsonText
-            }, 'http://localhost:3000');
+            }, 'http://prostool.unicam.it:3000');
         }
 
         setTimeout(() => {
