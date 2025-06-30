@@ -67,23 +67,26 @@ The animation terminates once all tokens cannot move forward. In the case of dea
 ### Environment Modeling
 BEAR embeds a modeler (on the right) used to design the environment model.
 The environment is modeled in JSON (JavaScript Object Notation) and overlaid onto a geographic map for enhanced visualization.
+
 ![Env modeler](./images/1-11.png)
 
 The designer can define an environment model by drawing **physical places** and **edges** directly on a geographic map, however, the underlying place graph can also be visualized. 
 
-<img src="./images/pg.png" alt="Env modeler" width="100" height="100"/>
+<img src="./images/pg.png" alt="Env modeler" width="100"/>
 
 Each element can be enriched with key-value attributes, either spatial, e.g., length, size or contextual, e.g., room purpose.
 
-<img src="./images/attr.png" alt="Env modeler" width="100" height="100"/>
-
+<img src="./images/attr.png" alt="Env modeler" width="100"/>
 
 In addition to the physical layer, the tool supports the definition of a logical layer: 
 
 - **Logical places** are defined by conditions that predicate over the attributes of physical places.
-<img src="./images/lp.png" alt="Env modeler" width="100" height="100"/>
+
+<img src="./images/lp.png" alt="Env modeler" width="100"/>
+
 - **Views** are dynamic groupings of logical places that enable reasoning at different levels of abstraction.
-<img src="./images/view.png" alt="Env modeler" width="100" height="100"/>
+
+<img src="./images/view.png" alt="Env modeler" width="100"/>
 
 
 The model attains to the following structure:
@@ -153,18 +156,22 @@ For each element, it is possible to define additional properties using the **ele
 
 An **initial position** corresponding to one of the places in the environmental model can be set for each **pool**, which represents participant in the collaboration.
 
-<img src="./images/ip.png" alt="Env modeler" width="100" height="100"/>
+<img src="./images/ip.png" alt="Env modeler" width="100"/>
 
 **Tasks** in the model will include a new **Assignments** property used to modify the value of environmental attributes. Assignments are defined by specifying the name of a defined attribute (e.g. `place1.temperature`) and its new value (e.g. `25`).
 **Tasks** will also include a **Guards** property used to assess the value of environmental attributes prior to execution. Guards are defined by specifying the name of a defined attribute (e.g. `place1.temperature`), a logical operator (e.g. `=<`) and a value (e.g. `25`).
-<img src="./images/gass.png" alt="Env modeler" width="100" height="100"/>
+
+<img src="./images/gass.png" alt="Env modeler" width="100"/>
 
 New types of **Tasks** are also introduced in the modeler:
 *   **Movement Tasks** are used to move a participant within the environment, modifying its position. A **Destination** attribute indicates the place that the participant wants to reach from its current position. The destination has to be defined by selecting one of the places defined in the environmental model or by specifying the name of an attribute that contains the name of a place.
-<img src="./images/movement.png" alt="Env modeler" width="100" height="100"/>
+
+<img src="./images/movement.png" alt="Env modeler" width="100"/>
+
 *   **Binding Tasks** and **Unbinding Tasks** are used to synchronize movements between participants. **Movement Tasks** performed after a **Binding Task** will affect all the bound participants, until they reach the next **Unbinding Task**.
-<img src="./images/bind.png" alt="Env modeler" width="100" height="100"/>
-<img src="./images/unbind.png" alt="Env modeler" width="100" height="100"/>
+
+<img src="./images/bind.png" alt="Env modeler" width="100"/>
+<img src="./images/unbind.png" alt="Env modeler" width="100"/>
 
 ## License
 
