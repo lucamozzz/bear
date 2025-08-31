@@ -528,8 +528,11 @@ async function createNewDiagram() {
     showLoadingOverlay();
     // await olcModeler.createNew();
     await modeler.importXML(bearBPMN);
-    hideLoadingSpinner();
-    hideLoadingOverlay();
+    setTimeout(() => {
+        importFromGitHub();
+        hideLoadingSpinner();
+        hideLoadingOverlay();
+    }, 1500);
 }
 
 // async function createEmptyDiagram() {
@@ -653,6 +656,50 @@ document.addEventListener('bindFlows', function (event) {
 //     // localStorage.setItem('spaceModel', JSON.stringify(spaceModelString));
 //     localStorage.setItem('spaceModel', spaceModelString);
 
+
+async function importFromGitHub() {
+    const bpmnUrl = 'https://raw.githubusercontent.com/lucamozzz/bear/refs/heads/bear-bpm/example/resources/ambulance.bpmn';
+    const jsonUrl = 'https://raw.githubusercontent.com/lucamozzz/bear/refs/heads/bear-bpm/example/resources/ambulance.json';
+    try {
+        const [bpmnResponse, jsonResponse] = await Promise.all([
+            fetch(bpmnUrl),
+            fetch(jsonUrl)
+        ]);
+
+        if (!bpmnResponse.ok || !jsonResponse.ok) {
+            throw new Error('Failed to fetch one or both files.');
+        }
+
+        const bpmnText = await bpmnResponse.text();
+        const jsonText = await jsonResponse.text();
+
+        await modeler.importXML(bpmnText);
+        localStorage.setItem('spaceModel', jsonText);
+
+        if (iframe && iframe.contentWindow) {
+            iframe.contentWindow.postMessage({
+                type: 'importModel',
+                payload: jsonText
+            }, 'http://prostool.unicam.it:3000');
+        }
+
+        setTimeout(() => {
+            const elementRegistry = modeler.get('elementRegistry');
+            const tasks = elementRegistry._elements
+            const tasksArray = Object.values(tasks)
+                .map(element => element.element)
+                .filter(element => element.type === 'bpmn:Task');
+            tasksArray.forEach(task => {
+                if (task.businessObject.$attrs.type && task.businessObject.$attrs.type !== 'regular') {
+                    addCustomIcons(task.id, task.businessObject.$attrs.type);
+                }
+            })
+        }, 500);
+    } catch (err) {
+        console.error('Import failed:', err);
+    }
+}
+
 async function importFromZip(zipData) {
     const zip = await Zip.loadAsync(zipData, { base64: true });
 
@@ -692,7 +739,7 @@ async function importFromZip(zipData) {
             type: 'importModel',
             // payload: JSON.stringify(spaceModelString)
             payload: spaceModelString
-        }, 'http://localhost:3000');
+        }, 'http://prostool.unicam.it:3000');
     }
     // initMap(JSON.parse(spaceModelString))
 
@@ -775,7 +822,7 @@ function requestSpaceModelFromIframe() {
         window.addEventListener('message', listener);
 
         // Invia la richiesta all'iframe
-        iframe?.contentWindow?.postMessage('callExportModel', 'http://localhost:3000');
+        iframe?.contentWindow?.postMessage('callExportModel', 'http://prostool.unicam.it:3000');
     });
 }
 
@@ -892,11 +939,11 @@ dataToggle.style.display = 'none';
 
 modeler.get('eventBus').on('tokenSimulation.toggleMode', async event => {
     if (event.active) {
-        iframe?.contentWindow?.postMessage('callExportModel', 'http://localhost:3000');
+        iframe?.contentWindow?.postMessage('callExportModel', 'http://prostool.unicam.it:3000');
 
         const spaceModel = await new Promise((resolve) => {
             const handler = (event) => {
-                if (event.origin !== 'http://localhost:3000') return;
+                if (event.origin !== 'http://prostool.unicam.it:3000') return;
                 if (event.data?.type === 'exportModelResult') {
                     window.removeEventListener('message', handler); // Clean up
                     resolve(JSON.parse(event.data.payload));
@@ -904,10 +951,10 @@ modeler.get('eventBus').on('tokenSimulation.toggleMode', async event => {
             };
             window.addEventListener('message', handler);
         });
-        
+
         iframe.style.display = 'none';
         dataToggle.style.display = 'block';
-        
+
         localStorage.setItem('spaceModel', JSON.stringify(spaceModel));
         await initMap(spaceModel);
 
@@ -933,7 +980,7 @@ modeler.get('eventBus').on('tokenSimulation.toggleMode', async event => {
             iframe.contentWindow.postMessage({
                 type: 'importModel',
                 payload: spaceModel
-            }, 'http://localhost:3000');
+            }, 'http://prostool.unicam.it:3000');
         }
     }
 });
