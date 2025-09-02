@@ -1068,34 +1068,6 @@
             "attributes": {}
         },
         {
-            "id": "edge13",
-            "name": "Edge 13",
-            "source": "place14",
-            "target": "place8",
-            "attributes": {}
-        },
-        {
-            "id": "edge14",
-            "name": "Edge 14",
-            "source": "place8",
-            "target": "place14",
-            "attributes": {}
-        },
-        {
-            "id": "edge15",
-            "name": "Edge 15",
-            "source": "place8",
-            "target": "place9",
-            "attributes": {}
-        },
-        {
-            "id": "edge16",
-            "name": "Edge 16",
-            "source": "place9",
-            "target": "place8",
-            "attributes": {}
-        },
-        {
             "id": "edge17",
             "name": "Edge 17",
             "source": "place9",
@@ -1431,19 +1403,6 @@
             ],
             "expression": "zone === 'SP17'",
             "place": "place1"
-        },
-        {
-            "id": "set2",
-            "name": "SP256",
-            "conditions": [
-                {
-                    "attribute": "zone",
-                    "operator": "==",
-                    "value": "SP256"
-                }
-            ],
-            "expression": "zone === 'SP256'",
-            "place": "place8"
         },
         {
             "id": "set3",
