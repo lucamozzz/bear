@@ -865,7 +865,7 @@
         {
             "id": "view1",
             "name": "Buildings",
-            "sets": [
+            "logicalPlaces": [
                 "set1",
                 "set2"
             ],
@@ -874,7 +874,7 @@
         {
             "id": "view2",
             "name": "Available Rooms",
-            "sets": [
+            "logicalPlaces": [
                 "set3",
                 "set4"
             ],
@@ -885,7 +885,7 @@
         {
             "id": "view3",
             "name": "Offices",
-            "sets": [
+            "logicalPlaces": [
                 "set5",
                 "set6"
             ],
