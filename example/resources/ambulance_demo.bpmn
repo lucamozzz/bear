@@ -21,7 +21,7 @@
     <bpmn:startEvent id="Event_12vwrhu" name="Accident occurence">
       <bpmn:outgoing>Flow_1bm2z6v</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:intermediateThrowEvent id="Event_0tm4nln" name="Call&#10;�emergency">
+    <bpmn:intermediateThrowEvent id="Event_0tm4nln" name="Call&#10;emergency">
       <bpmn:incoming>Flow_1bm2z6v</bpmn:incoming>
       <bpmn:outgoing>Flow_1kj57gs</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_1k5ecqc" />
@@ -45,7 +45,7 @@
       <bpmn:incoming>Flow_0zakr56</bpmn:incoming>
       <bpmn:outgoing>Flow_0h3fxaq</bpmn:outgoing>
     </bpmn:task>
-    <bpmn:task id="Activity_0zm6sxs" name="Arrive at� hospital" type="unbind">
+    <bpmn:task id="Activity_0zm6sxs" name="Arrive at hospital" type="unbind">
       <bpmn:incoming>Flow_0sifoqf</bpmn:incoming>
       <bpmn:outgoing>Flow_0zakr56</bpmn:outgoing>
     </bpmn:task>
