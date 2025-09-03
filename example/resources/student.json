@@ -1,18 +1,4 @@
 {
-    "map": {
-        "center": [
-            13.068307772123394,
-            43.139407493133405
-        ],
-        "extent": [
-            13.067553,
-            43.138806,
-            13.068553,
-            43.139806
-        ],
-        "zoom": 19,
-        "rotation": 0.5
-    },
     "places": [
         {
             "id": "place1",
@@ -785,40 +771,92 @@
             "attributes": {}
         }
     ],
-    "sets": [
+    "logicalPlaces": [
         {
             "id": "set1",
             "name": "Building A",
+            "conditions": [
+                {
+                    "attribute": "zone",
+                    "operator": "==",
+                    "value": "A"
+                }
+            ],
             "expression": "zone === 'A'",
             "place": "place13"
         },
         {
             "id": "set2",
             "name": "Building B",
+            "conditions": [
+                {
+                    "attribute": "zone",
+                    "operator": "==",
+                    "value": "B"
+                }
+            ],
             "expression": "zone === 'B'",
             "place": "place5"
         },
         {
             "id": "set3",
             "name": "Available Study Rooms",
+            "conditions": [
+                {
+                    "attribute": "purpose",
+                    "operator": "==",
+                    "value": "studying"
+                },
+                {
+                    "attribute": "freeSeats",
+                    "operator": ">",
+                    "value": "0"
+                }
+            ],
             "expression": "purpose === 'studying' && freeSeats > 0",
             "place": "place6"
         },
         {
             "id": "set4",
             "name": "Available Classrooms",
+            "conditions": [
+                {
+                    "attribute": "purpose",
+                    "operator": "==",
+                    "value": "teaching"
+                },
+                {
+                    "attribute": "freeSeats",
+                    "operator": ">",
+                    "value": "30"
+                }
+            ],
             "expression": "purpose === 'teaching' && freeSeats > 30",
             "place": "place4"
         },
         {
             "id": "set5",
             "name": "PhD Office",
+            "conditions": [
+                {
+                    "attribute": "purpose",
+                    "operator": "==",
+                    "value": "phd"
+                }
+            ],
             "expression": "purpose === 'phd'",
             "place": "place2"
         },
         {
             "id": "set6",
             "name": "Tutor Office",
+            "conditions": [
+                {
+                    "attribute": "purpose",
+                    "operator": "==",
+                    "value": "tutor"
+                }
+            ],
             "expression": "purpose === 'tutor'",
             "place": "place13"
         }
